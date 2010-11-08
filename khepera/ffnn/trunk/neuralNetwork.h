@@ -6,5 +6,16 @@
 /*****************************************************************/
 #ifndef INC_NEURALNETWORK
 #define INC_NEURALNETWORK
-//Code goes here...
+
+#include "errors.h"
+#include "math.h"
+
+#define INPUTS 9
+#define HIDDENS 2
+#define OUTPUTS 2
+
+#define sigmoid(input) 1.0/(1.0 + exp(-input));
+
+double *ffnn(double inputsIN[INPUTS], double weightsIH[INPUTS][HIDDENS], double weightsHO[HIDDENS][OUTPUTS]);
+
 #endif //INC_NEURALNETWORK

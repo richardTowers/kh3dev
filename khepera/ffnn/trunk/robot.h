@@ -6,5 +6,17 @@
 /*****************************************************************/
 #ifndef INC_ROBOT
 #define INC_ROBOT
-//Code goes here...
+
+#include <korebot/korebot.h>
+#include "errors.h"
+
+//Globals
+static knet_dev_t * khepera;
+static knet_dev_t * leftMotor;
+static knet_dev_t * rightMotor;
+
+void initialiseRobot(void);
+unsigned int getIRRange(int sensorNumber);
+void setMotor(char theMotor);
+
 #endif //INC_ROBOT
