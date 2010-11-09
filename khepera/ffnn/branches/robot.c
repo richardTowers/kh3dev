@@ -56,19 +56,18 @@ void initialiseRobot(void)
 //Returns a range between 0 and 1
 float getIRRange(int sensorNumber)
 {
-	//usleep(10);
 	//Loosely based on getProxIR() from khepera3_test.c
 	char Buffer[25];
 	char rangeString[4];
 	float range;
-	//printf("...About to get IR ranges...\n");
+
   if(kh3_proximity_ir((char *)Buffer, khepera ))
 	{
 			sprintf(rangeString, "%4u",(Buffer[2*sensorNumber+1] | Buffer[2*sensorNumber+2]<<8));
 	  	range = atof(rangeString)/1024;
 	}
   else warning(WARNING_GETIR_FAIL);
-  //printf("...Leaving function getIRRange\n");
+
   return range;
 }
 

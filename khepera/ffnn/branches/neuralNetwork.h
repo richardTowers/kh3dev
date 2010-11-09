@@ -16,6 +16,8 @@
 
 #define sigmoid(input) 2.0/(1.0 + exp(-input)) - 1;
 
+//WARNING!
+//It is your responsibility to free the returned array of outputs!
 float *ffnn(float inputsIN[INPUTS], float weightsIH[INPUTS][HIDDENS], float weightsHO[HIDDENS][OUTPUTS]);
 
 #endif //INC_NEURALNETWORK

@@ -10,8 +10,19 @@
 int main(void)
 {
 	unsigned short int i;
-	unsigned int inputs[INPUTS];
-	float weightsIH[INPUTS][HIDDENS], weightsHO[HIDDENS][OUTPUTS];
+	float inputs[INPUTS];
+	float weightsIH[INPUTS][HIDDENS] = {{0.2,0.2}	,
+																			{-0.2,0.2},
+																			{-0.4,0.2},
+																			{-1,0.5}	,
+																			{0.5,-1}	,
+																			{0.2,-0.4},
+																			{0.2,-0.2},
+																			{0.2,0.2}	,
+																			{0.4,0.4}	};
+	
+	float weightsHO[HIDDENS][OUTPUTS] = {{1,0}		,
+																			 {0,1}		};
 	float *outputs;
 
 	startLoggingErrors();
@@ -31,7 +42,7 @@ int main(void)
 		printf("Got IR Values\n\n");
 		
 		//Send IR Values to NN and get outputs
-		outputs = ffnn((float*)inputs, weightsIH, weightsHO);
+		outputs = ffnn(inputs, weightsIH, weightsHO);
 		
 		//Set	Motor values to outputs
 		for(i=0;i<OUTPUTS;i++)

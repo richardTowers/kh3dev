@@ -10,6 +10,8 @@
 
 /* Inputs and Weights should be from -1 to 1, uses a sigmoid function which maps ±∞ to ±1
  * Outputs in the range -1 to 1, these should be scaled appropriately.*/
+//WARNING!
+//It is your responsibility to free the returned array of outputs!
 float *ffnn(float inputsIN[INPUTS], float weightsIH[INPUTS][HIDDENS], float weightsHO[HIDDENS][OUTPUTS])
 {
 	float inputsOUT[INPUTS];
