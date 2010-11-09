@@ -16,7 +16,7 @@ static knet_dev_t * leftMotor;
 static knet_dev_t * rightMotor;
 
 void initialiseRobot(void);
-unsigned int getIRRange(int sensorNumber);
+float getIRRange(int sensorNumber);
 void setMotor(char theMotor);
 
 #endif //INC_ROBOT
