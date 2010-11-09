@@ -25,6 +25,8 @@ int main(void)
 																			 {0,1}		};
 	float *outputs;
 
+	int leftMotorSpeed, rightMotorSpeed;
+
 	startLoggingErrors();
 	
 	//Initialise Robot
@@ -45,11 +47,10 @@ int main(void)
 		outputs = ffnn(inputs, weightsIH, weightsHO);
 		
 		//Set	Motor values to outputs
-		for(i=0;i<OUTPUTS;i++)
-		{
-			printf("%4.2f, ",outputs[i]);
-		}
-		printf("\n");
+		leftMotorSpeed = (int*)(outputs[0]*200);
+		rightMotorSpeed = (int*)(outputs[1]*200);
+		printf("Left Motor: %d, Right Motor: %d", leftMotorSpeed, rightMotorSpeed);
+		//Don't want to set motors just yet...
 
 	stopLoggingErrors();
 	return 0;
