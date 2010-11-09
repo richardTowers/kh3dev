@@ -34,7 +34,8 @@ int main(void)
 	initialiseRobot();
 	printf("Robot Initialised\n\n");
 		
-
+	while(true)
+	{
 		//Get IR Values from Robot
 		printf("Getting IR Values...\n");		
 		for(i=0;i<INPUTS;i++)
@@ -43,15 +44,21 @@ int main(void)
 		}
 		printf("Got IR Values\n\n");
 		
+		printf("Running Neural Net to get Outpus\n");
 		//Send IR Values to NN and get outputs
 		outputs = ffnn(inputs, weightsIH, weightsHO);
-		
+		printf("Got Outputs...\n\n");
+
 		//Set	Motor values to outputs
 		leftMotorSpeed = (int*)(outputs[0]*200);
 		rightMotorSpeed = (int*)(outputs[1]*200);
-		printf("Left Motor: %d, Right Motor: %d", leftMotorSpeed, rightMotorSpeed);
+		printf("Left Motor: %d, Right Motor: %d\n", leftMotorSpeed, rightMotorSpeed);
 		//Don't want to set motors just yet...
-
+		
+		//Just so we don't get ahead of oursleves...
+		usleep(20000);
+	}
+	
 	stopLoggingErrors();
 	return 0;
 }
