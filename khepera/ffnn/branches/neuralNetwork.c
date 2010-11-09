@@ -7,13 +7,16 @@
 
 #include "neuralNetwork.h"
 
-double *ffnn(double inputsIN[INPUTS], double weightsIH[INPUTS][HIDDENS], double weightsHO[HIDDENS][OUTPUTS])
+
+/* Inputs and Weights should be from -1 to 1, uses a sigmoid function which maps ±∞ to ±1
+ * Outputs in the range -1 to 1, these should be scaled appropriately.*/
+float *ffnn(float inputsIN[INPUTS], float weightsIH[INPUTS][HIDDENS], float weightsHO[HIDDENS][OUTPUTS])
 {
-	double inputsOUT[INPUTS];
-	double hiddensIN[HIDDENS];
-	double hiddensOUT[HIDDENS];
-	double outputsIN[OUTPUTS];
-	double *outputsOUT = malloc(OUTPUTS*sizeof(double));
+	float inputsOUT[INPUTS];
+	float hiddensIN[HIDDENS];
+	float hiddensOUT[HIDDENS];
+	float outputsIN[OUTPUTS];
+	float *outputsOUT = malloc(OUTPUTS*sizeof(float));
 	
 	if (outputsOUT == NULL) error(ERROR_MALLOC);
 	

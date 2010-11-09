@@ -14,8 +14,8 @@
 #define HIDDENS 2
 #define OUTPUTS 2
 
-#define sigmoid(input) 1.0/(1.0 + exp(-input));
+#define sigmoid(input) 2.0/(1.0 + exp(-input)) - 1;
 
-double *ffnn(double inputsIN[INPUTS], double weightsIH[INPUTS][HIDDENS], double weightsHO[HIDDENS][OUTPUTS]);
+float *ffnn(float inputsIN[INPUTS], float weightsIH[INPUTS][HIDDENS], float weightsHO[HIDDENS][OUTPUTS]);
 
 #endif //INC_NEURALNETWORK
