@@ -1,0 +1,35 @@
+#!/bin/bash
+#Checks connection to robot, then sends the input file to the destination on the robot. If no destination is specified the file is sent to /home/root
+
+PROGNAME=$(basename $0)
+
+function error_exit
+{
+	echo "${PROGNAME}: ${1:-"Unknown Error"}" 1>&2
+	exit 1
+}
+
+#Check that a filename has been specified
+if [ $# -gt 2 ]; then error_exit "Maximum of 2 arguments allowed, $# recieved"
+elif [ $# -lt 1 ]; then error_exit "Please specify a file to be copied"
+fi
+
+echo "Pinging robot..."
+ping -c1 192.168.1.2 | grep -q '1 packets transmitted'
+if [ "$?" != "0" ]; then error_exit "Failed to contact robot on 192.168.1.2, run \"greetRobot\"."
+else
+	#Ping succeeded
+	echo "Ping was succesful"
+	if [ "$2" = "" ]; then
+		#No destination specified, use /home/root
+		scp $1 root@192.168.1.2:/home/root
+		if [ $? != 0 ]; then error_exit "scp returned error code $?"
+		fi
+	else
+		#A destination was specified
+		scp $1 root@192.168.1.2:$2
+		if [ $? != 0 ]; then error_exit "scp returned error code $?"
+		fi
+	fi
+fi
+echo "File copied succesfully"

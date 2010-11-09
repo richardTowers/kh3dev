@@ -1,0 +1,8 @@
+#!/bin/bash
+#Sets up the computer's usb port to have the IP address 192.168.1.1
+
+
+if sudo ifconfig usb0 192.168.1.1; then echo "usb0s IP set to 192.168.1.1"
+else echo "Failed to configure usb0"
+	exit 1
+fi

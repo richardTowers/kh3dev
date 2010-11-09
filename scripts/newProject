@@ -1,0 +1,87 @@
+#!/bin/bash
+#Creates a new khepera3 project
+
+
+PROGNAME=$(basename $0)
+
+function error_exit
+{
+	echo "${PROGNAME}: ${1:-"Unknown Error"}" 1>&2
+	exit 1
+}
+
+
+if [ $# -gt 1 ]; then error_exit "1 argument expected, $# recieved"
+elif [ $# -lt 1 ]; then error_exit "Please supply a name for your project"
+fi
+
+projectName=$1
+
+if ! mkdir $projectName; then error_exit "Failed to create directory"
+fi
+
+if ! mkdir ${projectName}/branches ${projectName}/tags ${projectName}/trunk; then error_exit "Failed to create directory"
+fi
+
+cat > $projectName/trunk/$projectName.c << _EOF_
+/*****************************************************************/
+/*  $projectName.c
+/*	Created by $USER at $(date +"%k:%M") on $(date +"%d/%m/%G")
+/*	Copyright Durham University $(date +"%G"), all rights reserved
+/*
+/*****************************************************************/
+
+#include "$projectName.h"
+
+int main(int argc, char * argv[])
+{
+	//Code goes here...
+}
+_EOF_
+
+ # Create H file
+		cat > $projectName/trunk/$projectName.h << _EOF_
+/*****************************************************************/
+/*  $projectName.h
+/*	Created by $USER at $(date +"%k:%M") on $(date +"%d/%m/%G")
+/*	Copyright Durham University $(date +"%G"), all rights reserved
+/*
+/*****************************************************************/
+#ifndef INC_$capsName
+#define INC_$capsName
+//Code goes here...
+#endif //INC_$capsName
+_EOF_
+
+cat > $projectName/trunk/'Makefile' << _EOF_
+#A makefile to cross compile a program for a Khepera 3 robot
+
+CC = ~/Development/cross/bin/arm-angstrom-linux-gnueabi-gcc
+LDFLAGS = -lm
+SOURCES = \$(wildcard *.c)
+OBJECTS = \$(SOURCES:.c=.o)
+EXECUTABLE = $projectName
+
+INCS = -I ../libraries/include
+LIBS	= -L ../libraries/lib -lkorebot
+
+all: \$(EXECUTABLE)
+	@echo 'Target completed'
+
+\$(EXECUTABLE): \$(OBJECTS)
+	@echo 'Linking object files'
+
+#Dependency rules for object files must go here:
+#e.g.
+#${projectName}.o: someFileIncludedIn${projectName}.o
+#	@echo 'Compiling ${projectName}.o'
+
+clean : 
+	@echo "Cleaning"
+	@rm -f *.o \$(EXECUTABLE)
+
+_EOF_
+
+
+#Project created succesfully!!
+echo "New Project \"$projectName\" created in $PWD"

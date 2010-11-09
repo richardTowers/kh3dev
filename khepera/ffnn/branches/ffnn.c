@@ -52,6 +52,8 @@ int main(void)
 		//Set	Motor values to outputs
 		leftMotorSpeed = (int*)(outputs[0]*200);
 		rightMotorSpeed = (int*)(outputs[1]*200);
+			//DONE WITH OUTPUTS NOW
+			free(outputs);
 		printf("Left Motor: %d, Right Motor: %d\n", leftMotorSpeed, rightMotorSpeed);
 		//Don't want to set motors just yet...
 		
