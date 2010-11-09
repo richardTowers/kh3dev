@@ -25,28 +25,28 @@ void initialiseRobot(void)
 			//Set up both motors explicitly
 			kmot_SetMode( leftMotor , kMotModeIdle );
 			kmot_SetMode( rightMotor , kMotModeIdle );
-		  	kmot_SetSampleTime( leftMotor , 1550 );
+		  kmot_SetSampleTime( leftMotor , 1550 );
 			kmot_SetSampleTime( rightMotor , 1550 );
-		  	kmot_SetMargin( leftMotor , 6 );
+		  kmot_SetMargin( leftMotor , 6 );
 			kmot_SetMargin( rightMotor , 6 );
 	   	kmot_SetOptions( leftMotor , 0x0 , kMotSWOptWindup | kMotSWOptStopMotorBlk | kMotSWOptDirectionInv);
-	    	kmot_SetOptions( rightMotor , 0x0 , kMotSWOptWindup | kMotSWOptStopMotorBlk );
-		  	kmot_ResetError( leftMotor );
+	   	kmot_SetOptions( rightMotor , 0x0 , kMotSWOptWindup | kMotSWOptStopMotorBlk );
+		 	kmot_ResetError( leftMotor );
 			kmot_ResetError( rightMotor );
-		  	kmot_SetBlockedTime( leftMotor , 10 );
-		  	kmot_SetBlockedTime( rightMotor , 10 );
-		  	kmot_SetLimits( leftMotor , kMotRegCurrent , 0 , 500 );
-		  	kmot_SetLimits( rightMotor , kMotRegCurrent , 0 , 500 );
-		  	kmot_SetLimits( leftMotor , kMotRegPos , -10000 , 10000 );
-		  	kmot_SetLimits( rightMotor , kMotRegPos , -10000 , 10000 );
-		
-		  	// PID
-		  	kmot_ConfigurePID( leftMotor , kMotRegSpeed , 400 , 0 , 10 );
-		  	kmot_ConfigurePID( rightMotor, kMotRegSpeed , 400 , 0 , 10 );
-		  	kmot_ConfigurePID( leftMotor , kMotRegPos, 620, 3, 10);
-		  	kmot_ConfigurePID( rightMotor, kMotRegPos, 620, 3, 10);
-		  	kmot_SetSpeedProfile( leftMotor, 30, 10);
-		  	kmot_SetSpeedProfile( rightMotor, 30, 10);
+	  	kmot_SetBlockedTime( leftMotor , 10 );
+	  	kmot_SetBlockedTime( rightMotor , 10 );
+	  	kmot_SetLimits( leftMotor , kMotRegCurrent , 0 , 500 );
+	  	kmot_SetLimits( rightMotor , kMotRegCurrent , 0 , 500 );
+		  kmot_SetLimits( leftMotor , kMotRegPos , -10000 , 10000 );
+		 	kmot_SetLimits( rightMotor , kMotRegPos , -10000 , 10000 );
+	
+		  // PID
+		 	kmot_ConfigurePID( leftMotor , kMotRegSpeed , 400 , 0 , 10 );
+		 	kmot_ConfigurePID( rightMotor, kMotRegSpeed , 400 , 0 , 10 );
+	  	kmot_ConfigurePID( leftMotor , kMotRegPos, 620, 3, 10);
+	  	kmot_ConfigurePID( rightMotor, kMotRegPos, 620, 3, 10);
+		 	kmot_SetSpeedProfile( leftMotor, 30, 10);
+	  	kmot_SetSpeedProfile( rightMotor, 30, 10);
 		}
 		else error(ERROR_MOTOR_INIT);
 	}
@@ -64,15 +64,26 @@ float getIRRange(int sensorNumber)
   if(kh3_proximity_ir((char *)Buffer, khepera ))
 	{
 			sprintf(rangeString, "%4u",(Buffer[2*sensorNumber+1] | Buffer[2*sensorNumber+2]<<8));
-	  	range = atof(rangeString)/1024;
+			//It would appear that the max IR value is 2^12 = 4096, so normalising gives:	  	
+			range = atof(rangeString)/4096;
 	}
   else warning(WARNING_GETIR_FAIL);
 
   return range;
 }
 
-void setMotor(char theMotor)
+void setMotor(char theMotor, int theSpeed)
 {
-	//No idea how to do this yet...
+	if(theSpeed > MAXIMUM_SPEED) theSpeed = MAXIMUM_SPEED;
+	else if(theSpeed < -MAXIMUM_SPEED) theSpeed = -MAXIMUM_SPEED;
 	
+	switch(theMotor)
+	{
+		case LEFT_MOTOR:
+			kmot_SetPoint( leftMotor, kMotRegSpeed, theSpeed);
+			break;
+		case RIGHT_MOTOR:
+			kmot_SetPoint( rightMotor, kMotMesSpeed, theSpeed);
+			break;
+	}
 }
