@@ -10,9 +10,22 @@
 int main(void)
 {
 	unsigned short int i;
-	unsigned int inputs[INPUTS];
-	double weightsIH[INPUTS][HIDDENS], weightsHO[HIDDENS][OUTPUTS];
-	double *outputs;
+	float inputs[INPUTS];
+	float weightsIH[INPUTS][HIDDENS] = {{0.2,0.2}	,
+																			{-0.2,0.2},
+																			{-0.4,0.2},
+																			{-1,0.5}	,
+																			{0.5,-1}	,
+																			{0.2,-0.4},
+																			{0.2,-0.2},
+																			{0.2,0.2}	,
+																			{0.4,0.4}	};
+	
+	float weightsHO[HIDDENS][OUTPUTS] = {{1,0}		,
+																			 {0,1}		};
+	float *outputs;
+
+	int leftMotorSpeed, rightMotorSpeed;
 
 	startLoggingErrors();
 	
@@ -20,26 +33,42 @@ int main(void)
 	printf("Initialising Robot...\n");
 	initialiseRobot();
 	printf("Robot Initialised\n\n");
+	for(i=0;i<10;i++)
+	{
+		printf("Program will start in %d seconds\n", 10-i);
+		sleep(1);
+	}
 		
-
+	while(1)
+	{
 		//Get IR Values from Robot
-		printf("Getting IR Values...\n");		
+		//printf("Getting IR Values...\nValues: ");		
 		for(i=0;i<INPUTS;i++)
 		{
 			inputs[i]=getIRRange(i);
+			//printf("%d: %f, ", i, inputs[i]);
 		}
-		printf("Got IR Values\n\n");
+		//printf("\nGot IR Values\n\n");
 		
+		//printf("Running Neural Net to get Outpus\n");
 		//Send IR Values to NN and get outputs
-		outputs = ffnn((double*)inputs, weightsIH, weightsHO);
-		
-		//Set	Motor values to outputs
-		for(i=0;i<OUTPUTS;i++)
-		{
-			printf("%4.2f, ",outputs[i]);
-		}
-		printf("\n");
+		outputs = ffnn(inputs, weightsIH, weightsHO);
+		//printf("Got Outputs...\n\n");
 
+		//Set	Motor values to outputs
+		leftMotorSpeed = (int)(outputs[1]*20000) + FORWARD_BIAS;
+		rightMotorSpeed = (int)(outputs[0]*20000) + FORWARD_BIAS;
+			//DONE WITH OUTPUTS NOW
+			free(outputs);
+		printf("\nLeft Motor: %d, Right Motor: %d\n", leftMotorSpeed, rightMotorSpeed);
+		//Set Motors
+		setMotor(LEFT_MOTOR, leftMotorSpeed);
+		setMotor(RIGHT_MOTOR, rightMotorSpeed);
+		
+		//Just so we don't get ahead of oursleves...
+		usleep(20000);
+	}
+	
 	stopLoggingErrors();
 	return 0;
 }

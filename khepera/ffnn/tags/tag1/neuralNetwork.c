@@ -7,48 +7,30 @@
 
 #include "neuralNetwork.h"
 
-
-/* Inputs and Weights should be from -1 to 1, uses a sigmoid function which maps ±∞ to ±1
- * Outputs in the range -1 to 1, these should be scaled appropriately.*/
-//WARNING!
-//It is your responsibility to free the returned array of outputs!
-float *ffnn(float inputsIN[INPUTS], float weightsIH[INPUTS][HIDDENS], float weightsHO[HIDDENS][OUTPUTS])
+double *ffnn(double inputsIN[INPUTS], double weightsIH[INPUTS][HIDDENS], double weightsHO[HIDDENS][OUTPUTS])
 {
-	float inputsOUT[INPUTS];
-	float hiddensIN[HIDDENS];
-	float hiddensOUT[HIDDENS];
-	float outputsIN[OUTPUTS];
-	float *outputsOUT = malloc(OUTPUTS*sizeof(float));
+	double inputsOUT[INPUTS];
+	double hiddensIN[HIDDENS];
+	double hiddensOUT[HIDDENS];
+	double outputsIN[OUTPUTS];
+	double *outputsOUT = malloc(OUTPUTS*sizeof(double));
 	
 	if (outputsOUT == NULL) error(ERROR_MALLOC);
 	
-	int theInput, theHidden, theOutput;
-	float inputSum=0;
+	int theInput, theHidden, theOutput, inputSum;
 	
 	//Get outputs of input neurons
-	//printf("\nOutputs of Input Neurons:\n");
-	for (theInput=0; theInput<INPUTS; theInput++)
-	{
-		inputsOUT[theInput]=sigmoid(inputsIN[theInput]);
-		//printf("%d: %f, ", theInput, inputsOUT[theInput]);
-	}
+	for (theInput=0; theInput<INPUTS; theInput++) inputsOUT[theInput]=sigmoid(inputsIN[theInput]);
 	
 	//Get the summed inputs to the hidden neurons
-	//printf("\nInputs to Hidden Neurons:\n");
 	for (theHidden=0; theHidden<HIDDENS; theHidden++) {
 		//Sum the inputs to this neuron
 		for (theInput=0; theInput<INPUTS; theInput++) inputSum += inputsOUT[theInput]*weightsIH[theInput][theHidden];
 		hiddensIN[theHidden]=inputSum;
 		inputSum=0; //Clear up our mess
-		//printf("%d: %f, ", theHidden, hiddensIN[theHidden]);
 	}
 	//Get outputs of hidden neurons
-	//printf("\nOutputs from Hidden Neurons:\n");
-	for (theHidden=0; theHidden<HIDDENS; theHidden++)
-	{
-		hiddensOUT[theHidden]=sigmoid(hiddensIN[theHidden]);
-		//printf("%d: %f, ", theHidden, hiddensOUT[theHidden]);
-	}
+	for (theHidden=0; theHidden<HIDDENS; theHidden++) hiddensOUT[theHidden]=sigmoid(hiddensIN[theHidden]);
 	
 	//Get the summed inputs to the output neurons
 	for (theOutput=0; theOutput<OUTPUTS; theOutput++) {
