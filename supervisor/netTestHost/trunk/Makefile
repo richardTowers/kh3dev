@@ -1,13 +1,13 @@
-#A makefile to cross compile a program for a Khepera 3 robot
+#A makefile to compile a program on a linux host
 
-CC = ~/Development/cross/bin/arm-angstrom-linux-gnueabi-gcc
-LDFLAGS = -lm
+CC = gcc
+#LDFLAGS = -lm
 SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:.c=.o)
 EXECUTABLE = netTestHost
 
-INCS = -I ../libraries/include
-LIBS	= -L ../libraries/lib -lkorebot
+#INCS = -I ../libraries/include
+#LIBS	= -L ../libraries/lib -lkorebot
 
 all: $(EXECUTABLE)
 	@echo 'Target completed'
