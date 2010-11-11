@@ -4,7 +4,7 @@
 /*	Copyright Durham University 2010, all rights reserved
 /*
 /*****************************************************************/
-#ifndef INC_
-#define INC_
+#ifndef INC_NETTESTHOST_H
+#define INC_NETTESTHOST_H
 //Code goes here...
 #endif //INC_
