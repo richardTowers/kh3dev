@@ -16,6 +16,7 @@ elif [ $# -lt 1 ]; then error_exit "Please supply a name for your project"
 fi
 
 projectName=$1
+capsName=`echo $projectName | tr '[a-z]' '[A-Z]'`
 
 if ! mkdir $projectName; then error_exit "Failed to create directory"
 fi
@@ -47,8 +48,8 @@ _EOF_
 /*	Copyright Durham University $(date +"%G"), all rights reserved
 /*
 /*****************************************************************/
-#ifndef INC_$capsName
-#define INC_$capsName
+#ifndef INC_${capsName}_H
+#define INC_${capsName}_H
 //Code goes here...
 #endif //INC_$capsName
 _EOF_
@@ -57,21 +58,28 @@ cat > $projectName/trunk/'Makefile' << _EOF_
 #A makefile to cross compile a program for a Khepera 3 robot
 
 CC = ~/Development/cross/bin/arm-angstrom-linux-gnueabi-gcc
-#CC = gcc #For development...
 LDFLAGS = -lm
-SOURCES = $(wildcard *.c)
-OBJECTS = $(SOURCES:.c=.o)
+SOURCES = \$(wildcard *.c)
+OBJECTS = \$(SOURCES:.c=.o)
 EXECUTABLE = $projectName
 
-INCS = -I ~/Development/libraries/include
-LIBS	= -L ~/Development/libraries/lib -lkorebot
+INCS = -I ../libraries/include
+LIBS	= -L ../libraries/lib -lkorebot
 
-all:
-	$(CC) $(LDFLAGS) $(SOURCES) $(INCS) $(LIBS) -o $(EXECUTABLE)
+all: \$(EXECUTABLE)
+	@echo 'Target completed'
+
+\$(EXECUTABLE): \$(OBJECTS)
+	@echo 'Linking object files'
+
+#Dependency rules for object files must go here:
+#e.g.
+#${projectName}.o: someFileIncludedIn${projectName}.o
+#	@echo 'Compiling ${projectName}.o'
 
 clean : 
 	@echo "Cleaning"
-	@rm -f *.o *.txt $(EXECUTABLE)
+	@rm -f *.o \$(EXECUTABLE)
 
 _EOF_
 
