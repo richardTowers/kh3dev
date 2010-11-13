@@ -87,3 +87,12 @@ void setMotor(char theMotor, int theSpeed)
 			break;
 	}
 }
+
+void stopAllMotors(void)
+{
+	if(leftMotor!=NULL && rightMotor!=NULL)
+  {
+		kmot_SetMode( leftMotor , kMotModeStopMotor );
+		kmot_SetMode( rightMotor , kMotModeStopMotor );
+  }
+}

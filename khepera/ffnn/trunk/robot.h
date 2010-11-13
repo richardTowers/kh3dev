@@ -29,4 +29,7 @@ float getIRRange(int sensorNumber);
 //Sets the motor speed, a reasonable speed is found with theSpeed=20,000.
 void setMotor(char theMotor, int theSpeed);
 
+//Stop the motors
+void stopAllMotors(void);
+
 #endif //INC_ROBOT
