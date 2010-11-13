@@ -21,11 +21,16 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
+#include <sys/wait.h>
+
+
 #include <arpa/inet.h>
 
 #define PORT "5555" // the port client will be connecting to 
 
-#define MAXDATASIZE 100 // max number of bytes we can get at once 
+#define MAXDATASIZE 100 // max number of bytes we can get at once
+
+#define CHILD 0
 
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa)
@@ -44,6 +49,8 @@ int main(int argc, char *argv[])
 	struct addrinfo hints, *servinfo, *p;
 	int rv;
 	char s[INET6_ADDRSTRLEN];
+	pid_t processID = 0;
+	int status;
 
 	if (argc != 2) {
 	    fprintf(stderr,"usage: client hostname\n");
@@ -84,18 +91,38 @@ int main(int argc, char *argv[])
 	inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
 			s, sizeof s);
 	printf("client: connecting to %s\n", s);
-
+	
 	freeaddrinfo(servinfo); // all done with this structure
-
-	if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
-	    perror("recv");
-	    exit(1);
+	//At this point we should be connected to the server and ready to recieve...
+	for(;;)
+	{
+		if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
+	  	  perror("recv");
+	  	  exit(1);
+		}
+		else if (numbytes == 0);
+		else
+		{
+			buf[numbytes] = '\0';
+			printf("client: received '%s'\n",buf);
+			//If there's a child process, kill it
+			if(processID>0){ kill(processID, SIGKILL); wait(&status);}
+			
+			//Fork process
+			processID = fork();
+			if(processID==CHILD)
+			{
+				//Child process runs nn
+				printf("Doing a thing!\n");
+				for(;;)
+				{
+					printf("%s\n", buf);
+					sleep(1);
+				}
+			}
+				//Parent waits for new recv()				
+		}
 	}
-
-	buf[numbytes] = '\0';
-
-	printf("client: received '%s'\n",buf);
-
 	close(sockfd);
 
 	return 0;
