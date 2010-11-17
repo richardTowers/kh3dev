@@ -5,7 +5,7 @@ CC = ~/Development/cross/bin/arm-angstrom-linux-gnueabi-gcc
 LDFLAGS = -lm
 SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:.c=.o)
-EXECUTABLE = netTestClient
+EXECUTABLE = evoSlave
 
 INCS = -I ~/Development/libraries/include
 LIBS	= -L ~/Development/libraries/lib -lkorebot

@@ -126,7 +126,9 @@ int main(void)
 
 		if (!fork()) { // this is the child process
 			close(sockfd); // child doesn't need the listener
-
+			
+			//As a test, send a file across using scp
+			rv = system("scp testing.txt root@192.168.1.2:/home/root");
 			//Ready to send now!
 			for(;;)
 			{
