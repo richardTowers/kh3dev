@@ -16,6 +16,10 @@
 #define HOST_IP "192.168.1.1"
 #define CHILD 0
 
+//Genotype stored as global:
+extern int nInputs, nHiddens, nOutputs;
+extern int *weights; //Add biases and time constants later...
+
 void childProcess(char *genotype);
 
 #endif //INC_EVOSLAVE
