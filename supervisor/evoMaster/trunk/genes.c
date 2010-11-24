@@ -9,8 +9,7 @@
 
 void readGenotype(const char *filename)
 {
-	int i,j=0,startNode,endNode,theWeight;
-	char theChar, lineBuffer[100], intBuffer[10];
+	int theWeight;
 	FILE *file;
 	
 	file = fopen(filename, "r");
@@ -23,11 +22,33 @@ void readGenotype(const char *filename)
 		//timeConstants=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));
 	
 	//Loop through weights:
-	for (i = 0; i < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); i ++)
+	for (theWeight = 0; theWeight < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); theWeight ++)
 	{
 		fscanf("%d",&weights[i]);
 	}
 		//Same for the others...
+	
+	fclose(file);
+	
+}
+
+void writeGenotype(const char *filename)
+{
+	int theRow, theColumn;
+	FILE *file;
+	
+	file=fopen(filename, "w+");
+	//Print number of nodes:
+	fprintf(file, "%d %d %d\n", nInputs, nHiddens, nOutputs);
+	
+	//Loop through weights:
+	for (theRow = 0; theRow < (nInputs+nHiddens+nOutputs); theRow ++)
+	{
+		for (theColumn = 0; theColumn < (nInputs+nHiddens+nOutputs); theColumn ++)
+			fprintf("%d ",&weights[theRow*(nInputs+nHiddens+nOutputs)+theColumn]);
+		fprintf("\n");
+	}
+	fclose(file);
 }
 
 void printGenotype(void)

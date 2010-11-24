@@ -15,6 +15,7 @@ int nInputs, nHiddens, nOutputs;
 int *weights,*biases,*timeConstants;
 
 void readGenotype(const char *filename);
+void writeGenotype(const char *filename);
 void printGenotype(void);
 
 #endif //INC_GENES

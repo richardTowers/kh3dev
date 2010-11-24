@@ -12,12 +12,12 @@ int main(int argc, char * argv[])
 	struct individual individual[POP_SIZE*GENERATIONS];
 	struct generation generation[GENERATIONS];
 	
-	int theIndividual, theGeneration;
+	int theIndividual=0, theGeneration=0;
 	
 	//Connect to Robot
 	
 	//Create initial population of random genotype files
-	for (theIndividual)
+	for (theIndividual=0; theIndividual < POP_SIZE; theIndividual++)
 	{
 			//Random Weights etc.
 			
