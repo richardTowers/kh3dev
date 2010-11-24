@@ -24,7 +24,7 @@ void readGenotype(const char *filename)
 	//Loop through weights:
 	for (theWeight = 0; theWeight < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); theWeight ++)
 	{
-		fscanf("%d",&weights[i]);
+		fscanf(file,"%d",&weights[theWeight]);
 	}
 		//Same for the others...
 	
@@ -45,8 +45,8 @@ void writeGenotype(const char *filename)
 	for (theRow = 0; theRow < (nInputs+nHiddens+nOutputs); theRow ++)
 	{
 		for (theColumn = 0; theColumn < (nInputs+nHiddens+nOutputs); theColumn ++)
-			fprintf("%d ",&weights[theRow*(nInputs+nHiddens+nOutputs)+theColumn]);
-		fprintf("\n");
+			fprintf(file,"%d ",weights[theRow*(nInputs+nHiddens+nOutputs)+theColumn]);
+		fprintf(file,"\n");
 	}
 	fclose(file);
 }

@@ -7,7 +7,8 @@
 #ifndef INC_GENES
 #define INC_GENES
 
-#include <regex.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 //Genotype stored as global:

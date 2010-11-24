@@ -7,8 +7,23 @@
 #ifndef INC_EVOMASTER_H
 #define INC_EVOMASTER_H
 
-#define POP_SIZE
-#define	GENERATIONS
+#include <stdlib.h>
+#include "network.h"
+#include "genes.h"
+#include "errors.h"
+
+
+#define POP_SIZE 12
+#define	GENERATIONS 10
+
+#define INPUTS 9
+#define	HIDDENS 9
+#define OUTPUTS 2
+
+extern int nInputs;
+extern int nHiddens;
+extern int nOutputs;
+extern int* weights;
 
 struct individual
 {
@@ -23,5 +38,6 @@ struct generation
 	int number;
 	int averageFitness;
 	int bestFitness;
+	struct individual individual[POP_SIZE];
 };
 #endif //INC_EVOMASTER

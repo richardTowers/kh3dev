@@ -12,22 +12,21 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
-#include <netdb.h>
 #include <sys/types.h>
-#include <netinet/in.h>
 #include <sys/socket.h>
-#include <sys/wait.h>
+#include <netinet/in.h>
+#include <netdb.h>
 #include <arpa/inet.h>
+#include <sys/wait.h>
+#include <signal.h>
 
-#include "errors.h"
+#define PORT "5555"  // the port users will be connecting to
 
-#define PORT "5555" // the port client will be connecting to 
-
-#define MAXDATASIZE 100 // max number of bytes we can get at once
+#define BACKLOG 10	 // how many pending connections queue will hold
 
 void *get_in_addr(struct sockaddr *sa);
-
-int connectToHost(char *IPAddress);
+void sigchld_handler(int s);
+int connectToClient(char* IPAddress);
 
 ///////////////////////////////////////////////////////////////////
 #endif //INC_NETWORK
