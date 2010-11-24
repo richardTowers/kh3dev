@@ -13,12 +13,15 @@ int main(int argc, char * argv[])
 	
 	int theIndividual=0, theGeneration=0, theWeight, robotSocket;
 	char command[50];
+	nInputs=INPUTS;
+	nHiddens=HIDDENS;
+	nOutputs=OUTPUTS;
 	
 	FILE *file;
 	
 	weights=malloc( sizeof(int)*(nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs) );
 	//Connect to Robot
-	robotSocket=connectToClient("192.168.1.2");
+	robotSocket=connectToClient(ROBOT_IP);
 	
 	//Create initial population of random genotype files
 	for (theIndividual=0; theIndividual < POP_SIZE; theIndividual++)
@@ -27,23 +30,28 @@ int main(int argc, char * argv[])
 		nInputs=INPUTS;
 		nHiddens=HIDDENS;
 		nOutputs=OUTPUTS;
+		printf("!\n");
 		//Assign Weights
 		for (theWeight = 0; theWeight < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); theWeight ++)
 		{
-			weights[theWeight]=random();
+			weights[theWeight]=rand()%1024;
+			printf("%d\n",theWeight);
 		}
 		//Create a file for this individual
 		sprintf(generation[0].individual[theIndividual].geneFile, "Gen0Ind%d.txt", theIndividual);
 		//Store genotype in file...
 		writeGenotype(generation[0].individual[theIndividual].geneFile);
 	}
-	
+
 	for (theGeneration = 0; theGeneration < GENERATIONS; theGeneration ++)
 	{
 		for (theIndividual = 0; theIndividual < POP_SIZE; theIndividual ++)
 		{
 			//Send genotype to robot
-			sprintf(command, "scp %s root@192.168.1.2:/home/root", generation[theGeneration].individual[theIndividual].geneFile);
+			sprintf(command, "scp %s root@%s:%s",
+			generation[theGeneration].individual[theIndividual].geneFile,
+			ROBOT_IP,
+			GENE_FOLDER);
 			system(command);
 			
 			//Send 'File Sent!' to robot

@@ -45,7 +45,7 @@ void writeGenotype(const char *filename)
 	for (theRow = 0; theRow < (nInputs+nHiddens+nOutputs); theRow ++)
 	{
 		for (theColumn = 0; theColumn < (nInputs+nHiddens+nOutputs); theColumn ++)
-			fprintf(file,"%d ",weights[theRow*(nInputs+nHiddens+nOutputs)+theColumn]);
+			fprintf(file,"%4d ",weights[theRow*(nInputs+nHiddens+nOutputs)+theColumn]);
 		fprintf(file,"\n");
 	}
 	fclose(file);

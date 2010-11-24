@@ -16,14 +16,17 @@
 #define POP_SIZE 12
 #define	GENERATIONS 10
 
+#define ROBOT_IP "127.0.0.1"
+#define GENE_FOLDER "/home/richard"
+
 #define INPUTS 9
 #define	HIDDENS 9
 #define OUTPUTS 2
 
-extern int nInputs;
-extern int nHiddens;
-extern int nOutputs;
-extern int* weights;
+int nInputs;
+int nHiddens;
+int nOutputs;
+int* weights;
 
 struct individual
 {
