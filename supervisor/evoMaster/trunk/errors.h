@@ -19,6 +19,7 @@
 #define ERROR_KHEPERA_INIT 4
 #define WARNING_GETIR_FAIL 5
 #define ERROR_IPDDRESS 6
+#define WARNING_SCP_FAIL 7
 
 //Globals
 FILE *errorFile;

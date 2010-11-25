@@ -8,10 +8,11 @@
 #define INC_EVOMASTER_H
 
 #include <stdlib.h>
+#include <dirent.h>
+
 #include "network.h"
 #include "genes.h"
 #include "errors.h"
-
 
 #define POP_SIZE 12
 #define	GENERATIONS 10

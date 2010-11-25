@@ -19,10 +19,10 @@ void stopLoggingErrors(void)
 
 const char* errorLookup(int errorCode)
 {
-	static const char * errors[7]=
+	static const char * errors[8]=
 	{
 		"No Error", "Unspecified Error", "Malloc could not allocate memory", "Unable to initialise motor", "Unable to initialise khepera",
-		"Failed to get IR ranges", "IP Address is not valid"
+		"Failed to get IR ranges", "IP Address is not valid", "File Copy Failed"
 	};
 	return errors[errorCode];
 }
