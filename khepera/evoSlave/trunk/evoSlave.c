@@ -14,7 +14,6 @@ int main(int argc, char * argv[])
 	pid_t processID = 0;
 	int status;
 	
-	printf("%d\n",sizeof(short));
 	//Connect to host
 	host = connectToHost(HOST_IP);
 
@@ -34,7 +33,7 @@ int main(int argc, char * argv[])
 			if(processID>0){ kill(processID, SIGKILL); wait(&status);}
 
 			buffer[bytesRecieved] = '\0';
-			printf("Recieved New Genotype: '%s'\n",buffer);
+			printf("Recieved Signal: '%s'\n",buffer);
 			
 			//Fork process
 			processID = fork();
@@ -44,9 +43,9 @@ int main(int argc, char * argv[])
 	return 0;
 }
 
-void childProcess(char *genotype)
+void childProcess(char *filename)
 {
-	printf("Doing a thing!\n");
+	printf("Running...\n");
 	for(;;)
 	{
 		printf("%s\n", genotype);

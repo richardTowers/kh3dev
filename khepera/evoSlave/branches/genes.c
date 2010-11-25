@@ -25,7 +25,7 @@ void readGenotype(const char *filename)
 	//Loop through weights:
 	for (i = 0; i < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); i ++)
 	{
-		fscanf("%d",&weights[i]);
+		fscanf(file,"%d",&weights[i]);
 	}
 		//Same for the others...
 }

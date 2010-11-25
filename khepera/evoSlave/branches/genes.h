@@ -7,12 +7,14 @@
 #ifndef INC_GENES
 #define INC_GENES
 
-#include <regex.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 
 
 //Genotype stored as global:
-int nInputs, nHiddens, nOutputs;
-int *weights,*biases,*timeConstants;
+extern int nInputs, nHiddens, nOutputs;
+extern int *weights;
 
 void readGenotype(const char *filename);
 void printGenotype(void);

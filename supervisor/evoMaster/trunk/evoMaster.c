@@ -11,8 +11,8 @@ int main(int argc, char * argv[])
 {
 	struct generation generation[GENERATIONS];
 	
-	int theIndividual=0, theGeneration=0, theWeight, robotSocket;
-	char command[100];
+	int theIndividual=0, theGeneration=0, theWeight, robotSocket,i;
+	char command[100], filename[30];
 	nInputs=INPUTS;
 	nHiddens=HIDDENS;
 	nOutputs=OUTPUTS;
@@ -49,24 +49,23 @@ int main(int argc, char * argv[])
 	{
 		for (theIndividual = 0; theIndividual < POP_SIZE; theIndividual ++)
 		{
+			strcpy(filename,generation[theGeneration].individual[theIndividual].geneFile);
 			//Send genotype to robot
-			sprintf(command, "scp %s root@%s:%s",
-			generation[theGeneration].individual[theIndividual].geneFile, ROBOT_IP, GENE_FOLDER);
-			if(system(command)!=0) error(WARNING_SCP_FAIL);
-			else
-			{
-				//Send 'File Sent!' to robot
-				send(robotSocket, "File Sent!", 10, 0);
+			sprintf(command, "scp %s root@%s:%s",filename, ROBOT_IP, GENE_FOLDER);
+			if(system(command)!=0)warning(WARNING_SCP_FAIL);
+
+			//Send Filename to robot
+			send(robotSocket, filename, strlen(filename)+1, 0);
+		
+			//Monitor robots fitness
+				//This will take a long time to return
+				sleep(10);
+				//Store robots fitness
+					//generation[theGeneration].individual[theIndividual].fitness=someFitness;
 			
-				//Monitor robots fitness
-					//This will take a long time to return
-					sleep(10);
-					//Store robots fitness
-						//generation[theGeneration].individual[theIndividual].fitness=someFitness;
-				
-				//Send 'Stop Motors' to robot
-				send(robotSocket, "Stop Motors", 11, 0);
-			}
+			//Send 'Stop Motors' to robot
+			send(robotSocket, "Stop Motors", 11, 0);
+			sleep(1);
 		}
 		//Reproduce, crossover mutate
 	}

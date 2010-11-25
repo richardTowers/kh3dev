@@ -17,8 +17,8 @@
 #define POP_SIZE 12
 #define	GENERATIONS 10
 
-#define ROBOT_IP "127.0.0.1"
-#define GENE_FOLDER "/home/richard"
+#define ROBOT_IP "192.168.1.2"
+#define GENE_FOLDER "/home/root/Genotypes"
 
 #define INPUTS 9
 #define	HIDDENS 9
@@ -33,7 +33,7 @@ struct individual
 {
 	int number;
 	int ID;
-	char geneFile[8];
+	char geneFile[20];
 	int fitness;
 };
 
