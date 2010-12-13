@@ -1,17 +1,14 @@
-#A makefile to cross compile a program for a Khepera 3 robot
+#A makefile to compile a c program using openCV
 
-CC = ~/Development/cross/bin/arm-angstrom-linux-gnueabi-gcc
-#CC = gcc #For development...
+CC = g++
 LDFLAGS = -lm
+CFLAGS  = -ggdb $(shell pkg-config opencv --cflags --libs)
 SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:.c=.o)
 EXECUTABLE = fitMonitor
 
-INCS = -I ~/Development/libraries/include
-LIBS	= -L ~/Development/libraries/lib -lkorebot
-
 all:
-	$(CC) $(LDFLAGS) $(SOURCES) $(INCS) $(LIBS) -o $(EXECUTABLE)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(SOURCES) -o $(EXECUTABLE)
 
 clean : 
 	@echo "Cleaning"

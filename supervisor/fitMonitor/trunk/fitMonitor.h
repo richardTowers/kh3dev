@@ -6,5 +6,12 @@
 /*****************************************************************/
 #ifndef INC_FITMONITOR_H
 #define INC_FITMONITOR_H
-//Code goes here...
+
+#define NUMBER_ROBOTS 2
+
+struct RSTposition {
+	int theRobot;
+	cvPoint thePosition;
+};
+
 #endif //INC_FITMONITOR
