@@ -7,11 +7,43 @@
 #ifndef INC_FITMONITOR_H
 #define INC_FITMONITOR_H
 
-#define NUMBER_ROBOTS 2
+#include <stdio.h>
 
-struct RSTposition {
+#include "cv.h"
+#include "highgui.h"
+
+
+#define NUMBER_ROBOTS 2
+#define XSCALE 100/(float)width
+#define YSCALE 100/(float)height
+#define TARGETS 3
+#define HUE data[row*step+column*channels+0]
+#define LIGHTNESS data[row*step+column*channels+1]
+#define SATURATION data[row*step+column*channels+2]
+#define RED (HUE > 90 && HUE < 150)
+#define BLUE (HUE < 30 || HUE > 150)
+#define GREEN (HUE > 30 && HUE < 90)
+#define AREA 16
+#define ANY_CAMERA -1
+
+struct rtRobotPosition {
 	int theRobot;
-	cvPoint thePosition;
+	CvPoint thePosition;
 };
+
+struct rtTarget {
+	CvPoint position;
+	int hue;
+	int lightness;
+	int saturation;
+	int count;
+};
+
+IplImage *findLights(IplImage *frame);
+IplImage * downsize4(IplImage * frame);
+
+CvPoint redPosition;
+CvPoint greenPosition;
+CvPoint bluePosition;
 
 #endif //INC_FITMONITOR
