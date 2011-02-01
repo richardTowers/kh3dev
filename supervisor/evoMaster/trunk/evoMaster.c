@@ -11,7 +11,7 @@ int main(int argc, char * argv[])
 {
 	struct generation generation[GENERATIONS];
 	
-	int theIndividual=0, theGeneration=0, theWeight, robotSocket,i;
+	int theIndividual=0, theGeneration=0, theWeight, robotSocket,i, row, column;
 	char command[100], filename[30];
 	nInputs=INPUTS;
 	nHiddens=HIDDENS;
@@ -23,7 +23,7 @@ int main(int argc, char * argv[])
 	
 	weights=malloc( sizeof(int)*(nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs) );
 	//Connect to Robot
-	robotSocket=connectToClient(ROBOT_IP);
+	//robotSocket=connectToClient(ROBOT_IP);
 	
 	//Create initial population of random genotype files
 	if(access("./Genotypes",F_OK)!=0) system("mkdir Genotypes");
@@ -35,17 +35,80 @@ int main(int argc, char * argv[])
 		nOutputs=OUTPUTS;
 
 		//Assign Weights
-		for (theWeight = 0; theWeight < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); theWeight ++)
+		for (row = 0; row < (nInputs+nHiddens+nOutputs); row ++)
 		{
-			weights[theWeight]=rand()%1024;
+			for (column = 0; column < (nInputs+nHiddens+nOutputs); column ++)
+			{
+				theWeight=row*(nInputs+nHiddens+nOutputs)+column;
+				if(column<nInputs)
+				{
+					if(row<nInputs)
+					{
+						if(rand()%pBASE<pII) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						else weights[theWeight]=0;
+					}
+					else if(row<nInputs+nHiddens)
+					{
+						if(rand()%pBASE<pIH) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						else weights[theWeight]=0;
+					}
+					else
+					{
+						if(rand()%pBASE<pIO) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						else weights[theWeight]=0;
+					}
+				}
+				else if(column<nInputs+nHiddens)
+				{
+					if(row<nInputs)
+					{
+						if(rand()%pBASE<pHI) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						else weights[theWeight]=0;
+					}
+					else if(row<nInputs+nHiddens)
+					{
+						if(rand()%pBASE<pHH) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						else weights[theWeight]=0;
+					}
+					else
+					{
+						if(rand()%pBASE<pHO) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						else weights[theWeight]=0;
+					}
+				}
+				else
+				{
+					if(row<nInputs)
+					{
+						if(rand()%pBASE<pOI) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						else weights[theWeight]=0;
+					}
+					else if(row<nInputs+nHiddens)
+					{
+						if(rand()%pBASE<pOH) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						else weights[theWeight]=0;
+					}
+					else
+					{
+						if(rand()%pBASE<pOO) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						else weights[theWeight]=0;
+					}
+				}
+				//else weights[theWeight]=0;
+			}
 		}
+		/*for (theWeight = 0; theWeight < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); theWeight ++)
+		{
+			if(rand()%169<22) weights[theWeight]=rand()%2048-1024;
+			else weights[theWeight]=0;
+		}*/
 		//Create a file for this individual
 		sprintf(generation[0].individual[theIndividual].geneFile, "Genotypes/Gen0Ind%d.txt", theIndividual);
 		//Store genotype in file...
 		writeGenotype(generation[0].individual[theIndividual].geneFile);
 	}
 
-	for (theGeneration = 0; theGeneration < GENERATIONS; theGeneration ++)
+	/*for (theGeneration = 0; theGeneration < GENERATIONS; theGeneration ++)
 	{
 		for (theIndividual = 0; theIndividual < POP_SIZE; theIndividual ++)
 		{
@@ -69,6 +132,6 @@ int main(int argc, char * argv[])
 		}
 		//Reproduce, crossover mutate
 	}
-	
+	*/
 	stopLoggingErrors();
 }
