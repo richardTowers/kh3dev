@@ -29,7 +29,8 @@
 #define BLUE cvScalar(255,0,0)
 #define RED cvScalar(0,0,255)
 #define GREEN cvScalar(0,255,0)
-#define GREY cvScalar(50,50,50)
+#define GREY cvScalar(150,150,150)
+#define YELLOW cvScalar(0,255,255)
 #define AREA 16
 #define ANY_CAMERA -1
 #define YES 1
@@ -38,7 +39,7 @@
 #define EXCL_RADIUS 2
 #define ROI_SIZE 200
 #define PI 3.14159
-#define MARK_SIZE 20
+#define MARK_SIZE 30
 #define LINE_WIDTH 2
 #define NULL_POINT cvPoint(0xffff,0xffff)
 #define WIDTH 635
@@ -69,6 +70,7 @@ void mainCapture(void);
 void keyHandler(void);
 void subCapture(IplImage* fullFrame, CvRect bounds, int robot);
 void mouseHandler(int event, int x, int y, int flags, void* param);
+IplImage * downsize4(IplImage * frame);
 
 //Globals:
 rtRobotPosition robots[NUMBER_ROBOTS];
