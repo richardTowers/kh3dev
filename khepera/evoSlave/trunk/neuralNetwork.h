@@ -16,8 +16,23 @@
 
 #define sigmoid(input) 2.0/(1.0 + exp(-3*input)) - 1;
 
+typedef enum NNlayer
+{
+	input,
+	hidden,
+	output
+};
+
+//We need to keep track of this so it's declared as global and must be initiated and released using NNalloc() and NNdealloc()
+float *neuronState;
+
+void NNalloc(const short int nNodes);
+void NNdealloc(void);
 //WARNING!
 //It is your responsibility to free the returned array of outputs!
 float *ffnn(float inputsIN[INPUTS], float weightsIH[INPUTS][HIDDENS], float weightsHO[HIDDENS][OUTPUTS]);
+//WARNING!
+//It is your responsibility to free the returned array of outputs!
+float *dtrnn(const float *inputs, const float *weights, const short int nInputs, const short int nHiddens, const short int nOutputs);
 
 #endif //INC_NEURALNETWORK

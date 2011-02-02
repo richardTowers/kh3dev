@@ -7,6 +7,71 @@
 
 #include "neuralNetwork.h"
 
+void NNalloc(const short int nNodes)
+{
+	neuronState = calloc(nNodes, sizeof(float));
+}
+
+void NNdealloc(void)
+{
+	if(neuronState!=NULL) free(&neuronState);
+}
+
+/* 	inputs should be allocated: malloc(INPUTS*sizeof(float))
+	weights should be allocated: malloc((INPUTS+HIDDENS+OUTPUTS)*sizeof(float))*/
+//WARNING!
+//It is your responsibility to free the returned array of outputs!
+float *dtrnn(const float *inputs, const float *weights)
+{
+	float *neuronStatePrev;
+	float *outputs;
+	//Throughout this function I'm using 'pre' to indicate the PREsynaptic neuron, and 'post' to indicate the POSTsynaptic neuron.
+	short int pre, post, neuron;
+	NNlayer preLayer, postLayer;
+	short int nNodes = nInputs+nHiddens+nOutputs;
+	
+	//Allocate memory:
+	neuronStatePrev = malloc(nNodes*sizeof(float));
+	outputs = malloc(nOutputs*sizeof(float));
+	
+	for (post = 0; post < nNodes; post ++)
+	{
+		//Store previous (t -1) state
+		neuronStatePrev[post]=neuronState[post];
+		//Determine the layer of the postsynaptic neuron
+		if(post<nInputs) postLayer=input;
+		else if(post<nInputs+nHiddens) postLayer=hidden;
+		else postLayer=output;
+		
+		//If it's an input, then it'll have some input, otherwise we start counting from 0
+		if(postLayer==input) neuronState[post]=inputs[post];
+		else neuronState[post]=0;
+		
+		for (pre = 0; pre < nNodes; pre ++)
+		{
+			//Determine the layer of the presynaptic neuron
+			if(pre<nInputs) preLayer=input;
+			else if(pre<nInputs+nHiddens) preLayer=hidden;
+			else preLayer=output;
+			
+			/*If the postsynaptic neuron is in a higher layer than the presynaptic
+				it can take the value from this time step, since all of the lower layers
+				have been calculated. Otherwise it should take the value from t-1*/
+			if(postLayer>preLayer) neuronState[post]+=weights[post*nNodes+pre]*neuronState[pre];
+			else neuronState[post]+=weights[post*nNodes+pre]*neuronStatePrev[pre];
+		}
+	}
+	//At this point all of the neuron states for this timestep have been calculated, we're only interested in the outputs:
+	for (neuron = nInputs+nHiddens; neuron < nNodes; neuron ++)
+	{
+		outputs[neuron-nInputs+nHiddens] = neuronState[neuron];
+	}
+	//Free the memory:
+	free(&neuronStatePrev);
+	
+	//Return the outputs which MUST BE RELEASED by the caller
+	return *outputs;
+}
 
 /* Inputs and Weights should be from -1 to 1, uses a sigmoid function which maps ±∞ to ±1
  * Outputs in the range -1 to 1, these should be scaled appropriately.*/

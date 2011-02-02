@@ -29,7 +29,7 @@
 #define CHILD 0
 
 //Genotype stored as global:
-int nInputs, nHiddens, nOutputs;
+unsigned short int nInputs, nHiddens, nOutputs;
 int *weights; //Add biases and time constants later...
 
 void childProcess(char *genotype);

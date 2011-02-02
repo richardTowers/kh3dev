@@ -36,7 +36,7 @@ int main(int argc, char * argv[])
 			if(strncmp(buffer,"Genotype",5)==0)
 			{
 				//If there's a child process, kill it
-				if(processID>0){ kill(processID, SIGKILL); wait(&status);}
+				if(processID>0){ kill(processID, SIGKILL); wait(&status); NNdealloc();}
 				//Fork process
 				processID = fork();
 				if(processID==CHILD) childProcess(buffer);
@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
 			else if(strcmp(buffer,"Stop Motors")==0)
 			{
 				//If there's a child process, kill it
-				if(processID>0){ kill(processID, SIGKILL); wait(&status);}
+				if(processID>0){ kill(processID, SIGKILL); wait(&status); NNdealloc();}
 				//Stop Motors
 				printf("Stopping Motors\n");
 				stopAllMotors();
@@ -76,26 +76,25 @@ void childProcess(char *filename)
 	
 	printf("Running...\n");
 	//readGenotype(filename);
+	//Allocate memory for NN:
+	NNalloc(nInputs+nOutputs+nHiddens);
 	for(;;)
 	{
 		for(i=0;i<INPUTS;i++)
 		{
 			inputs[i]=getIRRange(i);
-			//printf("%d: %f, ", i, inputs[i]);
 		}
-		//printf("\nGot IR Values\n\n");
 		
-		//printf("Running Neural Net to get Outpus\n");
 		//Send IR Values to NN and get outputs
 		outputs = ffnn(inputs, weightsIH, weightsHO);
-		//printf("Got Outputs...\n\n");
+		outputs = dtrnn(inputs, weights)
 
 		//Set	Motor values to outputs
 		leftMotorSpeed = (int)(outputs[1]*20000);
 		rightMotorSpeed = (int)(outputs[0]*20000);
-			//DONE WITH OUTPUTS NOW
-			free(outputs);
-		//printf("\nLeft Motor: %d, Right Motor: %d\n", leftMotorSpeed, rightMotorSpeed);
+		//DONE WITH OUTPUTS NOW
+		free(outputs);
+
 		//Set Motors
 		setMotor(LEFT_MOTOR, leftMotorSpeed);
 		setMotor(RIGHT_MOTOR, rightMotorSpeed);
