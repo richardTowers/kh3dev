@@ -13,8 +13,8 @@
 
 
 //Genotype stored as global:
-extern int nInputs, nHiddens, nOutputs;
-extern int *weights;
+int nInputs, nHiddens, nOutputs;
+int *weights,*biases,*timeConstants;
 
 void readGenotype(const char *filename);
 void printGenotype(void);

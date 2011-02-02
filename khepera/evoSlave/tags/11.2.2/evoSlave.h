@@ -9,8 +9,6 @@
 
 //#define TESTING
 
-#include <string.h>
-
 #include "network.h"
 #include "errors.h"
 
@@ -29,8 +27,8 @@
 #define CHILD 0
 
 //Genotype stored as global:
-int nInputs, nHiddens, nOutputs;
-int *weights; //Add biases and time constants later...
+extern int nInputs, nHiddens, nOutputs;
+extern int *weights; //Add biases and time constants later...
 
 void childProcess(char *genotype);
 
