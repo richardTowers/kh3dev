@@ -11,17 +11,18 @@ int main(int argc, char * argv[])
 {
 	struct generation generation[GENERATIONS];
 	
-	int theIndividual=0, theGeneration=0, theWeight, robotSocket,i, row, column;
+	int theIndividual=0, theGeneration=0, theWeight, robotSocket,i, row, column, nNodes;
 	char command[100], filename[30];
 	nInputs=INPUTS;
 	nHiddens=HIDDENS;
 	nOutputs=OUTPUTS;
+	nNodes=INPUTS+HIDDENS+OUTPUTS;
 	
 	FILE *file;
 	
 	startLoggingErrors();
 	
-	weights=malloc( sizeof(int)*(nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs) );
+	weights=malloc( sizeof(int)*nNodes*nNodes );
 	//Connect to Robot
 	//robotSocket=connectToClient(ROBOT_IP);
 	
@@ -33,21 +34,22 @@ int main(int argc, char * argv[])
 		nInputs=INPUTS;
 		nHiddens=HIDDENS;
 		nOutputs=OUTPUTS;
+		nNodes=INPUTS+HIDDENS+OUTPUTS;
 
 		//Assign Weights
-		for (row = 0; row < (nInputs+nHiddens+nOutputs); row ++)
+		for (row = 0; row < nNodes; row ++)
 		{
-			for (column = 0; column < (nInputs+nHiddens+nOutputs); column ++)
+			for (column = 0; column < nNodes; column ++)
 			{
-				theWeight=row*(nInputs+nHiddens+nOutputs)+column;
-				if(column<nInputs)
+				theWeight=row*nNodes+column;
+				if(row<nInputs)
 				{
-					if(row<nInputs)
+					if(column<nInputs)
 					{
 						if(rand()%pBASE<pII) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
-					else if(row<nInputs+nHiddens)
+					else if(column<nInputs+nHiddens)
 					{
 						if(rand()%pBASE<pIH) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
@@ -58,14 +60,14 @@ int main(int argc, char * argv[])
 						else weights[theWeight]=0;
 					}
 				}
-				else if(column<nInputs+nHiddens)
+				else if(row<nInputs+nHiddens)
 				{
-					if(row<nInputs)
+					if(column<nInputs)
 					{
 						if(rand()%pBASE<pHI) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
-					else if(row<nInputs+nHiddens)
+					else if(column<nInputs+nHiddens)
 					{
 						if(rand()%pBASE<pHH) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
@@ -78,12 +80,12 @@ int main(int argc, char * argv[])
 				}
 				else
 				{
-					if(row<nInputs)
+					if(column<nInputs)
 					{
 						if(rand()%pBASE<pOI) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
-					else if(row<nInputs+nHiddens)
+					else if(column<nInputs+nHiddens)
 					{
 						if(rand()%pBASE<pOH) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
@@ -97,7 +99,7 @@ int main(int argc, char * argv[])
 				//else weights[theWeight]=0;
 			}
 		}
-		/*for (theWeight = 0; theWeight < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); theWeight ++)
+		/*for (theWeight = 0; theWeight < nNodes*nNodes; theWeight ++)
 		{
 			if(rand()%169<22) weights[theWeight]=rand()%2048-1024;
 			else weights[theWeight]=0;
