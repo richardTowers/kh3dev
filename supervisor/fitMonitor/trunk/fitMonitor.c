@@ -31,13 +31,13 @@ void mainCapture(void)
 		fprintf(stderr,"Could not initialize capturing...\n");
 		exit(1);
 	}
-	cvNamedWindow("Main");
+	cvNamedWindow("Main",0);
 	cvSetMouseCallback("Main",mouseHandler,NULL);
 	
 	
 	while(robot<NUMBER_ROBOTS)
 	{
-		while(roundel<2)
+		while(roundel<MARKS_PER_BOT)
 		{
 			keyHandler();
 			frame = cvQueryFrame( capture );
@@ -51,7 +51,7 @@ void mainCapture(void)
 				//Clear the frame
 				frame = cvQueryFrame( capture );
 				//Shrink the image
-				frame=downsize4(downsize4(frame));
+				//frame=downsize4(downsize4(frame));
 				cvSetImageROI(frame, fullRect);
 				cvShowImage("Main", frame);
 				
@@ -72,6 +72,7 @@ void mainCapture(void)
 							robots[robot].marks.front=cvCreateImage(cvGetSize(frame), frame->depth, frame->nChannels);
 							cvCopy(frame, robots[robot].marks.front, 0);
 							roundel++;
+							if(MARKS_PER_BOT<2) robot++;
 							break;
 						}
 						else if(roundel==1)
@@ -111,7 +112,7 @@ void mainCapture(void)
 		keyHandler();
 		frame = cvQueryFrame( capture );
 		if( !frame ) {fprintf(stderr,"\nError: Couldn\'t grab frame.\n"); exit(1);}
-		frame=downsize4(downsize4(frame));
+		//frame=downsize4(downsize4(frame));
 		
 		for (robot = 0; robot < NUMBER_ROBOTS; robot += 1)
 		{
@@ -127,7 +128,7 @@ void mainCapture(void)
 					cvNormalize( histogram, histogram, 1, 0, CV_MINMAX );
 					cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
 					maxloc=cvPoint(maxloc.x+robots[robot].marks.front->width/2, maxloc.y+robots[robot].marks.front->height/2);
-					cvCircle(frame, maxloc, (robots[robot].marks.front->width+robots[robot].marks.front->height)/4, cvAvg(frame,NULL), -1, CV_AA);
+					//cvCircle(frame, maxloc, (robots[robot].marks.front->width+robots[robot].marks.front->height)/4, cvAvg(frame,NULL), -1, CV_AA);
 					robots[robot].position=maxloc;
 					
 					
@@ -136,7 +137,7 @@ void mainCapture(void)
 				
 			}
 		}
-		frame = cvQueryFrame( capture );
+		//frame = cvQueryFrame( capture );
 		cvCircle(frame, robots[0].position, MARK_SIZE, YELLOW, LINE_WIDTH, CV_AA);
 		cvCircle(frame, robots[1].position, MARK_SIZE, RED, LINE_WIDTH, CV_AA);
 		cvShowImage("Main", frame);

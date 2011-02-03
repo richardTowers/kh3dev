@@ -16,7 +16,8 @@
 
 //Defines:
 #define CV_NO_BACKWARD_COMPATIBILITY
-#define NUMBER_ROBOTS 2
+#define NUMBER_ROBOTS 1
+#define MARKS_PER_BOT 1
 #define XSCALE 100/(float)width
 #define YSCALE 100/(float)height
 #define TARGETS 3

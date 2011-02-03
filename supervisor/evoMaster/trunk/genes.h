@@ -12,7 +12,7 @@
 
 
 //Genotype stored as global:
-extern int nInputs, nHiddens, nOutputs;
+extern unsigned short int nInputs, nHiddens, nOutputs;
 extern short int *weights;
 
 void readGenotype(const char *filename);

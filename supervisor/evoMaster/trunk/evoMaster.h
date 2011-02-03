@@ -40,9 +40,7 @@ O 0  0  0*/
 #define pOH 0
 #define pOO 0
 
-int nInputs;
-int nHiddens;
-int nOutputs;
+unsigned short int nInputs, nHiddens, nOutputs;
 short int* weights;
 
 struct individual

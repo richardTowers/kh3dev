@@ -14,7 +14,7 @@ void readGenotype(const char *filename)
 	
 	file = fopen(filename, "r");
 	//Get number of nodes:
-	fscanf(file,"%d %d %d",&nInputs,&nHiddens,&nOutputs);
+	fscanf(file,"%hd %hd %hd",&nInputs,&nHiddens,&nOutputs);
 	
 	//Allocate enough memory for the weights, biases and time constants
 	weights=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs));
@@ -24,7 +24,7 @@ void readGenotype(const char *filename)
 	//Loop through weights:
 	for (theWeight = 0; theWeight < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); theWeight ++)
 	{
-		fscanf(file,"%d",&weights[theWeight]);
+		fscanf(file,"%hd",&weights[theWeight]);
 	}
 		//Same for the others...
 	

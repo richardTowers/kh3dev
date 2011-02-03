@@ -24,7 +24,9 @@ int main(int argc, char * argv[])
 	
 	weights=malloc( sizeof(int)*nNodes*nNodes );
 	//Connect to Robot
-	//robotSocket=connectToClient(ROBOT_IP);
+	robotSocket=connectToClient(ROBOT_IP);
+	
+	//Set up fitMonitor
 	
 	//Create initial population of random genotype files
 	if(access("./Genotypes",F_OK)!=0) system("mkdir Genotypes");
@@ -110,7 +112,7 @@ int main(int argc, char * argv[])
 		writeGenotype(generation[0].individual[theIndividual].geneFile);
 	}
 
-	/*for (theGeneration = 0; theGeneration < GENERATIONS; theGeneration ++)
+	for (theGeneration = 0; theGeneration < GENERATIONS; theGeneration ++)
 	{
 		for (theIndividual = 0; theIndividual < POP_SIZE; theIndividual ++)
 		{
@@ -134,6 +136,6 @@ int main(int argc, char * argv[])
 		}
 		//Reproduce, crossover mutate
 	}
-	*/
+	
 	stopLoggingErrors();
 }
