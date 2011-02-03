@@ -1,0 +1,20 @@
+#A makefile to cross compile a program for a Khepera 3 robot
+
+#CC = ~/Development/cross/bin/arm-angstrom-linux-gnueabi-gcc
+CC = gcc #For development...
+CFLAGS = -Wall -DTESTING
+LDFLAGS = -lm
+SOURCES = $(wildcard [!r]*.c)
+OBJECTS = $(SOURCES:.c=.o)
+EXECUTABLE = testEvoSlave
+
+#INCS = -I ~/Development/libraries/include
+#LIBS	= -L ~/Development/libraries/lib -lkorebot
+
+all:
+	$(CC) $(CFLAGS) $(LDFLAGS) $(SOURCES) $(INCS) $(LIBS) -o $(EXECUTABLE)
+
+clean : 
+	@echo "Cleaning"
+	@rm -f *.o *.txt $(EXECUTABLE)
+

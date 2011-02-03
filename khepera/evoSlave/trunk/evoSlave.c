@@ -14,43 +14,48 @@ int main(int argc, char * argv[])
 	pid_t processID = 0;
 	int status;
 	
+	#ifndef TESTING
+		//Connect to host
+		host = connectToHost(HOST_IP);
+		initialiseRobot();
 	
-	//Connect to host
-	host = connectToHost(HOST_IP);
-	initialiseRobot();
-
-	for(;;)
-	{
-		//Wait for Signal:		
-		if ((bytesRecieved = recv(host, buffer, MAXDATASIZE-1, 0)) == -1)
+		for(;;)
 		{
-	  	  perror("recv");
-	  	  exit(1);
-		}
-		else if (bytesRecieved == 0);
-		else	//Got Signal:
-		{
-			buffer[bytesRecieved] = '\0';
-			printf("Recieved Signal: '%s'\n",buffer);
+			//Wait for Signal:		
+			if ((bytesRecieved = recv(host, buffer, MAXDATASIZE-1, 0)) == -1)
+			{
+		  	  perror("recv");
+		  	  exit(1);
+			}
+			else if (bytesRecieved == 0);
+			else	//Got Signal:
+			{
+				buffer[bytesRecieved] = '\0';
+				printf("Recieved Signal: '%s'\n",buffer);
 			
-			if(strncmp(buffer,"Genotype",5)==0)
-			{
-				//If there's a child process, kill it
-				if(processID>0){ kill(processID, SIGKILL); wait(&status); NNdealloc();}
-				//Fork process
-				processID = fork();
-				if(processID==CHILD) childProcess(buffer);
-			}
-			else if(strcmp(buffer,"Stop Motors")==0)
-			{
-				//If there's a child process, kill it
-				if(processID>0){ kill(processID, SIGKILL); wait(&status); NNdealloc();}
-				//Stop Motors
-				printf("Stopping Motors\n");
-				stopAllMotors();
+				if(strncmp(buffer,"Genotype",5)==0)
+				{
+					//If there's a child process, kill it
+					if(processID>0){ kill(processID, SIGKILL); wait(&status); NNdealloc();}
+					//Fork process
+					processID = fork();
+					if(processID==CHILD) childProcess(buffer);
+				}
+				else if(strcmp(buffer,"Stop Motors")==0)
+				{
+					//If there's a child process, kill it
+					if(processID>0){ kill(processID, SIGKILL); wait(&status); NNdealloc();}
+					//Stop Motors
+					printf("Stopping Motors\n");
+					#ifndef TESTING
+						stopAllMotors();
+					#endif
+				}
 			}
 		}
-	}
+	#else
+		childProcess("testGene.txt");
+	#endif
 	return 0;
 }
 
@@ -83,7 +88,11 @@ void childProcess(char *filename)
 	{
 		for(i=0;i<INPUTS;i++)
 		{
-			inputs[i]=getIRRange(i);
+			#ifndef TESTING
+				inputs[i]=getIRRange(i);
+			#else
+				inputs[i]=(rand()%2048-1024)/1024.0;
+			#endif
 		}
 		
 		//Send IR Values to NN and get outputs
@@ -95,10 +104,11 @@ void childProcess(char *filename)
 		rightMotorSpeed = (int)(outputs[0]*20000);
 		//DONE WITH OUTPUTS NOW
 		free(outputs);
-
-		//Set Motors
-		setMotor(LEFT_MOTOR, leftMotorSpeed);
-		setMotor(RIGHT_MOTOR, rightMotorSpeed);
+		#ifndef TESTING
+			//Set Motors
+			setMotor(LEFT_MOTOR, leftMotorSpeed);
+			setMotor(RIGHT_MOTOR, rightMotorSpeed);
+		#endif
 		
 		//Just so we don't get ahead of oursleves...
 		usleep(20000);

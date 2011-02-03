@@ -57,9 +57,10 @@ float *dtrnn(const float *inputs, const float *weights)
 			/*If the postsynaptic neuron is in a higher layer than the presynaptic
 				it can take the value from this time step, since all of the lower layers
 				have been calculated. Otherwise it should take the value from t-1*/
-			if(postLayer<=preLayer) neuronState[post]+=100*weights[post*nNeurons+pre]*neuronStatePrev[pre];
-			else neuronState[post]+=100*weights[post*nNeurons+pre]*neuronState[pre];
+			if(postLayer<=preLayer) neuronState[post]+=weights[post*nNeurons+pre]*neuronStatePrev[pre];
+			else neuronState[post]+=weights[post*nNeurons+pre]*neuronState[pre];
 		}
+		neuronState[post]=sigmoid(neuronState[post]);
 	}
 	//At this point all of the neuron states for this timestep have been calculated, we're only interested in the outputs:
 	for (neuron = nInputs+nHiddens; neuron < nNeurons; neuron ++)

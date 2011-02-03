@@ -31,7 +31,8 @@ void readGenotype(const char *filename)
 		for (preNeuron = 0; preNeuron < nNeurons; preNeuron ++)
 		{
 			fscanf(file,"%d",&integerWeight);
-			weights[postNeuron*nNeurons+preNeuron]=0.1+integerWeight/1024.0;
+			weights[postNeuron*nNeurons+preNeuron]=((float)integerWeight)/1024.0;
+			if(weights[postNeuron*nNeurons+preNeuron]!=0) weights[postNeuron*nNeurons+preNeuron]+=0.1;
 		}
 	}
 		//Same for the others...
