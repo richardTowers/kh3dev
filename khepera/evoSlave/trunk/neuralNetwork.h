@@ -1,8 +1,8 @@
 /*****************************************************************/
-/*  neuralNetwork.h
-/*	Created by richard at 12:28 on 06/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  neuralNetwork.h
+//	Created by richard at 12:28 on 06/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 #ifndef INC_NEURALNETWORK
 #define INC_NEURALNETWORK
@@ -21,18 +21,20 @@ typedef enum NNlayer
 	input,
 	hidden,
 	output
-};
+} NNlayer;
+
+extern unsigned short int nInputs, nHiddens, nOutputs;
 
 //We need to keep track of this so it's declared as global and must be initiated and released using NNalloc() and NNdealloc()
 float *neuronState;
 
-void NNalloc(const short int nNodes);
+void NNalloc(const short int nNeurons);
 void NNdealloc(void);
 //WARNING!
 //It is your responsibility to free the returned array of outputs!
 float *ffnn(float inputsIN[INPUTS], float weightsIH[INPUTS][HIDDENS], float weightsHO[HIDDENS][OUTPUTS]);
 //WARNING!
 //It is your responsibility to free the returned array of outputs!
-float *dtrnn(const float *inputs, const float *weights, const short int nInputs, const short int nHiddens, const short int nOutputs);
+float *dtrnn(const float *inputs, const float *weights);
 
 #endif //INC_NEURALNETWORK

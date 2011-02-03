@@ -1,20 +1,20 @@
 /*****************************************************************/
-/*  neuralNetwork.c
-/*	Created by richard at 12:28 on 06/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  neuralNetwork.c
+//	Created by richard at 12:28 on 06/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 
 #include "neuralNetwork.h"
 
-void NNalloc(const short int nNodes)
+void NNalloc(const short int nNeurons)
 {
-	neuronState = calloc(nNodes, sizeof(float));
+	neuronState = calloc(nNeurons, sizeof(float));
 }
 
 void NNdealloc(void)
 {
-	if(neuronState!=NULL) free(&neuronState);
+	if(neuronState!=NULL) free(neuronState);
 }
 
 /* 	inputs should be allocated: malloc(INPUTS*sizeof(float))
@@ -28,13 +28,13 @@ float *dtrnn(const float *inputs, const float *weights)
 	//Throughout this function I'm using 'pre' to indicate the PREsynaptic neuron, and 'post' to indicate the POSTsynaptic neuron.
 	short int pre, post, neuron;
 	NNlayer preLayer, postLayer;
-	short int nNodes = nInputs+nHiddens+nOutputs;
+	short int nNeurons = nInputs+nHiddens+nOutputs;
 	
 	//Allocate memory:
-	neuronStatePrev = malloc(nNodes*sizeof(float));
+	neuronStatePrev = malloc(nNeurons*sizeof(float));
 	outputs = malloc(nOutputs*sizeof(float));
 	
-	for (post = 0; post < nNodes; post ++)
+	for (post = 0; post < nNeurons; post ++)
 	{
 		//Store previous (t -1) state
 		neuronStatePrev[post]=neuronState[post];
@@ -47,7 +47,7 @@ float *dtrnn(const float *inputs, const float *weights)
 		if(postLayer==input) neuronState[post]=inputs[post];
 		else neuronState[post]=0;
 		
-		for (pre = 0; pre < nNodes; pre ++)
+		for (pre = 0; pre < nNeurons; pre ++)
 		{
 			//Determine the layer of the presynaptic neuron
 			if(pre<nInputs) preLayer=input;
@@ -57,20 +57,31 @@ float *dtrnn(const float *inputs, const float *weights)
 			/*If the postsynaptic neuron is in a higher layer than the presynaptic
 				it can take the value from this time step, since all of the lower layers
 				have been calculated. Otherwise it should take the value from t-1*/
-			if(postLayer>preLayer) neuronState[post]+=weights[post*nNodes+pre]*neuronState[pre];
-			else neuronState[post]+=weights[post*nNodes+pre]*neuronStatePrev[pre];
+			if(postLayer<=preLayer) neuronState[post]+=100*weights[post*nNeurons+pre]*neuronStatePrev[pre];
+			else neuronState[post]+=100*weights[post*nNeurons+pre]*neuronState[pre];
 		}
 	}
 	//At this point all of the neuron states for this timestep have been calculated, we're only interested in the outputs:
-	for (neuron = nInputs+nHiddens; neuron < nNodes; neuron ++)
+	for (neuron = nInputs+nHiddens; neuron < nNeurons; neuron ++)
 	{
-		outputs[neuron-nInputs+nHiddens] = neuronState[neuron];
+		outputs[neuron-(nInputs+nHiddens)] = neuronState[neuron];
 	}
 	//Free the memory:
-	free(&neuronStatePrev);
-	
+	free(neuronStatePrev);
+	printf("Neuron States: ");
+	for (neuron = 0; neuron < nNeurons; neuron += 1)
+	{
+		printf("%f ",neuronState[neuron]);
+	}
+	printf("\n");
+	printf("Outputs: ");
+	for (neuron = 0; neuron < nOutputs; neuron += 1)
+	{
+		printf("%f ",outputs[neuron]);
+	}
+	printf("\n");
 	//Return the outputs which MUST BE RELEASED by the caller
-	return *outputs;
+	return outputs;
 }
 
 /* Inputs and Weights should be from -1 to 1, uses a sigmoid function which maps ±∞ to ±1

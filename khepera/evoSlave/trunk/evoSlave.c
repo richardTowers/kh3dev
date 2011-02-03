@@ -1,8 +1,8 @@
 /*****************************************************************/
-/*  evoSlave.c
-/*	Created by richard at  9:49 on 15/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  evoSlave.c
+//	Created by richard at  9:49 on 15/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 
 #include "evoSlave.h"
@@ -58,7 +58,7 @@ void childProcess(char *filename)
 {
 	unsigned short int i;
 	float inputs[INPUTS];
-	float weightsIH[INPUTS][HIDDENS] = {{0.2,0.2},
+	/*float weightsIH[INPUTS][HIDDENS] = {{0.2,0.2},
 										{-0.2,0.2},
 										{-0.4,0.2},
 										{-1,0.5},
@@ -69,13 +69,14 @@ void childProcess(char *filename)
 										{0.4,0.4}};
 
 	float weightsHO[HIDDENS][OUTPUTS] = {{1,0},
-										{0,1}};
+										{0,1}};*/
 	float *outputs;
 
-	int leftMotorSpeed, rightMotorSpeed;
+	int leftMotorSpeed=0, rightMotorSpeed=0;
 	
-	printf("Running...\n");
-	//readGenotype(filename);
+	readGenotype(filename);
+	printf("Read Genotype...\n");
+	printGenotype();
 	//Allocate memory for NN:
 	NNalloc(nInputs+nOutputs+nHiddens);
 	for(;;)
@@ -86,8 +87,8 @@ void childProcess(char *filename)
 		}
 		
 		//Send IR Values to NN and get outputs
-		outputs = ffnn(inputs, weightsIH, weightsHO);
-		outputs = dtrnn(inputs, weights)
+		//outputs = ffnn(inputs, weightsIH, weightsHO);
+		outputs = dtrnn(inputs, weights);
 
 		//Set	Motor values to outputs
 		leftMotorSpeed = (int)(outputs[1]*20000);

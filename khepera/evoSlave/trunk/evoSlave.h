@@ -1,8 +1,8 @@
 /*****************************************************************/
-/*  evoSlave.h
-/*	Created by richard at  9:49 on 15/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  evoSlave.h
+//	Created by richard at  9:49 on 15/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 #ifndef INC_EVOSLAVE_H
 #define INC_EVOSLAVE_H
@@ -10,9 +10,11 @@
 //#define TESTING
 
 #include <string.h>
+#include <dirent.h>
 
 #include "network.h"
 #include "errors.h"
+#include "genes.h"
 
 #ifndef TESTING
 #include "robot.h"
@@ -30,7 +32,7 @@
 
 //Genotype stored as global:
 unsigned short int nInputs, nHiddens, nOutputs;
-int *weights; //Add biases and time constants later...
+float *weights; //Add biases and time constants later...
 
 void childProcess(char *genotype);
 

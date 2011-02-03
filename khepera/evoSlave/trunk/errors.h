@@ -1,8 +1,8 @@
 /*****************************************************************/
-/*  errors.h
-/*	Created by richard at 10:33 on 08/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  errors.h
+//	Created by richard at 10:33 on 08/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 #ifndef INC_
 #define INC_
@@ -28,5 +28,6 @@ void startLoggingErrors(void);
 void stopLoggingErrors(void);
 const char * errorLookup(int errorCode);
 void error(int errorCode);
+void warning(int errorCode);
 
 #endif //INC_

@@ -1,8 +1,8 @@
 /*****************************************************************/
-/*  network.h
-/*	Created by richard at  9:53 on 15/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  network.h
+//	Created by richard at  9:53 on 15/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 #ifndef INC_NETWORK
 #define INC_NETWORK

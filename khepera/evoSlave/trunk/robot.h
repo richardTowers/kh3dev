@@ -1,8 +1,8 @@
 /*****************************************************************/
-/*  robot.h
-/*	Created by richard at 12:28 on 06/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  robot.h
+//	Created by richard at 12:28 on 06/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 #ifndef INC_ROBOT
 #define INC_ROBOT
@@ -16,9 +16,9 @@
 #define MAXIMUM_SPEED 30000
 
 //Globals
-static knet_dev_t * khepera;
-static knet_dev_t * leftMotor;
-static knet_dev_t * rightMotor;
+knet_dev_t * khepera;
+knet_dev_t * leftMotor;
+knet_dev_t * rightMotor;
 
 //Initialises the robot. A bit of a black box I'm afraid, so far no bugs suspected.
 void initialiseRobot(void);

@@ -1,41 +1,53 @@
 /*****************************************************************/
-/*  genes.c
-/*	Created by richard at 21:20 on 17/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  genes.c
+//	Created by richard at 21:20 on 17/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 
 #include "genes.h"
 
 void readGenotype(const char *filename)
 {
-	int i,j=0,startNode,endNode,theWeight;
-	char theChar, lineBuffer[100], intBuffer[10];
+	unsigned int preNeuron, postNeuron, nNeurons;
+	int integerWeight;
 	FILE *file;
 	
 	file = fopen(filename, "r");
+
 	//Get number of nodes:
-	fscanf(file,"%d %d %d",&nInputs,&nHiddens,&nOutputs);
+	fscanf(file,"%hd %hd %hd",&nInputs,&nHiddens,&nOutputs);
+	//printf("Inputs: %d\nHiddens: %d\nOutputs: %d\n",nInputs,nHiddens,nOutputs);
+	
+	nNeurons=nInputs+nHiddens+nOutputs;
+	//printf("nNeurons: %d\n",nNeurons);
 	
 	//Allocate enough memory for the weights, biases and time constants
-	weights=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs));
-		//biases=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));
-		//timeConstants=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));
+	weights=malloc(sizeof(float)*nNeurons*nNeurons);
 	
 	//Loop through weights:
-	for (i = 0; i < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); i ++)
+	for (postNeuron = 0; postNeuron < nNeurons; postNeuron ++)
 	{
-		fscanf(file,"%d",&weights[i]);
+		for (preNeuron = 0; preNeuron < nNeurons; preNeuron ++)
+		{
+			fscanf(file,"%d",&integerWeight);
+			weights[postNeuron*nNeurons+preNeuron]=0.1+integerWeight/1024.0;
+		}
 	}
 		//Same for the others...
 }
 
 void printGenotype(void)
 {
-	int i;
-	printf("Inputs: %d\nHiddens: %d\nOutputs: %d\n",nInputs,nHiddens,nOutputs);
-	for (i = 0; i < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); i += 1)
+	int i,j;
+	printf("Inputs: %d\nHiddens: %d\nOutputs: %d\nTotal: %d\n",nInputs,nHiddens,nOutputs,nInputs+nHiddens+nOutputs);
+	for (i = 0; i < (nInputs+nHiddens+nOutputs); i += 1)
 	{
-		printf("%d ",weights[i]);
+		for (j = 0; j < (nInputs+nHiddens+nOutputs); j += 1)
+		{
+			if(weights[i*(nInputs+nHiddens+nOutputs)+j]==0) printf(" 0     ");
+			else printf("%6.3f ",weights[i*(nInputs+nHiddens+nOutputs)+j]);
+		}
+		printf("\n");
 	}
 }

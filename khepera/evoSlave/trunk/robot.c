@@ -1,8 +1,8 @@
 /*****************************************************************/
-/*  robot.c
-/*	Created by richard at 12:28 on 06/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  robot.c
+//	Created by richard at 12:28 on 06/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 
 #include "robot.h"

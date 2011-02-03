@@ -1,8 +1,8 @@
 /*****************************************************************/
-/*  network.c
-/*	Created by richard at  9:53 on 15/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  network.c
+//	Created by richard at  9:53 on 15/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 
 #include "network.h"
