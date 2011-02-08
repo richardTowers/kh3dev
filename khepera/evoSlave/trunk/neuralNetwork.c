@@ -34,33 +34,33 @@ float *dtrnn(const float *inputs, const float *weights)
 	neuronStatePrev = malloc(nNeurons*sizeof(float));
 	outputs = malloc(nOutputs*sizeof(float));
 	
-	for (post = 0; post < nNeurons; post ++)
+	for (pre = 0; pre < nNeurons; pre ++)
 	{
 		//Store previous (t -1) state
-		neuronStatePrev[post]=neuronState[post];
+		neuronStatePrev[pre]=neuronState[pre];
 		//Determine the layer of the postsynaptic neuron
-		if(post<nInputs) postLayer=input;
-		else if(post<nInputs+nHiddens) postLayer=hidden;
-		else postLayer=output;
+		if(pre<nInputs) preLayer=input;
+		else if(pre<nInputs+nHiddens) preLayer=hidden;
+		else preLayer=output;
 		
 		//If it's an input, then it'll have some input, otherwise we start counting from 0
-		if(postLayer==input) neuronState[post]=inputs[post];
-		else neuronState[post]=0;
+		if(preLayer==input) neuronState[pre]=inputs[pre];
+		else neuronState[pre]=0;
 		
-		for (pre = 0; pre < nNeurons; pre ++)
+		for (post = 0; post < nNeurons; post ++)
 		{
 			//Determine the layer of the presynaptic neuron
-			if(pre<nInputs) preLayer=input;
-			else if(pre<nInputs+nHiddens) preLayer=hidden;
-			else preLayer=output;
+			if(post<nInputs) postLayer=input;
+			else if(post<nInputs+nHiddens) postLayer=hidden;
+			else postLayer=output;
 			
 			/*If the postsynaptic neuron is in a higher layer than the presynaptic
 				it can take the value from this time step, since all of the lower layers
 				have been calculated. Otherwise it should take the value from t-1*/
-			if(postLayer<=preLayer) neuronState[post]+=weights[post*nNeurons+pre]*neuronStatePrev[pre];
-			else neuronState[post]+=weights[post*nNeurons+pre]*neuronState[pre];
+			if(preLayer<=postLayer) neuronState[pre]+=weights[post*nNeurons+pre]*neuronStatePrev[post];
+			else neuronState[pre]+=weights[post*nNeurons+pre]*neuronState[post];
 		}
-		neuronState[post]=sigmoid(neuronState[post]);
+		neuronState[pre]=sigmoid(neuronState[pre]);
 	}
 	//At this point all of the neuron states for this timestep have been calculated, we're only interested in the outputs:
 	for (neuron = nInputs+nHiddens; neuron < nNeurons; neuron ++)
@@ -69,18 +69,20 @@ float *dtrnn(const float *inputs, const float *weights)
 	}
 	//Free the memory:
 	free(neuronStatePrev);
-	printf("Neuron States: ");
-	for (neuron = 0; neuron < nNeurons; neuron += 1)
-	{
-		printf("%f ",neuronState[neuron]);
-	}
-	printf("\n");
-	printf("Outputs: ");
-	for (neuron = 0; neuron < nOutputs; neuron += 1)
-	{
-		printf("%f ",outputs[neuron]);
-	}
-	printf("\n");
+	#ifdef TESTING
+		printf("Neuron States: ");
+		for (neuron = 0; neuron < nNeurons; neuron += 1)
+		{
+			printf("%f ",neuronState[neuron]);
+		}
+		printf("\n");
+		printf("Outputs: ");
+		for (neuron = 0; neuron < nOutputs; neuron += 1)
+		{
+			printf("%f ",outputs[neuron]);
+		}
+		printf("\n");
+	#endif
 	//Return the outputs which MUST BE RELEASED by the caller
 	return outputs;
 }
