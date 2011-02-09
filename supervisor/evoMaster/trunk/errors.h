@@ -1,11 +1,11 @@
 /*****************************************************************/
-/*  errors.h
-/*	Created by richard at 10:33 on 08/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  errors.h
+//	Created by richard at 10:33 on 08/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
-#ifndef INC_
-#define INC_
+#ifndef INC_ERRORS
+#define INC_ERRORS
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,12 +22,13 @@
 #define WARNING_SCP_FAIL 7
 
 //Globals
-FILE *errorFile;
+static FILE *errorFile;
 
 
 void startLoggingErrors(void);
 void stopLoggingErrors(void);
 const char * errorLookup(int errorCode);
 void error(int errorCode);
+void warning(int errorCode);
 
-#endif //INC_
+#endif //INC_ERRORS

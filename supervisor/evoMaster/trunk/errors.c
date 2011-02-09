@@ -1,8 +1,8 @@
 /*****************************************************************/
-/*  errors.c
-/*	Created by richard at 10:33 on 08/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  errors.c
+//	Created by richard at 10:33 on 08/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 
 #include "errors.h"

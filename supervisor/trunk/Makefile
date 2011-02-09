@@ -5,7 +5,7 @@ LDFLAGS = -lm -g
 CFLAGS = -ggdb -O0 -Wall $(shell pkg-config opencv --cflags --libs)
 SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:.c=.o)
-EXECUTABLE = evoMaster
+EXECUTABLE = supervisor
 
 all:
 	$(CC) $(CFLAGS) $(LDFLAGS) $(SOURCES) -o $(EXECUTABLE)

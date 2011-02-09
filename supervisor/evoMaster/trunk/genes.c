@@ -1,8 +1,8 @@
 /*****************************************************************/
-/*  genes.c
-/*	Created by richard at 21:20 on 17/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  genes.c
+//	Created by richard at 21:20 on 17/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 
 #include "genes.h"
@@ -17,7 +17,7 @@ void readGenotype(const char *filename)
 	fscanf(file,"%hd %hd %hd",&nInputs,&nHiddens,&nOutputs);
 	
 	//Allocate enough memory for the weights, biases and time constants
-	weights=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs));
+	weights=(short*)malloc(sizeof(int)*(nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs));
 		//biases=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));
 		//timeConstants=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));
 	

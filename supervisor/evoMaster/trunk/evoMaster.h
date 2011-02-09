@@ -1,8 +1,8 @@
 /*****************************************************************/
-/*  evoMaster.h
-/*	Created by richard at 16:14 on 18/11/2010
-/*	Copyright Durham University 2010, all rights reserved
-/*
+//  evoMaster.h
+//	Created by richard at 16:14 on 18/11/2010
+//	Copyright Durham University 2010, all rights reserved
+//
 /*****************************************************************/
 #ifndef INC_EVOMASTER_H
 #define INC_EVOMASTER_H
@@ -19,7 +19,6 @@
 
 #define ROBOT_IP "192.168.1.2"
 #define GENE_FOLDER "/home/root/Genotypes"
-#define WEIGHT_RANGE 1024
 
 #define INPUTS 9
 #define	HIDDENS 2
@@ -58,4 +57,7 @@ struct generation
 	int bestFitness;
 	struct individual individual[POP_SIZE];
 };
+
+extern void mainCapture(void);
+
 #endif //INC_EVOMASTER

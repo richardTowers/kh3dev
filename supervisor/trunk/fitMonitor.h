@@ -27,11 +27,9 @@
 #define ISRED (HUE > 90 && HUE < 150)
 #define ISBLUE (HUE < 30 || HUE > 150)
 #define ISGREEN (HUE > 30 && HUE < 90)
-#define BLUE cvScalar(255,0,0)
-#define RED cvScalar(0,0,255)
-#define GREEN cvScalar(0,255,0)
-#define GREY cvScalar(150,150,150)
-#define YELLOW cvScalar(0,255,255)
+
+#include "defines/colours.h"
+
 #define AREA 16
 #define ANY_CAMERA -1
 #define YES 1
@@ -69,6 +67,7 @@ typedef struct rtRobotPosition {
 } rtRobotPosition;
 
 //Functions:
+void setupTracker(void);
 void mainCapture(void);
 void keyHandler(void);
 void subCapture(IplImage* fullFrame, CvRect bounds, int robot);
@@ -76,6 +75,8 @@ void mouseHandler(int event, int x, int y, int flags, void* param);
 IplImage * downsize4(IplImage * frame);
 
 //Globals:
+//CvCapture* capture;
+//extern rtRobot* bots;
 rtRobotPosition robots[NUMBER_ROBOTS];
 unsigned short int theSemaphor;
 volatile bool mouseDown=NO;

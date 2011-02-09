@@ -8,15 +8,15 @@
 #include "fitMonitor.h"
 
 
-int main( void )
-{
-	printf("Main window accepts keyboard and mouse input:\n"
-	"  ESC - Quit\n"
-	"  Mouse - Drag to Select Area\n"
-	"  Return - Confirm Area\n");
-	
-	mainCapture();
-}
+/*int main( void )*/
+/*{*/
+/*	printf("Main window accepts keyboard and mouse input:\n"*/
+/*	"  ESC - Quit\n"*/
+/*	"  Mouse - Drag to Select Area\n"*/
+/*	"  Return - Confirm Area\n");*/
+/*	*/
+/*	mainCapture();*/
+/*}*/
 
 void mainCapture(void)
 {
