@@ -15,45 +15,24 @@
 #include "highgui.h"
 #include "network.h"
 #include "genes.h"
+#include "types.h"
+
 
 //Physical:
 #define nROBOTS 1			//This represents the physical number of robots in the environment
 //Genetics:
-#define POP_SIZE 10			//The number of individuals to be evaluated before reproduction
-#define GENERATIONS 10		//The number of generations to evaluate
-#define EVAL_TIME 10		//The max time to spend evaluating an individual
+#include "defines/genetics.h"
 //Neurology:
 #include "defines/neurology.h"
-
 //Colours:
 #include "defines/colours.h"
 
 
-
-typedef struct rtRobot		//This refers to a physical robot, not an individual
-{
-	char ip[15];
-	int socket;
-	IplImage *mark;
-	CvScalar colour;
-} rtRobot;
-
-typedef struct rtIndividual	//An individual to be evaluated and bred
-{
-	char geneFile[20];
-	int fitness;
-} rtIndividual;
-
-typedef struct rtGeneration	//A generation contains several individuals
-{
-	rtIndividual inds[POP_SIZE];
-	int maxFit;
-	int avgFit;
-} rtGeneration;
-
 void createInitialGenes(int population, rtGeneration* generation);
-extern void setupTracker(void);
+extern void setupTracker(int nRobots, rtRobot* robots);
+extern void testIndividualOnRobot(rtIndividual* individual, rtRobot robot);
 
+extern CvCapture* capture;
 //Assign architecure
 unsigned short int nInputs=INPUTS;
 unsigned short int nHiddens=HIDDENS;

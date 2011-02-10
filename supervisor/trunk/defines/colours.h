@@ -12,5 +12,6 @@
 #define GREEN cvScalar(0,255,0)
 #define GREY cvScalar(150,150,150)
 #define YELLOW cvScalar(0,255,255)
+#define WHITE cvScalar(255,255,255)
 
 #endif //INC_COLOURS

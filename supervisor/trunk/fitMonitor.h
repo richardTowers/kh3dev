@@ -10,9 +10,13 @@
 //Includes:
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
+
 
 #include "cv.h"
 #include "highgui.h"
+#include "types.h"
+#include "limits.h"
 
 //Defines:
 #define CV_NO_BACKWARD_COMPATIBILITY
@@ -27,8 +31,10 @@
 #define ISRED (HUE > 90 && HUE < 150)
 #define ISBLUE (HUE < 30 || HUE > 150)
 #define ISGREEN (HUE > 30 && HUE < 90)
+#define COLLISION_DISTANCE 50
 
 #include "defines/colours.h"
+#include "defines/genetics.h"
 
 #define AREA 16
 #define ANY_CAMERA -1
@@ -45,47 +51,33 @@
 #define HEIGHT 466
 #define ESC 27
 #define min(X, Y)  ((X) < (Y) ? (X) : (Y))
-#define GOTRECT 0
-#define SELECTIONORWINDOW 1
-#define MOUSEDOWN 2
-#define ESC_ONLY 3
 
-
-//Types:
-typedef struct rtFlags {
-	IplImage* front;
-	IplImage* rear;
-} rtFlags;
-
-typedef struct rtRobotPosition {
-	rtFlags marks;
-	char positionIsKnown;
-	CvPoint position;
-	CvPoint lastPosition;
-	int distance;
-	double heading;
-} rtRobotPosition;
 
 //Functions:
-void setupTracker(void);
-void mainCapture(void);
+void setupTracker(int nRobots, rtRobot* robots);
+void testIndividualOnRobot(rtIndividual* individual, rtRobot robot);
+
+int pointToLine(CvPoint point, CvPoint start, CvPoint end);
 void keyHandler(void);
-void subCapture(IplImage* fullFrame, CvRect bounds, int robot);
 void mouseHandler(int event, int x, int y, int flags, void* param);
-IplImage * downsize4(IplImage * frame);
 
 //Globals:
-//CvCapture* capture;
-//extern rtRobot* bots;
-rtRobotPosition robots[NUMBER_ROBOTS];
-unsigned short int theSemaphor;
+extern rtRobot* bots;
+
+typedef enum semaphor {getRect, getLine, acceptOrReset, watchMouse, watchEscOnly} semaphor;
+
+semaphor uiAction;
 volatile bool mouseDown=NO;
 volatile bool gotRect=NO;
+volatile bool gotLine=NO;
+volatile bool undoLine=NO;
 volatile bool selectionMade=NO;
 volatile bool windowNeedsReset=NO;
 
 CvPoint rectStart={0,0};
 CvPoint rectEnd={0,0};
 CvRect fullRect={0,0,0,0};
+int nBounds=0;
+CvLine* bounds;
 
 #endif //INC_FITMONITOR

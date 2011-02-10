@@ -10,41 +10,51 @@
 
 int main(void)
 {
-	rtRobot bots[nROBOTS]={{"192.168.1.2",NULL,NULL,RED}};
+	rtRobot bots[nROBOTS]={{"192.168.1.2",NULL,NULL,RED,{0,0},{0,0}}};
 	rtGeneration gens[GENERATIONS];
-	short int ind, gen, bot; char command[100], filename[30];
+	short int ind=0, gen=0, bot; char command[100], filename[30];
 	
-	//Connect to robots
-	for (bot = 0; bot < nROBOTS; bot ++) bots[bot].socket=connectToClient(bots[bot].ip);
+	#ifndef TESTING
+		//Connect to robots
+		for (bot = 0; bot < nROBOTS; bot ++) bots[bot].socket=connectToClient(bots[bot].ip);
+	#endif
 	
 	//Set up fitness tracker
-	
+	setupTracker(nROBOTS, bots);
+
 	//Create initial population of genotype files
 	createInitialGenes(POP_SIZE, &gens[0]);
 	
+	#ifndef TESTING
 	//For each generation starting at 0
 	for (gen = 0; gen < GENERATIONS; gen ++)
 	{
+		#endif
 		//For each individual in the population
 		for (ind = 0; ind < POP_SIZE; ind ++)
 		{
+			#ifndef TESTING
 			//Send the file to the individual
 			strcpy(filename,gens[gen].inds[ind].geneFile);
 			sprintf(command, "scp %s root@%s:Genotypes",filename, bots[0].ip);
 			system(command);
 			//Tell the individual to get going
 			send(bots[0].socket, filename, strlen(filename)+1, 0);
-			
+			#endif
 			//Monitor and then store its fitness
+			testIndividualOnRobot(&(gens[gen].inds[ind]), bots[0]);
+			#ifndef TESTING
 			sleep(10);
 			//Stop the motors (move back to start position later)
 			send(bots[0].socket, "Stop Motors", 11, 0);
-			
+			#endif
 		}
 		//When entire population have fitness values
 			//Reproduce, Crossover mutate
 		//Next Generation
+		#ifndef TESTING
 	}
+	#endif
 	//When enough generations have elapsed
 		//Print useful data
 		//END

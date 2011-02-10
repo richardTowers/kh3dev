@@ -1,7 +1,8 @@
 #A makefile to compile for the host computer
 
 CC = g++
-LDFLAGS = -lm -g
+
+LDFLAGS = -lm
 CFLAGS = -ggdb -O0 -Wall $(shell pkg-config opencv --cflags --libs)
 SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:.c=.o)

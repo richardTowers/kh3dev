@@ -8,159 +8,241 @@
 #include "fitMonitor.h"
 
 
-/*int main( void )*/
-/*{*/
-/*	printf("Main window accepts keyboard and mouse input:\n"*/
-/*	"  ESC - Quit\n"*/
-/*	"  Mouse - Drag to Select Area\n"*/
-/*	"  Return - Confirm Area\n");*/
-/*	*/
-/*	mainCapture();*/
-/*}*/
-
-void mainCapture(void)
+void setupTracker(int nRobots, rtRobot* robots)
 {
-	CvCapture *capture = 0;
-	IplImage *frame = 0, *histogram = 0;
-	rtRobotPosition robots[NUMBER_ROBOTS];
-	int robot=0, roundel=0;
-	
+	IplImage* frame;
+	CvCapture* capture;
+	int bot=0, bound=0;
+	CvLine *tmp;
 	//Start capturing:
 	if( !(capture = cvCaptureFromCAM(ANY_CAMERA)))
 	{
 		fprintf(stderr,"Could not initialize capturing...\n");
 		exit(1);
 	}
-	cvNamedWindow("Main",0);
-	cvSetMouseCallback("Main",mouseHandler,NULL);
+	cvNamedWindow("Select Robots",0);
+	cvSetMouseCallback("Select Robots",mouseHandler,NULL);
 	
 	
-	while(robot<NUMBER_ROBOTS)
+	//Now we stream frames and collect the images to track
+	
+	while(bot<nRobots)	//Get image to track
 	{
-		while(roundel<MARKS_PER_BOT)
-		{
-			keyHandler();
-			frame = cvQueryFrame( capture );
-			if( !frame ) {fprintf(stderr,"\nError: Couldn\'t grab frame.\n"); exit(1);}
-
-			cvRectangle(frame, rectStart, rectEnd, RED, 1, CV_AA, 0);
-			theSemaphor=GOTRECT;
-			if(gotRect==YES)
-			{
-				gotRect=NO;
-				//Clear the frame
-				frame = cvQueryFrame( capture );
-				//Shrink the image
-				//frame=downsize4(downsize4(frame));
-				cvSetImageROI(frame, fullRect);
-				cvShowImage("Main", frame);
-				
-				printf("\a/************************************/"
-				"\nYou should be looking at a small image of:"
-				"\nROBOT: %d\nROUNDLE: %d (1 front, 2 back)\n\nPress Return if you are happy with your selection\n"
-				"Press C to change your selection\n\n",robot+1, roundel+1);
-				
-				for(;;)
-				{
-					keyHandler();
-					theSemaphor=SELECTIONORWINDOW;
-					if(selectionMade)
-					{
-						selectionMade=NO;
-						if(roundel==0)
-						{
-							robots[robot].marks.front=cvCreateImage(cvGetSize(frame), frame->depth, frame->nChannels);
-							cvCopy(frame, robots[robot].marks.front, 0);
-							roundel++;
-							if(MARKS_PER_BOT<2) robot++;
-							break;
-						}
-						else if(roundel==1)
-						{
-							robots[robot].marks.rear=cvCreateImage(cvGetSize(frame), frame->depth, frame->nChannels);
-							cvCopy(frame, robots[robot].marks.rear, 0);
-							roundel++;
-							robot++;
-							break;
-						}
-						else roundel=0;
-					}
-					if(windowNeedsReset)
-					{
-						windowNeedsReset=NO;
-						break;
-					}
-				}
-				cvResetImageROI(frame);
-			}
-			cvShowImage("Main", frame);
-		}
-		roundel=0;
-	}
-	
-	//At this point all of the targets have been acquired and we can get on with following them.
-	printf("\n/************************************/"
-	"\nTarget Images obtained, beginning tracking...\n");
-	CvPoint maxloc, origin;
-	CvSize hSize;
-	CvFont font;
-	char line1[50], line2[50];
-	theSemaphor=ESC_ONLY;
-	
-	cvInitFont(&font,CV_FONT_HERSHEY_SIMPLEX|CV_FONT_ITALIC, 0.5,0.5,0,LINE_WIDTH/3);
-
-	//Find initial positions
-	for (robot = 0; robot < NUMBER_ROBOTS; robot += 1)
-	{
-		robots[robot].distance=0;
-		hSize=cvSize(frame->width-robots[robot].marks.front->width+1,
-		frame->height-robots[robot].marks.front->height+1);
+		keyHandler();
+		frame=cvQueryFrame(capture);
+		//The mouse is collecting a rectangle, draw it:
+		cvRectangle(frame, rectStart, rectEnd, RED, 1, CV_AA, 0);
+		//Show the image:
+		cvShowImage("Select Robots", frame);
 		
-		histogram = cvCreateImage(hSize, IPL_DEPTH_32F,1);
-		cvMatchTemplate(frame, robots[robot].marks.front, histogram, CV_TM_CCOEFF);
-		cvNormalize( histogram, histogram, 1, 0, CV_MINMAX );
-		cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
-		maxloc=cvPoint(maxloc.x+robots[robot].marks.front->width/2, maxloc.y+robots[robot].marks.front->height/2);
-		//cvCircle(frame, maxloc, (robots[robot].marks.front->width+robots[robot].marks.front->height)/4, cvAvg(frame,NULL), -1, CV_AA);
-		robots[robot].lastPosition=maxloc;
-		robots[robot].position=maxloc;
-		origin=maxloc;
+		uiAction=getRect;
+		if(gotRect==YES)	//This is set in the key handler...
+		{
+			gotRect=NO;
+			cvDestroyAllWindows();
+			cvNamedWindow("Is this your robot?",0);
+			//Clear the frame of the rectangle we just drew
+			frame = cvQueryFrame( capture );
+			//Clip to the image we just outlined with the rectangle
+			cvSetImageROI(frame, fullRect);
+			//Show the cropped image:
+			cvShowImage("Is this your robot?", frame);
+			
+			printf("\nYou should be looking at a small image of:"
+			"\nROBOT: %d\n\nPress Return if you are happy with your selection\n"
+			"Press C to change your selection\n\n",bot+1);
+			//Wait for user to make choice:
+			uiAction=acceptOrReset;
+			for(;;)
+			{
+				keyHandler();
+				if(selectionMade)
+				{
+					selectionMade=NO;
+					robots[bot].mark=cvCreateImage(cvGetSize(frame), frame->depth, frame->nChannels);
+					cvCopy(frame, robots[bot].mark, 0);
+					bot++;
+					break;
+				}
+				if(windowNeedsReset)
+				{
+					windowNeedsReset=NO;
+					cvNamedWindow("Select Robots");
+					cvSetMouseCallback("Select Robots", mouseHandler, NULL);
+					break;
+				}
+			}
+			cvResetImageROI(frame);
+			rectStart=cvPoint(0,0); rectEnd=cvPoint(0,0);
+		}
 	}
+	cvDestroyWindow("Is this your robot?");
+
+	printf("\nGot targets...\n"
+	"Please draw straight lines around the bounds and any obstacles.\n"
+	"Press \'+\' to add a line, \'-\' to remove a line\n");
+	cvNamedWindow("Select Boundaries",0);
+	cvSetMouseCallback("Select Boundaries",mouseHandler,NULL);
+	
+	bounds=(CvLine*)malloc(sizeof(CvLine)*nBounds);
 	for(;;)
 	{
 		keyHandler();
-		frame = cvQueryFrame( capture );
-		if( !frame ) {fprintf(stderr,"\nError: Couldn\'t grab frame.\n"); exit(1);}
-		
-		for (robot = 0; robot < NUMBER_ROBOTS; robot += 1)
+		frame=cvQueryFrame(capture);
+		cvShowImage("Select Boundaries", frame);
+		uiAction=getLine;
+		//The mouse is collecting a line, draw it:
+		cvLine(frame, rectStart, rectEnd, BLUE, 1, CV_AA, 0);
+		//Draw the other lines
+		for (bound = 0; bound < nBounds; bound ++)
 		{
-			hSize=cvSize(frame->width-robots[robot].marks.front->width+1,
-			frame->height-robots[robot].marks.front->height+1);
-		
-			histogram = cvCreateImage(hSize, IPL_DEPTH_32F,1);
-			cvMatchTemplate(frame, robots[robot].marks.front, histogram, CV_TM_CCOEFF);
-			cvNormalize( histogram, histogram, 1, 0, CV_MINMAX );
-			cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
-			maxloc=cvPoint(maxloc.x+robots[robot].marks.front->width/2, maxloc.y+robots[robot].marks.front->height/2);
-			//cvCircle(frame, maxloc, (robots[robot].marks.front->width+robots[robot].marks.front->height)/4, cvAvg(frame,NULL), -1, CV_AA);
-			robots[robot].lastPosition=robots[robot].position;
-			robots[robot].position=maxloc;
-			robots[robot].distance+=hypot(robots[robot].position.x-robots[robot].lastPosition.x,robots[robot].position.y-robots[robot].lastPosition.y);
-			sprintf(line1, "Distance from origin: %d px",(int)hypot(origin.x-robots[robot].position.x, origin.y-robots[robot].position.y));
-			sprintf(line2, "Total Distance: %d px", robots[robot].distance);
+			cvLine(frame, bounds[bound].start, bounds[bound].end, GREY, 1, CV_AA, 0);
 		}
-		//frame = cvQueryFrame( capture );
-		cvCircle(frame, robots[0].position, MARK_SIZE, YELLOW, LINE_WIDTH, CV_AA);
-		cvPutText(frame,line1,cvPoint(10,50), &font, RED);
-		cvPutText(frame,line2,cvPoint(10,100), &font, BLUE);
-		#if NUMBER_ROBOTS>1
-			cvCircle(frame, robots[1].position, MARK_SIZE, RED, LINE_WIDTH, CV_AA);
-		#endif
-		cvShowImage("Main", frame);
+		//Show the image:
+		cvShowImage("Select Boundaries", frame);
+		if(gotLine)
+		{
+			gotLine=NO;
+			//expand bounds
+			nBounds++;
+			tmp = (CvLine*)realloc(bounds, nBounds*sizeof(CvLine));
+			if (tmp != NULL) bounds = tmp;
+			else perror("malloc");
+			//add line
+			bounds[nBounds-1].start=rectStart;
+			bounds[nBounds-1].end=rectEnd;
+		}
+		if(undoLine)
+		{
+			undoLine=NO;
+			//Shrink bounds
+			nBounds--;
+			if(nBounds<=0) {nBounds=0; if(bounds!=NULL) {bounds=NULL;free(bounds);}}
+			else
+			{
+				tmp = (CvLine*)realloc(bounds, nBounds*sizeof(CvLine));
+				if (tmp != NULL) bounds = tmp;
+				else perror("malloc");
+			}
+		}
+		if(selectionMade)
+		{
+			selectionMade=NO;
+			break;
+		}
 	}
+	//cvReleaseImage(&frame);
+	cvDestroyWindow("Select Boundaries");
+	printf("Got Boundaries...\n");
 	
+	cvReleaseCapture(&capture);
 }
 
+void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
+{
+	IplImage* frame, *histogram;
+	CvCapture* capture; CvPoint maxloc, origin; CvSize hSize; CvFont font;
+	int dFromLastPoint=0, dFromOrigin=0, dTravelled=0, dToNearestBound=INT_MAX, dToBound, bound; char line1[100], line2[100], line3[100];
+	int health=0xffff, fitness=0xffff;
+	time_t startTime;
+	
+	startTime=time(NULL);
+	
+	capture=cvCaptureFromCAM(ANY_CAMERA);
+	cvNamedWindow("Fitness Monitor",0);
+	cvInitFont(&font,CV_FONT_HERSHEY_SIMPLEX|CV_FONT_ITALIC, 0.5,0.5,0,LINE_WIDTH/3);
+	
+	printf("Testing individual with genome: %s on robot with IP: %s\n", (*individual).geneFile, robot.ip);
+	
+	//Grab a frame for the initial position:
+	frame=cvQueryFrame(capture);
+	
+	//Find initial position
+	hSize=cvSize(frame->width-robot.mark->width+1,frame->height-robot.mark->height+1);
+	histogram = cvCreateImage(hSize, IPL_DEPTH_32F,1);
+	
+	cvMatchTemplate(frame, robot.mark, histogram, CV_TM_CCOEFF);
+	cvNormalize(histogram, histogram, 1, 0, CV_MINMAX);
+	cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
+	
+	maxloc=cvPoint(maxloc.x+robot.mark->width/2, maxloc.y+robot.mark->height/2);
+
+	robot.currPos=maxloc;
+	robot.prevPos=maxloc;
+	origin=maxloc;
+	
+	while(time(NULL)-startTime < EVAL_TIME)
+	{	
+		keyHandler();
+		frame=cvQueryFrame(capture);
+		dToNearestBound=INT_MAX;
+		//Get position
+		cvMatchTemplate(frame, robot.mark, histogram, CV_TM_CCOEFF);
+		cvNormalize(histogram, histogram, 1, 0, CV_MINMAX);
+		cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
+		maxloc=cvPoint(maxloc.x+robot.mark->width/2, maxloc.y+robot.mark->height/2);
+		robot.currPos=maxloc;
+		//Plot position and bounds
+		cvCircle(frame, robot.currPos, MARK_SIZE, YELLOW, LINE_WIDTH, CV_AA);
+		for (bound = 0; bound < nBounds; bound ++)
+		{
+			cvLine(frame, bounds[bound].start, bounds[bound].end, RED, 1, CV_AA, 0);
+		}
+		
+		//Calculate distance moved from last position, orgin and total:
+		dFromLastPoint=(int)hypot(robot.currPos.x-robot.prevPos.x,robot.currPos.y-robot.prevPos.y);
+		dTravelled+=dFromLastPoint;
+		dFromOrigin=(int)hypot(robot.currPos.x-origin.x,robot.currPos.y-origin.y);
+		
+		//Calculate minimum distance from obstacles
+		for (bound = 0; bound < nBounds; bound ++)
+		{
+			dToBound=pointToLine(robot.currPos, bounds[bound].start, bounds[bound].end);
+			if(dToBound<dToNearestBound) dToNearestBound=dToBound;
+		}
+		
+		//Write data:
+		sprintf(line1, "Distance from origin: %d px",dFromOrigin);
+		sprintf(line2, "Total Distance: %d px", dTravelled);
+		sprintf(line3, "Distance to nearest bound: %d px", dToNearestBound);
+		cvPutText(frame,line1,cvPoint(10,15), &font, WHITE);
+		cvPutText(frame,line2,cvPoint(10,30), &font, WHITE);
+		cvPutText(frame,line3,cvPoint(10,45), &font, WHITE);
+		
+		//Store stuff we can later use for fitness
+		
+		
+		cvShowImage("Fitness Monitor",frame);
+	}
+	//Timer ran down, we should have all the stuff needed to calculate a fitness
+	
+	//Store fitness:
+	(*individual).fitness=fitness;
+	//Clear up:
+	cvReleaseCapture(&capture);
+}
+
+/*****************************************GEOMETRY*********************************/
+int pointToLine(CvPoint point, CvPoint start, CvPoint end)
+{
+	int distanceLine;
+    double r_numerator = (double)((point.x-start.x)*(end.x-start.x) + (point.y-start.y)*(end.y-start.y));
+    double r_denomenator = (double)((end.x-start.x)*(end.x-start.x) + (end.y-start.y)*(end.y-start.y));
+    double r = r_numerator / r_denomenator;
+   
+    double s =  ((start.y-point.y)*(end.x-start.x)-(start.x-point.x)*(end.y-start.y) ) / r_denomenator;
+
+    distanceLine = fabs(s)*sqrt(r_denomenator);
+
+    if ( (r >= 0) && (r <= 1) ) return distanceLine;
+    else
+    {
+        double dist1 = (point.x-start.x)*(point.x-start.x) + (point.y-start.y)*(point.y-start.y);
+        double dist2 = (point.x-end.x)*(point.x-end.x) + (point.y-end.y)*(point.y-end.y);
+        if (dist1 < dist2) return sqrt(dist1);
+	    else return sqrt(dist2);
+	}
+}
 
 /*****************************************EVENT HANDLERS*********************************/
 void keyHandler(void)
@@ -172,15 +254,22 @@ void keyHandler(void)
         	case ESC:
         		exit(0);
         	case '\n':
-        		if(theSemaphor==GOTRECT)
+        		if(uiAction==getRect)
         		{
         			if(rectStart.x!=rectEnd.x && rectStart.y!=rectEnd.y) gotRect=YES;
         			else printf("Please select a robot\n");
         		}
-        		else if(theSemaphor==SELECTIONORWINDOW)	selectionMade=YES;
+        		else if(uiAction==acceptOrReset)	selectionMade=YES;
+        		else if(uiAction==getLine) selectionMade=YES;
+        		break;
+        	case '+':
+        		if(uiAction==getLine) gotLine=YES;
+        		break;
+        	case '-':
+        		if(uiAction==getLine) undoLine=YES;
         		break;
         	case 'c':
-        		if(theSemaphor==SELECTIONORWINDOW) windowNeedsReset=YES;
+        		if(uiAction==acceptOrReset) windowNeedsReset=YES;
         		break;
         	default:
         		break;
@@ -188,7 +277,8 @@ void keyHandler(void)
 }
 void mouseHandler(int event, int x, int y, int flags, void* param)
 {
-	switch(event){
+	switch(event)
+	{
 		case CV_EVENT_LBUTTONDOWN:
 			mouseDown=YES;
 			rectStart=cvPoint(x,y);
@@ -206,25 +296,4 @@ void mouseHandler(int event, int x, int y, int flags, void* param)
 			break;
 
 	}
-}
-
-/*****************************************IMAGE HANDLERS*********************************/
-IplImage * downsize4(IplImage * frame)
-{
-	int frameHeight, frameWidth;
-	frameHeight=frame->height;
-	frameWidth=frame->width;
-
-	IplImage *pyr = cvCreateImage(cvSize(frameWidth/2, frameHeight/2), IPL_DEPTH_8U, 3);
-	IplImage *pyr2 = cvCreateImage(cvSize(frameWidth/4, frameHeight/4), IPL_DEPTH_8U, 3);
-
-	cvPyrDown(frame, pyr, IPL_GAUSSIAN_5x5);
-	cvPyrDown(pyr, pyr2, IPL_GAUSSIAN_5x5);
-
-	cvResize(pyr2, frame, CV_INTER_NN);
-
-	cvReleaseImage(&pyr);
-	cvReleaseImage(&pyr2);
-
-	return frame;
 }
