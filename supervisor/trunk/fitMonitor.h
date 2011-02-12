@@ -17,6 +17,7 @@
 #include "highgui.h"
 #include "types.h"
 #include "limits.h"
+#include "network.h"
 
 //Defines:
 #define CV_NO_BACKWARD_COMPATIBILITY
@@ -60,6 +61,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot);
 int pointToLine(CvPoint point, CvPoint start, CvPoint end);
 void keyHandler(void);
 void mouseHandler(int event, int x, int y, int flags, void* param);
+
 
 //Globals:
 extern rtRobot* bots;

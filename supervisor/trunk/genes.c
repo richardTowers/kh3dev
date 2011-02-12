@@ -7,30 +7,28 @@
 
 #include "genes.h"
 
-/*void readGenotype(const char *filename)*/
-/*{*/
-/*	int theWeight;*/
-/*	FILE *file;*/
-/*	*/
-/*	file = fopen(filename, "r");*/
-/*	//Get number of nodes:*/
-/*	fscanf(file,"%hd %hd %hd",&nInputs,&nHiddens,&nOutputs);*/
-/*	*/
-/*	//Allocate enough memory for the weights, biases and time constants*/
-/*	weights=(short*)malloc(sizeof(int)*(nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs));*/
-/*		//biases=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));*/
-/*		//timeConstants=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));*/
-/*	*/
-/*	//Loop through weights:*/
-/*	for (theWeight = 0; theWeight < (nInputs+nHiddens+nOutputs)*(nInputs+nHiddens+nOutputs); theWeight ++)*/
-/*	{*/
-/*		fscanf(file,"%hd",&weights[theWeight]);*/
-/*	}*/
-/*		//Same for the others...*/
-/*	*/
-/*	fclose(file);*/
-/*	*/
-/*}*/
+void readGenotype(const char *filename, short int* weights)
+{
+	int theWeight;
+	FILE *file;
+	
+	file = fopen(filename, "r");
+	//Get number of nodes:
+	fscanf(file,"%hd %hd %hd",&nInputs,&nHiddens,&nOutputs);
+	
+	//Allocate enough memory for the weights, biases and time constants
+	weights=(short*)malloc(sizeof(int)*nNodes*nNodes);
+		//biases=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));
+		//timeConstants=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));
+	
+	//Loop through weights:
+	for (theWeight = 0; theWeight < nNodes*nNodes; theWeight ++)
+	{
+		fscanf(file,"%hd",&weights[theWeight]);
+	}
+	
+	fclose(file);
+}
 
 void writeGenotype(const char *filename, short int* weights)
 {

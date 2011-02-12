@@ -181,6 +181,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		cvNormalize(histogram, histogram, 1, 0, CV_MINMAX);
 		cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
 		maxloc=cvPoint(maxloc.x+robot.mark->width/2, maxloc.y+robot.mark->height/2);
+		robot.prevPos=robot.currPos;
 		robot.currPos=maxloc;
 		//Plot position and bounds
 		cvCircle(frame, robot.currPos, MARK_SIZE, YELLOW, LINE_WIDTH, CV_AA);
@@ -201,6 +202,19 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 			if(dToBound<dToNearestBound) dToNearestBound=dToBound;
 		}
 		
+		//If we're closer than 60 px to an object we're basically about to crash...
+		//Until we can implement a "Go to center" program there's not a lot we can do here...
+		if (dToNearestBound<60)
+		{
+			//Stop motors
+			send(robot.socket, "Stop Motors", 11, 0);
+			//Give fitness equal to distance it travelled before the crash
+			fitness=dTravelled;
+			//Show what happened:
+			cvPutText(frame, "CRASH!", robot.currPos, &font, RED);
+			cvShowImage("Fitness Monitor", frame);
+			break;
+		}
 		//Write data:
 		sprintf(line1, "Distance from origin: %d px",dFromOrigin);
 		sprintf(line2, "Total Distance: %d px", dTravelled);
