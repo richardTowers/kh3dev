@@ -11,15 +11,15 @@ int main(void)
 {
 	unsigned short int i;
 	float inputs[INPUTS];
-	float weightsIH[INPUTS][HIDDENS] = {{0.2,0.2}	,
-																			{-0.2,0.2},
-																			{-0.4,0.2},
-																			{-1,0.5}	,
-																			{0.5,-1}	,
-																			{0.2,-0.4},
-																			{0.2,-0.2},
-																			{0.2,0.2}	,
-																			{0.4,0.4}	};
+	float weightsIH[INPUTS][HIDDENS] = {{0.5,0.5}	,
+										{-0.2,0.2},
+										{-0.4,0.2},
+										{-1,-0.2}	,
+										{-0.2,-1}	,
+										{0.2,-0.4},
+										{0.2,-0.2},
+										{0.5,0.5}	,
+										{1,1}	};
 	
 	float weightsHO[HIDDENS][OUTPUTS] = {{1,0}		,
 																			 {0,1}		};

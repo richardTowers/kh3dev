@@ -12,6 +12,6 @@
 #include "neuralNetwork.h"
 #include "robot.h"
 
-#define FORWARD_BIAS 20000
+#define FORWARD_BIAS 0
 
 #endif //INC_FFNN
