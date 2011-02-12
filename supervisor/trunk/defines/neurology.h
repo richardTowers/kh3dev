@@ -17,7 +17,6 @@ I 0 14  1
 H 0  4 14
 O 0  0  0*/
 #define pBASE 20
-#define pMUTATE pBASE*10
 #define pII 0
 #define pIH 14
 #define pIO 1

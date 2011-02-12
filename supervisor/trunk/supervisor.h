@@ -31,7 +31,8 @@
 void createInitialGenes(int population, rtGeneration* generation);
 void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* childGen);
 void rtShuffle(rtIndividual* array, int size);
-void mutate();
+void mutate(rtIndividual* individual);
+short int mutateWeight(const short int weight);
 extern void setupTracker(int nRobots, rtRobot* robots);
 extern void testIndividualOnRobot(rtIndividual* individual, rtRobot robot);
 

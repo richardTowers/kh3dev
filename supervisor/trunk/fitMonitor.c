@@ -143,8 +143,8 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	IplImage* frame, *histogram;
 	CvCapture* capture; CvPoint maxloc, origin; CvSize hSize; CvFont font;
 	int dFromLastPoint=0, dFromOrigin=0, dTravelled=0, dToNearestBound=INT_MAX, dToBound, bound; char line1[100], line2[100], line3[100];
-	int health=0xffff, fitness=0xffff;
-	time_t startTime;
+	//int health=0xffff, fitness=0;
+	time_t startTime, retreatTime;
 	
 	startTime=time(NULL);
 	
@@ -203,17 +203,28 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		}
 		
 		//If we're closer than 60 px to an object we're basically about to crash...
-		//Until we can implement a "Go to center" program there's not a lot we can do here...
+		//Use the "retreat" neural network to get out of trouble.
 		if (dToNearestBound<60)
 		{
 			//Stop motors
 			send(robot.socket, "Stop Motors", 11, 0);
+			//Wait for the message to sink in:
+			sleep(1);
+			//Use retreat genotype:
+			send(robot.socket, "Genotypes/Retreat.txt", 22, 0);
+			retreatTime=time(NULL);
+			while((time(NULL)-retreatTime) < 5)
+			{
+				keyHandler();
+				frame = cvQueryFrame(capture);
+				cvPutText(frame, "Retreating...", cvPoint(10,10), &font, BLUE);
+				cvPutText(frame, "CRASH!", robot.currPos, &font, RED);
+				cvShowImage("Fitness Monitor", frame);
+			}
 			//Give fitness equal to distance it travelled before the crash
-			fitness=dTravelled;
-			//Show what happened:
-			cvPutText(frame, "CRASH!", robot.currPos, &font, RED);
-			cvShowImage("Fitness Monitor", frame);
-			break;
+			(*individual).fitness=dTravelled;
+			cvReleaseCapture(&capture);
+			return;
 		}
 		//Write data:
 		sprintf(line1, "Distance from origin: %d px",dFromOrigin);
@@ -231,7 +242,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	//Timer ran down, we should have all the stuff needed to calculate a fitness
 	
 	//Store fitness:
-	(*individual).fitness=fitness;
+	(*individual).fitness=dTravelled+SURVIVAL_BONUS;
 	//Clear up:
 	cvReleaseCapture(&capture);
 }
