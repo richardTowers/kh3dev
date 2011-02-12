@@ -12,6 +12,7 @@ int main(int argc, char * argv[])
 	int host, bytesRecieved;
 	char buffer[MAXDATASIZE];
 	pid_t processID = 0;
+	semaphor expectedSignal=genotype;
 	int status;
 	
 	#ifndef TESTING
@@ -33,16 +34,18 @@ int main(int argc, char * argv[])
 				buffer[bytesRecieved] = '\0';
 				printf("Recieved Signal: '%s'\n",buffer);
 			
-				if(strncmp(buffer,"Genotype",5)==0)
+				if((strncmp(buffer,"Genotype",5)==0) && (expectedSignal==genotype))
 				{
+					expectedSignal=stopMotors;
 					//If there's a child process, kill it
 					if(processID>0){ kill(processID, SIGKILL); wait(&status); NNdealloc();}
 					//Fork process
 					processID = fork();
 					if(processID==CHILD) childProcess(buffer);
 				}
-				else if(strcmp(buffer,"Stop Motors")==0)
+				else if((strcmp(buffer,"Stop Motors")==0) && (expectedSignal==stopMotors))
 				{
+					expectedSignal=genotype;
 					//If there's a child process, kill it
 					if(processID>0){ kill(processID, SIGKILL); wait(&status); NNdealloc();}
 					//Stop Motors
@@ -84,6 +87,8 @@ void childProcess(char *filename)
 	printGenotype();
 	//Allocate memory for NN:
 	NNalloc(nInputs+nOutputs+nHiddens);
+	//Just wait a few seconds for the fitness monitor to catch up...
+	sleep(4);
 	for(;;)
 	{
 		for(i=0;i<INPUTS;i++)

@@ -30,6 +30,8 @@
 #endif
 #define CHILD 0
 
+typedef enum semaphor {genotype, stopMotors} semaphor;
+
 //Genotype stored as global:
 unsigned short int nInputs, nHiddens, nOutputs;
 float *weights; //Add biases and time constants later...
