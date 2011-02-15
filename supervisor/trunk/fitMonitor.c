@@ -48,8 +48,7 @@ void setupTracker(int nRobots, rtRobot* robots)
 			//Show the cropped image:
 			cvShowImage("Is this your robot?", frame);
 			
-			printf("\nYou should be looking at a small image of:"
-			"\nROBOT: %d\n\nPress Return if you are happy with your selection\n"
+			printf("\nYou should be looking at a small image of robot %d\n\nPress Return if you are happy with your selection\n"
 			"Press C to change your selection\n\n",bot+1);
 			//Wait for user to make choice:
 			uiAction=acceptOrReset;
@@ -165,7 +164,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	cvNormalize(histogram, histogram, 1, 0, CV_MINMAX);
 	cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
 	
-	maxloc=cvPoint(maxloc.x+robot.mark->width/2, maxloc.y+robot.mark->height/2);
+	maxloc.x+=robot.mark->width/2; maxloc.y+=robot.mark->height/2;
 
 	robot.currPos=maxloc;
 	robot.prevPos=maxloc;
@@ -180,7 +179,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		cvMatchTemplate(frame, robot.mark, histogram, CV_TM_CCOEFF);
 		cvNormalize(histogram, histogram, 1, 0, CV_MINMAX);
 		cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
-		maxloc=cvPoint(maxloc.x+robot.mark->width/2, maxloc.y+robot.mark->height/2);
+		maxloc.x+=robot.mark->width/2; maxloc.y+=robot.mark->height/2;
 		robot.prevPos=robot.currPos;
 		robot.currPos=maxloc;
 		//Plot position and bounds
@@ -213,7 +212,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 			//Use retreat genotype:
 			send(robot.socket, "Genotypes/Retreat.txt", 22, 0);
 			retreatTime=time(NULL);
-			while((time(NULL)-retreatTime) < 5)
+			while((time(NULL)-retreatTime) < 12)
 			{
 				keyHandler();
 				frame = cvQueryFrame(capture);

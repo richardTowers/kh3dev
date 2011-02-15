@@ -45,7 +45,7 @@
 #define EXCL_RADIUS 2
 #define ROI_SIZE 200
 #define PI 3.14159
-#define MARK_SIZE 30
+#define MARK_SIZE 60
 #define LINE_WIDTH 2
 #define NULL_POINT cvPoint(0xffff,0xffff)
 #define WIDTH 635

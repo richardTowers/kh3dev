@@ -50,7 +50,8 @@ int main(void)
 			#endif
 		}
 		//When entire population have fitness values
-			//Reproduce, Crossover mutate
+		reproduce(POP_SIZE, gen, &gens[gen], &gens[gen+1]);
+		//for (ind = 0; ind < POP_SIZE; ind ++) mutate(&gens[gen+1].inds[ind]);
 		//Next Generation
 		#ifndef TESTING
 	}
