@@ -65,10 +65,10 @@ IplImage *findLights(IplImage *frame)
 	//cvCopy(frame, theImage, 0);
 	
 	//Dilate to make the target bigger
-	cvDilate(frame, frame, NULL, 2);
+	//cvDilate(frame, frame, NULL, 2);
 	
 	//Reduce resolution to make our job easier
-	frame = downsize4(frame);
+	//frame = downsize4(frame);
 	
 	//Find the brightest pixels who's hue is red, green and blue
 	{
