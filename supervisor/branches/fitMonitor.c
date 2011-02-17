@@ -13,27 +13,7 @@ void setupTracker(int nRobots, rtRobot* robots)
 	IplImage* frame;
 	CvCapture* capture;
 	int bot=0, bound=0;
-	char timeStr[30], makeDirectory[100];
-	time_t progStartTime;
-	struct tm *localTime;
-	unsigned short int i;
 	CvLine *tmp;
-	//Create Log Folder:
-		progStartTime=time(NULL);
-		localTime=localtime(&progStartTime);
-		strcpy(timeStr,asctime(localTime));
-		for (i = 0; i < strlen(timeStr); i += 1)
-		{
-			if(timeStr[i]==' ') timeStr[i]='-';
-			else if(timeStr[i]=='\n') timeStr[i]='\0';
-		}
-		sprintf(lFolderName, "LogFiles/%s", timeStr);
-		printf("%s\n",lFolderName);
-		sprintf(makeDirectory, "mkdir %s", lFolderName);
-		printf("%s\n",makeDirectory);
-		
-		if(access("./LogFiles",F_OK)!=0) system("mkdir LogFiles");
-		if(access(lFolderName,F_OK)!=0) system(makeDirectory);
 	
 	//Start capturing:
 	if( !(capture = cvCaptureFromCAM(ANY_CAMERA)))
@@ -162,20 +142,23 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 {
 	IplImage* frame, *histogram;
 	CvCapture* capture; CvPoint maxloc, origin; CvSize hSize; CvFont font;
-	FILE* logImage; char lFileName[30], openFile[200];
-	int dFromLastPoint=0, dFromOrigin=0, dTravelled=0, dToNearestBound=INT_MAX, dToBound, bound; char line1[100], line2[100], line3[100];
+	FILE* logImage; char lFileName[4000], openFile[200];
+	int dFromLastPoint=0, dFromOrigin=0, dTravelled=0, dFit=0, dToNearestBound=INT_MAX, dToBound, bound;
+	char line1[100], line2[100], line3[100], line4[100];
 	//int health=0xffff, fitness=0;
 	time_t startTime, retreatTime;
 	
 	startTime=time(NULL);
 	//Create Log File:
-		strcpy(lFileName, replace_str(replace_str((*individual).geneFile, ".txt", ".svg"), "Genotypes/", ""));
-		printf("%s\n",lFileName);
-		sprintf(openFile, "%s/%s", lFolderName, lFileName);
-		printf("%s\n\n",openFile);
+		sprintf(lFileName, "%s/Gen%dInd%d.svg",logFolder, (*individual).generation, (*individual).number);
+		printf("Log File:%s\n",lFileName);
 	
-		logImage=fopen(openFile, "w+");
-		
+		logImage=fopen(lFileName, "w+");
+		if(!logImage)
+		{
+			printf("Failed to open file...");
+			exit(1);
+		}
 	
 	//Start Camera
 	capture=cvCaptureFromCAM(ANY_CAMERA);
@@ -184,18 +167,26 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	
 	printf("Testing individual with genome: %s on robot with IP: %s\n", (*individual).geneFile, robot.ip);
 	
-	//Grab a frame for the initial position:
-	frame=cvQueryFrame(capture);
-	
 	//Find initial position
+	frame=cvQueryFrame(capture);
 	hSize=cvSize(frame->width-robot.mark->width+1,frame->height-robot.mark->height+1);
 	histogram = cvCreateImage(hSize, IPL_DEPTH_32F,1);
-	
-	cvMatchTemplate(frame, robot.mark, histogram, CV_TM_CCOEFF);
-	cvNormalize(histogram, histogram, 1, 0, CV_MINMAX);
-	cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
-	
-	maxloc.x+=robot.mark->width/2; maxloc.y+=robot.mark->height/2;
+	startTime=time(NULL);
+	while(time(NULL)-startTime < 4)
+	{
+		keyHandler();
+		frame=cvQueryFrame(capture);
+		
+		//Get position
+		cvMatchTemplate(frame, robot.mark, histogram, CV_TM_CCOEFF);
+		cvNormalize(histogram, histogram, 1, 0, CV_MINMAX);
+		cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
+		maxloc.x+=robot.mark->width/2; maxloc.y+=robot.mark->height/2;
+		//Plot position
+		cvCircle(frame, maxloc, MARK_SIZE, YELLOW, LINE_WIDTH, CV_AA);
+		cvPutText(frame,"Finding Initial Position...",cvPoint(10,20), &font, WHITE);
+		cvShowImage("Fitness Monitor",frame);
+	}
 
 	robot.currPos=maxloc;
 	robot.prevPos=maxloc;
@@ -220,6 +211,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		fprintf(logImage, "<polyline style=\"fill:none; stroke:green; stroke-width:1\" "
 		"points=\"\n");
 	
+	startTime=time(NULL);
 	while(time(NULL)-startTime < EVAL_TIME)
 	{	
 		keyHandler();
@@ -252,6 +244,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 			dToBound=pointToLine(robot.currPos, bounds[bound].start, bounds[bound].end);
 			if(dToBound<dToNearestBound) dToNearestBound=dToBound;
 		}
+		if(dToNearestBound<120) dFit+=dFromLastPoint;
 		
 		//If we're closer than 60 px to an object we're basically about to crash...
 		//Use the "retreat" neural network to get out of trouble.
@@ -271,12 +264,12 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 			{
 				keyHandler();
 				frame = cvQueryFrame(capture);
-				cvPutText(frame, "Retreating...", cvPoint(10,10), &font, BLUE);
+				cvPutText(frame, "Crashed, Retreating...", cvPoint(10,15), &font, BLUE);
 				cvPutText(frame, "CRASH!", robot.currPos, &font, RED);
 				cvShowImage("Fitness Monitor", frame);
 			}
-			//Give fitness equal to distance it travelled before the crash
-			(*individual).fitness=dTravelled;
+			//Give fitness equal to whatever fitness it had before the crash
+			(*individual).fitness=3*dFit+dFromOrigin;
 			cvReleaseCapture(&capture);
 			return;
 		}
@@ -284,12 +277,11 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		sprintf(line1, "Distance from origin: %d px",dFromOrigin);
 		sprintf(line2, "Total Distance: %d px", dTravelled);
 		sprintf(line3, "Distance to nearest bound: %d px", dToNearestBound);
+		sprintf(line4, "Fitness: %d", 3*dFit+dFromOrigin);
 		cvPutText(frame,line1,cvPoint(10,15), &font, WHITE);
 		cvPutText(frame,line2,cvPoint(10,30), &font, WHITE);
 		cvPutText(frame,line3,cvPoint(10,45), &font, WHITE);
-		
-		//Store stuff we can later use for fitness
-		
+		cvPutText(frame,line4,cvPoint(10,60), &font, RED);
 		
 		cvShowImage("Fitness Monitor",frame);
 	}
@@ -298,7 +290,22 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	fprintf(logImage, "\" />\n\n</svg>");
 	fclose(logImage);
 	//Store fitness:
-	(*individual).fitness=dTravelled+SURVIVAL_BONUS;
+	(*individual).fitness=3*dFit+dFromOrigin+SURVIVAL_BONUS;
+	//Retreat to sensible position:
+	//Stop motors
+	send(robot.socket, "Stop Motors", 11, 0);
+	//Wait for the message to sink in:
+	sleep(1);
+	//Use retreat genotype:
+	send(robot.socket, "Genotypes/Retreat.txt", 22, 0);
+	retreatTime=time(NULL);
+	while((time(NULL)-retreatTime) < 12)
+	{
+		keyHandler();
+		frame = cvQueryFrame(capture);
+		cvPutText(frame, "Finished Evaluation, Retreating...", cvPoint(10,15), &font, BLUE);
+		cvShowImage("Fitness Monitor", frame);
+	}
 	//Clear up:
 	cvReleaseCapture(&capture);
 }
@@ -382,7 +389,7 @@ void mouseHandler(int event, int x, int y, int flags, void* param)
 /*****************************************HELPERS*********************************/
 char *replace_str(const char *str, const char *orig, const char *rep)
 {
-	static char buffer[100];
+	static char buffer[300];
 	const char *p;
 
 	if(!(p = strstr(str, orig)))  // Is 'orig' even in 'str'?

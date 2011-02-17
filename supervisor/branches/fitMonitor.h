@@ -85,6 +85,7 @@ CvPoint rectEnd={0,0};
 CvRect fullRect={0,0,0,0};
 int nBounds=0;
 CvLine* bounds;
-char lFolderName[50];
+extern char logFolder[200];
+extern char genotypeFolder[200];
 
 #endif //INC_FITMONITOR
