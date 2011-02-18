@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 		}
 		else	//argv[1] is a valid folder, does it contain genes?
 		{
-			sprintf(genotypeFolder, "%s/Genotypes", argv[1]);
+			sprintf(genotypeFolder, "%sGenotypes", argv[1]);
 			sprintf(buffer, "%s/Gen0Ind0.txt", genotypeFolder);
 			if(access(buffer,F_OK)!=0)	//Not a genotype folder
 			{
@@ -45,27 +45,34 @@ int main(int argc, char *argv[])
 				{
 					sprintf(buffer, "%s/Gen0Ind%d.txt", genotypeFolder, ind);
 					ind++;
-				} while (access(buffer,F_OK)==0); ind--;
+				} while (access(buffer,F_OK)==0); ind-=2;
 				nInds=ind;
 				//nInds is now equal to the number of individuals
 				printf("Number of individuals = %d\n",nInds);
 				//Get most recent full generation by counting GenXIndNinds
 				do
 				{
-					sprintf(buffer, "%s/Gen%dInd%d.txt", genotypeFolder, gen, nInds-1);
+					sprintf(buffer, "%s/Gen%dInd%d.txt", genotypeFolder, gen, nInds);
 					gen++;
-				} while (access(buffer,F_OK)==0); gen--;
+				} while (access(buffer,F_OK)==0); gen-=2;
 				nGens=gen;
 				//nGens is now equal to the number of generations evaluated so far
 				printf("Number of Generations = %d\n",nGens);
 				
 				//Make sure Log File exists too:
-				sprintf(logFolder, "%s/LogFiles", argv[1]);
+				sprintf(logFolder, "%sLogFiles", argv[1]);
 				if(access(logFolder,F_OK)!=0)
 				{
 					printf("No LogFiles folder in experiment directory, creating a new folder...\n");
 					sprintf(buffer, "mkdir %s", logFolder);
 					system(buffer);
+				}
+				
+				//Now need to set geneFiles of individuals in the first generation
+				for (ind = 0; ind < nInds; ind += 1)
+				{
+					sprintf(gens[nGens].inds[ind].geneFile, "%s/Gen%dInd%d.txt", genotypeFolder, nGens, ind);
+					gens[nGens].inds[ind].generation=nGens; gens[nGens].inds[ind].number=ind;
 				}
 			}
 		}
@@ -258,7 +265,7 @@ void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* c
 		(*childGen).inds[child] = (*parentGen).inds[bestParent];
 		
 		weights=readGenotype((*parentGen).inds[bestParent].geneFile, weights);
-		sprintf((*childGen).inds[child].geneFile, "Genotypes/Gen%dInd%d.txt", gen+1, child);
+		sprintf((*childGen).inds[child].geneFile, "%s/Gen%dInd%d.txt", genotypeFolder, gen+1, child);
 		writeGenotype((*childGen).inds[child].geneFile, weights);
 		(*childGen).inds[child].number=child;
 		(*childGen).inds[child].generation=gen;

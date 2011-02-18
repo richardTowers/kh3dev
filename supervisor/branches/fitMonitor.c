@@ -142,7 +142,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 {
 	IplImage* frame, *histogram;
 	CvCapture* capture; CvPoint maxloc, origin; CvSize hSize; CvFont font;
-	FILE* logImage; char lFileName[4000], openFile[200];
+	FILE* logImage; char lFileName[200];
 	int dFromLastPoint=0, dFromOrigin=0, dTravelled=0, dFit=0, dToNearestBound=INT_MAX, dToBound, bound;
 	char line1[100], line2[100], line3[100], line4[100];
 	//int health=0xffff, fitness=0;
