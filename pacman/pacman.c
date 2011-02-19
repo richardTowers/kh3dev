@@ -1,9 +1,7 @@
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <limits.h>
+#include "pacman.h"
+
 
 
 int main(int argc, char *argv[])
@@ -36,21 +34,24 @@ int main(int argc, char *argv[])
 			scanf("%hd", &value);
 			if(value>nCherries-1) printf("\nValue must be between 0 and %d\n", nCherries-1);
 		}
-		nCherries--;
-		for (cherry = value; cherry < nCherries; cherry += 1) cherries[cherry]=cherries[cherry+1];
-		cherries=realloc(cherries, sizeof(short)*nCherries);
+		removeFromArray(cherries, &nCherries, value);
+/*		nCherries--;*/
+/*		for (cherry = value; cherry < nCherries; cherry += 1) cherries[cherry]=cherries[cherry+1];*/
+/*		cherries=realloc(cherries, sizeof(short)*nCherries);*/
 	}
+	return 0;
 }
 
-/*void* removeFromArray(void* array, int *length, int size, short sizeOf, int index)*/
-/*{*/
-/*	short i;*/
-/*	if(index>*length || index < 0) {fprintf(stderr, "Index out of bounds\n"); return array;}*/
-/*	else if(size % *length != 0) {fprintf(stderr, "sizeof() non-integer\n"); return array;}*/
-/*	else*/
-/*	{*/
-/*		for(i = index; i < *length; i++) ;*/
-/*	}*/
-/*}*/
+short* removeFromArray(short* array, short *length, const short index)
+{
+	short i;
+	if(index>*length || index < 0) {fprintf(stderr, "removeFromArray(): Index out of bounds\n"); return array;}
+	else
+	{
+		*length=*length-1;
+		for(i = index; i < *length; i++) *(array+i) = *(array+(i+1));
+	}
+	return realloc(array, sizeof(short)*(*length));
+}
 
 
