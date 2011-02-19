@@ -40,6 +40,7 @@
 #include "defines/colours.h"
 #include "defines/genetics.h"
 
+#define CHERRY_SPACE 30
 #define AREA 16
 #define ANY_CAMERA -1
 #define YES 1
@@ -62,9 +63,13 @@ void setupTracker(int nRobots, rtRobot* robots);
 void testIndividualOnRobot(rtIndividual* individual, rtRobot robot);
 
 int pointToLine(CvPoint point, CvPoint start, CvPoint end);
+int pointToPoint(CvPoint p1, CvPoint p2);
+
 void keyHandler(void);
 void mouseHandler(int event, int x, int y, int flags, void* param);
+
 char *replace_str(const char *str, const char *orig, const char *rep);
+CvPoint* removeFromArray(CvPoint* array, short *length, const short index);
 
 
 //Globals:

@@ -8,6 +8,7 @@
 #define INC_TYPES
 
 #include "defines/genetics.h"
+#include "cv.h"
 
 typedef struct rtRobot		//This refers to a physical robot, not an individual
 {
