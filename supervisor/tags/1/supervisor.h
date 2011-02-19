@@ -43,8 +43,4 @@ unsigned short int nHiddens=HIDDENS;
 unsigned short int nOutputs=OUTPUTS;
 unsigned short int nNodes=INPUTS+HIDDENS+OUTPUTS;
 
-//File Paths
-char genotypeFolder[200];
-char logFolder[200];
-
 #endif //INC_SUPERVISOR

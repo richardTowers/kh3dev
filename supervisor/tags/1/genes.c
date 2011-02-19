@@ -7,7 +7,7 @@
 
 #include "genes.h"
 
-short int* readGenotype(const char *filename, short int* weights)
+void readGenotype(const char *filename, short int* weights)
 {
 	int theWeight;
 	FILE *file;
@@ -17,7 +17,7 @@ short int* readGenotype(const char *filename, short int* weights)
 	fscanf(file,"%hd %hd %hd",&nInputs,&nHiddens,&nOutputs);
 	
 	//Allocate enough memory for the weights, biases and time constants
-	weights=(short*)malloc(sizeof(short)*nNodes*nNodes);
+	weights=(short*)malloc(sizeof(int)*nNodes*nNodes);
 		//biases=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));
 		//timeConstants=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));
 	
@@ -28,7 +28,6 @@ short int* readGenotype(const char *filename, short int* weights)
 	}
 	
 	fclose(file);
-	return weights;
 }
 
 void writeGenotype(const char *filename, short int* weights)

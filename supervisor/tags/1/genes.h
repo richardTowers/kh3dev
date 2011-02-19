@@ -15,7 +15,7 @@
 extern unsigned short int nInputs, nHiddens, nOutputs, nNodes;
 extern short int *weights;
 
-short int* readGenotype(const char *filename, short int* weights);
+void readGenotype(const char *filename, short int* weights);
 void writeGenotype(const char *filename, short int* weights);
 //void printGenotype(void);
 

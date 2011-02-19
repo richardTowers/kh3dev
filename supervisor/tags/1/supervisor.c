@@ -8,107 +8,11 @@
 #include "supervisor.h"
 
 
-int main(int argc, char *argv[])
+int main(void)
 {
-	char buffer[100], folder[50];
 	rtRobot bots[nROBOTS]={{"192.168.1.2",NULL,NULL,RED,{0,0},{0,0}}};
 	rtGeneration gens[GENERATIONS];
-	short int ind=0, gen=0, bot, nInds=0, nGens=0; char command[300], filename[200];
-	time_t progStartTime; struct tm *localTime; char timeStr[30];
-	unsigned short int i; 
-	
-	if(argc>2)
-	{
-		printf("Too many arguments for program %s\n", argv[0]);
-		exit(1);
-	}
-	else if(argc==2)	//Folder of pre-existing genotypes specified...
-	{
-		if(access(argv[1],F_OK)!=0)	//No such folder
-		{
-			printf("%s: No such experiment folder\n", argv[1]);
-			exit(1);
-		}
-		else	//argv[1] is a valid folder, does it contain genes?
-		{
-			sprintf(genotypeFolder, "%sGenotypes", argv[1]);
-			sprintf(buffer, "%s/Gen0Ind0.txt", genotypeFolder);
-			if(access(buffer,F_OK)!=0)	//Not a genotype folder
-			{
-				printf("%s: Specified file does not contain a non-empty Genotypes folder\n", argv[1]);
-				exit(1);
-			}
-			else	//argv[1] is a genotype folder!
-			{
-				//Get number of individuals by counting through Gen0
-				do
-				{
-					sprintf(buffer, "%s/Gen0Ind%d.txt", genotypeFolder, ind);
-					ind++;
-				} while (access(buffer,F_OK)==0); ind-=2;
-				nInds=ind;
-				//nInds is now equal to the number of individuals
-				printf("Number of individuals = %d\n",nInds);
-				//Get most recent full generation by counting GenXIndNinds
-				do
-				{
-					sprintf(buffer, "%s/Gen%dInd%d.txt", genotypeFolder, gen, nInds);
-					gen++;
-				} while (access(buffer,F_OK)==0); gen-=2;
-				nGens=gen;
-				//nGens is now equal to the number of generations evaluated so far
-				printf("Number of Generations = %d\n",nGens);
-				
-				//Make sure Log File exists too:
-				sprintf(logFolder, "%sLogFiles", argv[1]);
-				if(access(logFolder,F_OK)!=0)
-				{
-					printf("No LogFiles folder in experiment directory, creating a new folder...\n");
-					sprintf(buffer, "mkdir %s", logFolder);
-					system(buffer);
-				}
-				
-				//Now need to set geneFiles of individuals in the first generation
-				for (ind = 0; ind < nInds; ind += 1)
-				{
-					sprintf(gens[nGens].inds[ind].geneFile, "%s/Gen%dInd%d.txt", genotypeFolder, nGens, ind);
-					gens[nGens].inds[ind].generation=nGens; gens[nGens].inds[ind].number=ind;
-				}
-			}
-		}
-	}
-	else	//We need to create a new folder...
-	{
-		nInds=POP_SIZE; nGens=0;
-		//Create new experiment directory:
-		progStartTime=time(NULL);
-		localTime=localtime(&progStartTime);
-		strcpy(timeStr,asctime(localTime));
-		for (i = 0; i < strlen(timeStr); i += 1)
-		{
-			if(timeStr[i]==' ') timeStr[i]='-';
-			else if(timeStr[i]=='\n') timeStr[i]='\0';
-		}
-		sprintf(folder, "Experiments/%s", timeStr);
-		sprintf(buffer, "mkdir %s", folder);
-		
-		if(access("./Experiments",F_OK)!=0) system("mkdir Experiments");
-		if(access(folder,F_OK)!=0) system(buffer);
-		else
-		{
-			printf("Already an experiment directory with this time stamp!! Exiting...\n");
-			exit(1);
-		}
-		sprintf(logFolder, "%s/LogFiles", folder);
-		sprintf(genotypeFolder, "%s/Genotypes", folder);
-		sprintf(buffer, "mkdir %s", logFolder);
-		system(buffer);
-		sprintf(buffer, "mkdir %s", genotypeFolder);
-		system(buffer);
-		
-		//Create initial population of genotype files
-		createInitialGenes(nInds, &gens[0]);
-	}
+	short int ind=0, gen=0, bot; char command[100], filename[30];
 	
 	#ifndef TESTING
 		//Connect to robots
@@ -117,35 +21,37 @@ int main(int argc, char *argv[])
 	
 	//Set up fitness tracker
 	setupTracker(nROBOTS, bots);
+
+	//Create initial population of genotype files
+	createInitialGenes(POP_SIZE, &gens[0]);
 	
 	#ifndef TESTING
 	//For each generation starting at 0
-	for (gen = nGens; gen < GENERATIONS; gen ++)
+	for (gen = 0; gen < GENERATIONS; gen ++)
 	{
 		#endif
 		//For each individual in the population
-		for (ind = 0; ind < nInds; ind ++)
+		for (ind = 0; ind < POP_SIZE; ind ++)
 		{
 			#ifndef TESTING
 			//Send the file to the individual
-			//strcpy(filename,gens[gen].inds[ind].geneFile);
-			sprintf(filename, "Genotypes/Gen%dInd%d.txt", gen, ind);
-			printf("Filename: %s\n", gens[gen].inds[ind].geneFile);
-			sprintf(command, "scp \'%s\' root@%s:Genotypes",gens[gen].inds[ind].geneFile, bots[0].ip);
-			printf("Command: %s\n",command);
+			strcpy(filename,gens[gen].inds[ind].geneFile);
+			sprintf(command, "scp %s root@%s:Genotypes",filename, bots[0].ip);
 			system(command);
 			//Tell the individual to get going
 			send(bots[0].socket, filename, strlen(filename)+1, 0);
+			#endif
 			//Monitor and then store its fitness
 			testIndividualOnRobot(&(gens[gen].inds[ind]), bots[0]);
+			#ifndef TESTING
 			//Stop the motors:
 			send(bots[0].socket, "Stop Motors", 11, 0);
 			
 			#endif
 		}
 		//When entire population have fitness values
-		reproduce(nInds, gen, &gens[gen], &gens[gen+1]);
-		
+		reproduce(POP_SIZE, gen, &gens[gen], &gens[gen+1]);
+		//for (ind = 0; ind < POP_SIZE; ind ++) mutate(&gens[gen+1].inds[ind]);
 		//Next Generation
 		#ifndef TESTING
 	}
@@ -162,7 +68,8 @@ void createInitialGenes(int population, rtGeneration* generation)
 	
 	weights=(short*)malloc(sizeof(short)*nNodes*nNodes);
 	
-	for (theIndividual=0; theIndividual < population; theIndividual++)
+	if(access("./Genotypes",F_OK)!=0) system("mkdir Genotypes");
+	for (theIndividual=0; theIndividual < POP_SIZE; theIndividual++)
 	{
 		//Assign Weights
 		for (row = 0; row < nNodes; row ++)
@@ -227,23 +134,18 @@ void createInitialGenes(int population, rtGeneration* generation)
 			}
 		}
 		//Create a file for this individual
-		sprintf(generation[0].inds[theIndividual].geneFile, "%s/Gen0Ind%d.txt", genotypeFolder ,theIndividual);
-		printf("%s\n",generation[0].inds[theIndividual].geneFile);
+		sprintf(generation[0].inds[theIndividual].geneFile, "Genotypes/Gen0Ind%d.txt", theIndividual);
 		//Store genotype in file...
 		writeGenotype(generation[0].inds[theIndividual].geneFile, weights);
-		generation[0].inds[theIndividual].generation=0;
-		generation[0].inds[theIndividual].number=theIndividual;
 	}
 	free(weights);
 }
 
 void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* childGen)
 {
-	short int *weights=NULL;
+	short int *weights=NULL;		//This will be initialized properly in readGenotype()
 	short int child, parent, bestParent;
 	int maxFitness=0;
-	
-	weights=(short*)malloc(sizeof(short)*nNodes*nNodes);
 	
 	//We're going to use tournament selection
 	//We require "population" of children:
@@ -253,7 +155,7 @@ void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* c
 		rtShuffle((*parentGen).inds, population);
 		//Find fittest parent in tournament:
 		maxFitness=0;
-		for (parent = 0; parent < TOUR_SIZE && parent < population; parent ++)
+		for (parent = 0; parent < TOUR_SIZE; parent ++)
 		{
 			if((*parentGen).inds[parent].fitness > maxFitness)
 			{
@@ -263,12 +165,9 @@ void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* c
 		}
 		//Fittest parent is allowed a child!
 		(*childGen).inds[child] = (*parentGen).inds[bestParent];
-		
-		weights=readGenotype((*parentGen).inds[bestParent].geneFile, weights);
-		sprintf((*childGen).inds[child].geneFile, "%s/Gen%dInd%d.txt", genotypeFolder, gen+1, child);
+		readGenotype((*parentGen).inds[bestParent].geneFile, weights);
+		sprintf((*childGen).inds[child].geneFile, "Genotypes/Gen%dInd%d.txt", gen+1, child);
 		writeGenotype((*childGen).inds[child].geneFile, weights);
-		(*childGen).inds[child].number=child;
-		(*childGen).inds[child].generation=gen;
 	}
 	//We now have a population of children identical to their fit parents
 	//Mutate kiddies
@@ -281,7 +180,7 @@ void mutate(rtIndividual* individual)
 	short int* weights=NULL;	//This will be initialized properly in readGenotype()
 	int theWeight, row, column;
 	
-	weights=readGenotype((*individual).geneFile, weights);
+	readGenotype((*individual).geneFile, weights);
 	
 	//Change weights
 	for (row = 0; row < nNodes; row ++)
