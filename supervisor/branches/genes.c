@@ -162,7 +162,7 @@ void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* c
 		sprintf((*childGen).inds[child].geneFile, "%s/Gen%dInd%d.txt", genotypeFolder, gen+1, child);
 		writeGenotype((*childGen).inds[child].geneFile, weights);
 		(*childGen).inds[child].number=child;
-		(*childGen).inds[child].generation=gen;
+		(*childGen).inds[child].generation=gen+1;
 	}
 	//We now have a population of children identical to their fit parents
 	//Mutate kiddies

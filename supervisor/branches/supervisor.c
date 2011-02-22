@@ -100,6 +100,7 @@ int main(int argc, char *argv[])
 			sprintf(filename, "Genotypes/Gen%dInd%d.txt", gen, ind);
 			sprintf(buffer, "scp \'%s\' root@%s:Genotypes",gens[gen].inds[ind].geneFile, bots[0].ip);
 			system(buffer);
+			
 			//Tell the individual to get going
 			send(bots[0].socket, filename, strlen(filename)+1, 0);
 			//Monitor and then store its fitness

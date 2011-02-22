@@ -237,7 +237,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		"points=\"\n");
 	
 	startTime=time(NULL);
-	while(time(NULL)-startTime < EVAL_TIME)
+	while(time(NULL)-startTime < EVAL_TIME+fitness)
 	{	
 		keyHandler();
 		frame=cvQueryFrame(capture);
@@ -283,11 +283,11 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 			{
 				fprintf(logImage, "<circle cx=\"%d\" cy=\"%d\" r=\"1\" stroke=\"none\" fill=\"red\" />\n", cherries[cherry].x, cherries[cherry].y);
 			}
-			fprintf(logImage, "<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke=\"black\" stroke-width=\"2\" fill=\"none\" />\n", robot.currPos.x, robot.currPos.y, MARK_SIZE);
+			fprintf(logImage, "<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke=\"red\" stroke-width=\"2\" fill=\"none\" />\n", robot.currPos.x, robot.currPos.y, MARK_SIZE);
+			fprintf(logImage, "<!--Fitness=%d, dToNearestBound=%d, dFit=%d, dTravelled=%d-->\n", fitness, dToNearestBound, dFit, dTravelled );
 			fprintf(logImage, "\n</svg>");
 			fclose(logImage);
-			//Wait for the message to sink in:
-			sleep(1);
+
 			//Use retreat genotype:
 			send(robot.socket, "Genotypes/Retreat.txt", 22, 0);
 			retreatTime=time(NULL);
@@ -302,6 +302,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 			//Give fitness equal to whatever fitness it had before the crash
 			(*individual).fitness=fitness;//3*dFit+dFromOrigin;
 			cvReleaseCapture(&capture);
+			free(cherries);
 			return;
 		}
 		//Write data:
@@ -334,6 +335,8 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		fprintf(logImage, "<circle cx=\"%d\" cy=\"%d\" r=\"1\" stroke=\"none\" fill=\"red\" />\n", cherries[cherry].x, cherries[cherry].y);
 	}
 	fprintf(logImage, "<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke=\"black\" stroke-width=\"2\" fill=\"none\" />\n", robot.currPos.x, robot.currPos.y, MARK_SIZE);
+	fprintf(logImage, "<!--Fitness=%d, dToNearestBound=%d, dFit=%d, dTravelled=%d-->\n", fitness+SURVIVAL_BONUS,
+	dToNearestBound, dFit, dTravelled );
 	fprintf(logImage, "\n</svg>");
 	
 	fclose(logImage);
@@ -356,6 +359,8 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	}
 	//Clear up:
 	cvReleaseCapture(&capture);
+	free(cherries);
+	return;
 }
 
 /*****************************************GEOMETRY*********************************/
