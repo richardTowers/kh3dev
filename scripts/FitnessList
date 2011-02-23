@@ -1,0 +1,11 @@
+#!/bin/bash
+
+sauce=$(cat Gen* | grep 'Fitness');
+
+IFS=$'\n'
+for line in $sauce; do
+	line=${line#*'Fitness='};
+	line=${line%%,*};
+	echo "$line"
+done
+unset IFS
