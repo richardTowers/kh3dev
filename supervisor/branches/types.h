@@ -24,6 +24,7 @@ typedef struct rtIndividual	//An individual to be evaluated and bred
 {
 	char geneFile[100];
 	char logFile[100];
+	char networkDiagram[100];
 	int fitness;
 	int generation;
 	int number;

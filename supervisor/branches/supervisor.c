@@ -46,10 +46,13 @@ int main(int argc, char *argv[])
 			system(buffer);
 		}
 		
-		//Now need to set geneFiles of individuals in the first generation
+		//Now need to set data of individuals in the first generation
 		for (ind = 0; ind < nInds; ind += 1)
 		{
 			sprintf(gens[nGens].inds[ind].geneFile, "%s/Gen%dInd%d.txt", genotypeFolder, nGens, ind);
+			sprintf(gens[nGens].inds[ind].logFile, "%s/Gen%dInd%d.svg", logFolder, nGens, ind);
+			sprintf(gens[nGens].inds[ind].networkDiagram, "%s/Gen%dInd%d.dot", genotypeFolder, nGens, ind);
+			gens[nGens].inds[ind].fitness=0; gens[nGens].inds[ind].parent=NULL;
 			gens[nGens].inds[ind].generation=nGens; gens[nGens].inds[ind].number=ind;
 		}
 	}
@@ -109,7 +112,7 @@ int main(int argc, char *argv[])
 			send(bots[0].socket, "Stop Motors", 11, 0);
 		}
 		//When entire population have fitness values
-		reproduce(nInds, gen, &gens[gen], &gens[gen+1]);
+		reproduce(nInds+1, gen, &gens[gen], &gens[gen+1]);
 		//Next Generation
 	}
 	

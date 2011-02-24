@@ -31,23 +31,108 @@ short int* readGenotype(const char *filename, short int* weights)
 	return weights;
 }
 
-void writeGenotype(const char *filename, short int* weights)
+void writeGenotype(const char *geneFile, const char *networkDiagram, short int* weights)
 {
-	int theRow, theColumn;
-	FILE *file;
+	short row, column;
+	short theWeight;
+	FILE *file_gene, *file_diagram;
 	
-	file=fopen(filename, "w+");
+	file_gene=fopen(geneFile, "w+");
 	//Print number of nodes:
-	fprintf(file, "%d %d %d\n", nInputs, nHiddens, nOutputs);
+	fprintf(file_gene, "%d %d %d\n", nInputs, nHiddens, nOutputs);
 	
 	//Loop through weights:
-	for (theRow = 0; theRow < (nInputs+nHiddens+nOutputs); theRow ++)
+	for (row = 0; row < (nInputs+nHiddens+nOutputs); row ++)
 	{
-		for (theColumn = 0; theColumn < (nInputs+nHiddens+nOutputs); theColumn ++)
-			fprintf(file,"%6d ",weights[theRow*(nInputs+nHiddens+nOutputs)+theColumn]);
-		fprintf(file,"\n");
+		for (column = 0; column < (nInputs+nHiddens+nOutputs); column ++)
+			fprintf(file_gene,"%6d ",weights[row*(nInputs+nHiddens+nOutputs)+column]);
+		fprintf(file_gene,"\n");
 	}
-	fclose(file);
+	fclose(file_gene);
+	
+	file_diagram=fopen(networkDiagram, "w+");
+	
+	fprintf(file_diagram, "digraph hierarchy {\n\nedge [color=\"#009900\", style=solid]\n\n");
+	for(row=0; row < nInputs; row++) fprintf(file_diagram, "n%d [label=\"I %d\"]\n",
+	row, row+1);
+	
+	for(row=nInputs; row < nInputs+nHiddens; row++) fprintf(file_diagram, "n%d [label=\"H %d\"]\n",
+	row, row-nInputs+1);
+	
+	for(row=nInputs+nHiddens; row < nNodes; row++) fprintf(file_diagram, "n%d [label=\"O %d\"]\n",
+	row, row-nInputs-nHiddens+1);
+	
+	fprintf(file_diagram, "\n{rank=same; ");
+	for(row=0; row < nInputs; row++) fprintf(file_diagram, "n%d ", row);
+	fprintf(file_diagram, "}\n{rank=same; ");
+	for(row=nInputs; row < nInputs+nHiddens; row++) fprintf(file_diagram, "n%d ", row);
+	fprintf(file_diagram, "}\n{rank=same; ");
+	for(row=nInputs+nHiddens; row < nNodes; row++) fprintf(file_diagram, "n%d ", row);
+	fprintf(file_diagram, "}\n\n");
+	
+	for (row = 0; row < nNodes; row ++)
+	{
+		for (column = 0; column < nNodes; column ++)
+		{
+			theWeight=row*nNodes+column;
+			if(row<nInputs)
+			{
+				if(column<nInputs)
+				{
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+				}
+				else if(column<nInputs+nHiddens)
+				{
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+				}
+				else
+				{
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+				}
+			}
+			else if(row<nInputs+nHiddens)
+			{
+				if(column<nInputs)
+				{
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+				}
+				else if(column<nInputs+nHiddens)
+				{
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+				}
+				else
+				{
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+				}
+			}
+			else
+			{
+				if(column<nInputs)
+				{
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+				}
+				else if(column<nInputs+nHiddens)
+				{
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+				}
+				else
+				{
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+				}
+			}
+		}
+	}
+	fprintf(file_diagram, "\n}\n");
+	fclose(file_diagram);
 }
 
 void createInitialGenes(int population, rtGeneration* generation)
@@ -121,10 +206,13 @@ void createInitialGenes(int population, rtGeneration* generation)
 				}
 			}
 		}
-		//Create a file for this individual
+		//Create files for this individual
 		sprintf(generation[0].inds[theIndividual].geneFile, "%s/Gen0Ind%d.txt", genotypeFolder ,theIndividual);
+		sprintf(generation[0].inds[theIndividual].logFile, "%s/Gen0Ind%d.svg", logFolder, theIndividual);
+		sprintf(generation[0].inds[theIndividual].networkDiagram, "%s/Gen0Ind%d.dot", genotypeFolder, theIndividual);
 		//Store genotype in file...
-		writeGenotype(generation[0].inds[theIndividual].geneFile, weights);
+		writeGenotype(generation[0].inds[theIndividual].geneFile, generation[0].inds[theIndividual].networkDiagram, weights);
+		generation[0].inds[theIndividual].fitness=0; generation[0].inds[theIndividual].parent=NULL;
 		generation[0].inds[theIndividual].generation=0;
 		generation[0].inds[theIndividual].number=theIndividual;
 	}
@@ -159,10 +247,17 @@ void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* c
 		(*childGen).inds[child] = (*parentGen).inds[bestParent];
 		
 		weights=readGenotype((*parentGen).inds[bestParent].geneFile, weights);
+		//Create files for this individual
 		sprintf((*childGen).inds[child].geneFile, "%s/Gen%dInd%d.txt", genotypeFolder, gen+1, child);
-		writeGenotype((*childGen).inds[child].geneFile, weights);
+		sprintf((*childGen).inds[child].logFile, "%s/Gen%dInd%d.svg", logFolder, gen+1, child);
+		sprintf((*childGen).inds[child].networkDiagram, "%s/Gen%dInd%d.dot", genotypeFolder, gen+1, child);
+		//Store genotype in file...
+		writeGenotype((*childGen).inds[child].geneFile, (*childGen).inds[child].networkDiagram, weights);
+		//Set data
 		(*childGen).inds[child].number=child;
 		(*childGen).inds[child].generation=gen+1;
+		(*childGen).inds[child].fitness=0;
+		(*childGen).inds[child].parent = &((*parentGen).inds[bestParent]);
 	}
 	//We now have a population of children identical to their fit parents
 	//Mutate kiddies
@@ -189,7 +284,7 @@ void mutate(rtIndividual* individual)
 			if((rand()%pMUTATE<pCHANGE_WEIGHT) && (weights[theWeight]!=0)) weights[theWeight]=mutateWeight(weights[theWeight]);
 		}
 	}
-	writeGenotype((*individual).geneFile, weights);
+	writeGenotype((*individual).geneFile,(*individual).networkDiagram,  weights);
 }
 
 short int mutateWeight(short int weight)

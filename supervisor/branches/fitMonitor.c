@@ -218,26 +218,11 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	origin=maxloc;
 	
 	//Log the status at the beginning of the run:
-		//Print header
-		fprintf(logImage, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"no\"?>\n"
-		"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"%d\" width=\"%d\" version=\"1.1\" "
-		"y=\"0\" x=\"0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"  >\n\n", frame->height, frame->width);
-	
-		//Print background rectangle
-		fprintf(logImage, "<rect x=\"0\" y=\"0\" width=\"%d\" height=\"%d\" style=\"fill:white; fill-opacity:1;\"/>\n\n", frame->width, frame->height);
-	
-		//Print boundaries:
-		for (bound = 0; bound < nBounds; bound ++)
-		{
-			fprintf(logImage, "<line style=\"fill:none; stroke:red; stroke-width:2\" "
-			"x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" />\n\n", bounds[bound].start.x, bounds[bound].start.y, bounds[bound].end.x, bounds[bound].end.y);
-		}
-		
-		fprintf(logImage, "<polyline style=\"fill:none; stroke:green; stroke-width:1\" "
-		"points=\"\n");
+	createLogImage(logImage, frame->width, frame->height, bounds, nBounds);
+	startLoggingPositions(logImage);
 	
 	startTime=time(NULL);
-	while(time(NULL)-startTime < EVAL_TIME+fitness)
+	while(time(NULL)-startTime < EVAL_TIME+fitness/9)
 	{	
 		keyHandler();
 		frame=cvQueryFrame(capture);
@@ -251,7 +236,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		robot.currPos=maxloc;
 		//Plot position and bounds
 		cvCircle(frame, robot.currPos, MARK_SIZE, YELLOW, LINE_WIDTH, CV_AA);
-		fprintf(logImage, "%d,%d\n",robot.currPos.x, robot.currPos.y);
+		logPosition(logImage, robot.currPos);
 		
 		for (bound = 0; bound < nBounds; bound ++)
 		{
@@ -278,14 +263,9 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 			//Stop motors
 			send(robot.socket, "Stop Motors", 11, 0);
 			//Finish up log file:
-			fprintf(logImage, "\" />\n\n");
-			for (cherry = 0; cherry < nCherries; cherry ++)
-			{
-				fprintf(logImage, "<circle cx=\"%d\" cy=\"%d\" r=\"1\" stroke=\"none\" fill=\"red\" />\n", cherries[cherry].x, cherries[cherry].y);
-			}
-			fprintf(logImage, "<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke=\"red\" stroke-width=\"2\" fill=\"none\" />\n", robot.currPos.x, robot.currPos.y, MARK_SIZE);
-			fprintf(logImage, "<!--Fitness=%d, dToNearestBound=%d, dFit=%d, dTravelled=%d-->\n", fitness, dToNearestBound, dFit, dTravelled );
-			fprintf(logImage, "\n</svg>");
+			logFinalPosition(logImage, robot.currPos, MARK_SIZE, TRUE, cherries, nCherries);
+			logFitnessData(logImage, fitness, *individual);
+			endSVG(logImage);
 			fclose(logImage);
 
 			//Use retreat genotype:
@@ -305,15 +285,6 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 			free(cherries);
 			return;
 		}
-		//Write data:
-		sprintf(line1, "Distance from origin: %d px",dFromOrigin);
-		sprintf(line2, "Total Distance: %d px", dTravelled);
-		sprintf(line3, "Distance to nearest bound: %d px", dToNearestBound);
-		sprintf(line4, "Fitness: %d", fitness);//3*dFit+dFromOrigin);
-		cvPutText(frame,line1,cvPoint(10,15), &font, WHITE);
-		cvPutText(frame,line2,cvPoint(10,30), &font, WHITE);
-		cvPutText(frame,line3,cvPoint(10,45), &font, WHITE);
-		cvPutText(frame,line4,cvPoint(10,60), &font, RED);
 		//Remove cherries:
 		for (cherry = 0; cherry < nCherries; cherry ++)
 		{
@@ -325,18 +296,22 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		}
 		//show cherries:
 		for (cherry = 0; cherry < nCherries; cherry ++) cvCircle(frame, cherries[cherry], 1, RED, -1, CV_AA);
+		
+		//Write data:
+		sprintf(line1, "Distance from origin: %d px",dFromOrigin);
+		sprintf(line2, "Total Distance: %d px", dTravelled);
+		sprintf(line3, "Distance to nearest bound: %d px", dToNearestBound);
+		sprintf(line4, "Fitness: %d", fitness);//3*dFit+dFromOrigin);
+		cvPutText(frame,line1,cvPoint(10,15), &font, WHITE);
+		cvPutText(frame,line2,cvPoint(10,30), &font, WHITE);
+		cvPutText(frame,line3,cvPoint(10,45), &font, WHITE);
+		cvPutText(frame,line4,cvPoint(10,60), &font, RED);
 		cvShowImage("Fitness Monitor",frame);
 	}
 	//Timer ran down, we should have all the stuff needed to calculate a fitness
 	//Finish up log file:
-	fprintf(logImage, "\" />\n\n");
-	for (cherry = 0; cherry < nCherries; cherry ++)
-	{
-		fprintf(logImage, "<circle cx=\"%d\" cy=\"%d\" r=\"1\" stroke=\"none\" fill=\"red\" />\n", cherries[cherry].x, cherries[cherry].y);
-	}
-	fprintf(logImage, "<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke=\"black\" stroke-width=\"2\" fill=\"none\" />\n", robot.currPos.x, robot.currPos.y, MARK_SIZE);
-	fprintf(logImage, "<!--Fitness=%d, dToNearestBound=%d, dFit=%d, dTravelled=%d-->\n", fitness+SURVIVAL_BONUS,
-	dToNearestBound, dFit, dTravelled );
+	logFinalPosition(logImage, robot.currPos, MARK_SIZE, FALSE, cherries, nCherries);
+	logFitnessData(logImage, fitness, *individual);
 	fprintf(logImage, "\n</svg>");
 	
 	fclose(logImage);

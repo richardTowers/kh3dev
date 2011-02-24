@@ -21,6 +21,7 @@
 #include "types.h"
 #include "limits.h"
 #include "network.h"
+#include "dataLogger.h"
 
 //Defines:
 #define CV_NO_BACKWARD_COMPATIBILITY
@@ -40,7 +41,7 @@
 #include "defines/colours.h"
 #include "defines/genetics.h"
 
-#define CHERRY_SPACE 30
+#define CHERRY_SPACE 10
 #define AREA 16
 #define ANY_CAMERA -1
 #define YES 1
@@ -57,6 +58,9 @@
 #define ESC 27
 #define min(X, Y)  ((X) < (Y) ? (X) : (Y))
 
+#define TRUE 1
+#define FALSE 0
+
 
 //Functions:
 void setupTracker(int nRobots, rtRobot* robots);
@@ -71,6 +75,13 @@ void mouseHandler(int event, int x, int y, int flags, void* param);
 char *replace_str(const char *str, const char *orig, const char *rep);
 CvPoint* removeFromArray(CvPoint* array, short *length, const short index);
 
+//extern void createLogImage(FILE* logImage, short arenaWidth, short arenaHeight, CvLine* bounds, short nBounds);
+//extern void startLoggingPositions(FILE* logImage);
+//extern void logPosition(FILE* logImage, CvPoint position);
+//extern void logFinalPosition(FILE* logImage, CvPoint position, short markSize, char crashed, CvPoint* cherries, short nCherries);
+//extern void logFitnessData(FILE* logImage, short fitness, rtIndividual ind);
+//extern void addNetworkDiagram(FILE* logImage, char* filename);
+//extern void endSVG(FILE* logImage);
 
 //Globals:
 extern rtRobot* bots;
