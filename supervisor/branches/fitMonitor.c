@@ -21,20 +21,40 @@ void setupTracker(int nRobots, rtRobot* robots)
 		fprintf(stderr,"Could not initialize capturing...\n");
 		exit(1);
 	}
-	cvNamedWindow("Select Robots",0);
-	cvSetMouseCallback("Select Robots",mouseHandler,NULL);
+	cvNamedWindow("Select background...",0);
 	
+	//Get background
+	uiAction=getBackground;
+	while(gotBackground==NO)
+	{
+		keyHandler();
+		frame=cvQueryFrame(capture);
+		cvShowImage("Select background...", frame);
+		if(gotBackground==YES)
+		{
+			background=cvCreateImage(cvGetSize(frame), frame->depth, frame->nChannels);
+			cvNot(frame,frame);
+			cvCopy(frame, background, NULL);
+			cvDestroyWindow("Select background...");
+			break;
+		}
+	}
 	
 	//Now we stream frames and collect the images to track
+	cvNamedWindow("Select Robots...",0);
+	cvSetMouseCallback("Select Robots...",mouseHandler,NULL);
 	
 	while(bot<nRobots)	//Get image to track
 	{
 		keyHandler();
 		frame=cvQueryFrame(capture);
+		cvNot(frame,frame);
+		cvSub(frame, background, frame, NULL);
+		cvNot(frame,frame);
 		//The mouse is collecting a rectangle, draw it:
 		cvRectangle(frame, rectStart, rectEnd, RED, 1, CV_AA, 0);
 		//Show the image:
-		cvShowImage("Select Robots", frame);
+		cvShowImage("Select Robots...", frame);
 		
 		uiAction=getRect;
 		if(gotRect==YES)	//This is set in the key handler...
@@ -44,10 +64,14 @@ void setupTracker(int nRobots, rtRobot* robots)
 			cvNamedWindow("Is this your robot?",0);
 			//Clear the frame of the rectangle we just drew
 			frame = cvQueryFrame( capture );
+			cvNot(frame,frame);
+			cvSub(frame, background, frame, NULL);
 			//Clip to the image we just outlined with the rectangle
 			cvSetImageROI(frame, fullRect);
 			//Show the cropped image:
+			cvNot(frame,frame);
 			cvShowImage("Is this your robot?", frame);
+			cvNot(frame,frame);
 			
 			printf("\nYou should be looking at a small image of robot %d\n\nPress Return if you are happy with your selection\n"
 			"Press C to change your selection\n",bot+1);
@@ -61,14 +85,15 @@ void setupTracker(int nRobots, rtRobot* robots)
 					selectionMade=NO;
 					robots[bot].mark=cvCreateImage(cvGetSize(frame), frame->depth, frame->nChannels);
 					cvCopy(frame, robots[bot].mark, 0);
+					markSize=(fullRect.width+fullRect.height)/4;
 					bot++;
 					break;
 				}
 				if(windowNeedsReset)
 				{
 					windowNeedsReset=NO;
-					cvNamedWindow("Select Robots");
-					cvSetMouseCallback("Select Robots", mouseHandler, NULL);
+					cvNamedWindow("Select Robots...");
+					cvSetMouseCallback("Select Robots...", mouseHandler, NULL);
 					break;
 				}
 			}
@@ -89,6 +114,7 @@ void setupTracker(int nRobots, rtRobot* robots)
 	{
 		keyHandler();
 		frame=cvQueryFrame(capture);
+		
 		cvShowImage("Select Boundaries", frame);
 		uiAction=getLine;
 		//The mouse is collecting a line, draw it:
@@ -194,6 +220,9 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	
 	//Find initial position
 	frame=cvQueryFrame(capture);
+	cvNot(frame,frame);
+	cvSub(frame, background, frame, NULL);
+	
 	hSize=cvSize(frame->width-robot.mark->width+1,frame->height-robot.mark->height+1);
 	histogram = cvCreateImage(hSize, IPL_DEPTH_32F,1);
 	startTime=time(NULL);
@@ -201,6 +230,8 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	{
 		keyHandler();
 		frame=cvQueryFrame(capture);
+		cvNot(frame,frame);
+		cvSub(frame, background, frame, NULL);
 		
 		//Get position
 		cvMatchTemplate(frame, robot.mark, histogram, CV_TM_CCOEFF);
@@ -208,8 +239,9 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
 		maxloc.x+=robot.mark->width/2; maxloc.y+=robot.mark->height/2;
 		//Plot position
-		cvCircle(frame, maxloc, MARK_SIZE, YELLOW, LINE_WIDTH, CV_AA);
+		cvCircle(frame, maxloc, markSize, YELLOW, LINE_WIDTH, CV_AA);
 		cvPutText(frame,"Finding Initial Position...",cvPoint(10,20), &font, WHITE);
+		cvNot(frame,frame);
 		cvShowImage("Fitness Monitor",frame);
 	}
 
@@ -226,16 +258,21 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	{	
 		keyHandler();
 		frame=cvQueryFrame(capture);
+		cvNot(frame,frame);
+		cvSub(frame, background, frame, NULL);
+		
 		dToNearestBound=INT_MAX;
 		//Get position
 		cvMatchTemplate(frame, robot.mark, histogram, CV_TM_CCOEFF);
+		//Flip Colours Back
+		cvNot(frame,frame);
 		cvNormalize(histogram, histogram, 1, 0, CV_MINMAX);
 		cvMinMaxLoc(histogram, NULL, NULL, NULL, &maxloc, 0);
 		maxloc.x+=robot.mark->width/2; maxloc.y+=robot.mark->height/2;
 		robot.prevPos=robot.currPos;
 		robot.currPos=maxloc;
 		//Plot position and bounds
-		cvCircle(frame, robot.currPos, MARK_SIZE, YELLOW, LINE_WIDTH, CV_AA);
+		cvCircle(frame, robot.currPos, markSize, YELLOW, LINE_WIDTH, CV_AA);
 		logPosition(logImage, robot.currPos);
 		
 		for (bound = 0; bound < nBounds; bound ++)
@@ -256,14 +293,14 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		}
 		if(dToNearestBound<120) dFit+=dFromLastPoint;
 		
-		//If we're closer than 60 px to an object we're basically about to crash...
+		//If the mark's closer than 10 px to an object we're basically about to crash...
 		//Use the "retreat" neural network to get out of trouble.
-		if (dToNearestBound<60)
+		if (dToNearestBound<markSize+10)
 		{
 			//Stop motors
 			send(robot.socket, "Stop Motors", 11, 0);
 			//Finish up log file:
-			logFinalPosition(logImage, robot.currPos, MARK_SIZE, TRUE, cherries, nCherries);
+			logFinalPosition(logImage, robot.currPos, markSize, TRUE, cherries, nCherries);
 			logFitnessData(logImage, fitness, *individual);
 			endSVG(logImage);
 			fclose(logImage);
@@ -285,15 +322,17 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 			free(cherries);
 			return;
 		}
+		
 		//Remove cherries:
 		for (cherry = 0; cherry < nCherries; cherry ++)
 		{
-			if(pointToPoint(robot.currPos,cherries[cherry]) < MARK_SIZE)
+			if(pointToPoint(robot.currPos,cherries[cherry]) < markSize)
 			{
 				removeFromArray(cherries, &nCherries, cherry);
 				fitness++;
 			}
 		}
+		
 		//show cherries:
 		for (cherry = 0; cherry < nCherries; cherry ++) cvCircle(frame, cherries[cherry], 1, RED, -1, CV_AA);
 		
@@ -302,15 +341,15 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		sprintf(line2, "Total Distance: %d px", dTravelled);
 		sprintf(line3, "Distance to nearest bound: %d px", dToNearestBound);
 		sprintf(line4, "Fitness: %d", fitness);//3*dFit+dFromOrigin);
-		cvPutText(frame,line1,cvPoint(10,15), &font, WHITE);
-		cvPutText(frame,line2,cvPoint(10,30), &font, WHITE);
-		cvPutText(frame,line3,cvPoint(10,45), &font, WHITE);
+		cvPutText(frame,line1,cvPoint(10,15), &font, BLUE);
+		cvPutText(frame,line2,cvPoint(10,30), &font, BLUE);
+		cvPutText(frame,line3,cvPoint(10,45), &font, BLUE);
 		cvPutText(frame,line4,cvPoint(10,60), &font, RED);
 		cvShowImage("Fitness Monitor",frame);
 	}
 	//Timer ran down, we should have all the stuff needed to calculate a fitness
 	//Finish up log file:
-	logFinalPosition(logImage, robot.currPos, MARK_SIZE, FALSE, cherries, nCherries);
+	logFinalPosition(logImage, robot.currPos, markSize, FALSE, cherries, nCherries);
 	logFitnessData(logImage, fitness, *individual);
 	fprintf(logImage, "\n</svg>");
 	
@@ -371,6 +410,12 @@ void keyHandler(void)
         {
         	case ESC:
         		exit(0);
+        	case ' ':
+        		if(uiAction==getBackground)
+        		{
+        			gotBackground=YES;
+    			}
+    			break;
         	case '\n':
         		if(uiAction==getRect)
         		{

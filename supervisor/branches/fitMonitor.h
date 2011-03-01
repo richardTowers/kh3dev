@@ -86,16 +86,19 @@ CvPoint* removeFromArray(CvPoint* array, short *length, const short index);
 //Globals:
 extern rtRobot* bots;
 
-typedef enum semaphor {getRect, getLine, acceptOrReset, watchMouse, watchEscOnly} semaphor;
+typedef enum semaphor {getRect, getLine, acceptOrReset, watchMouse, watchEscOnly, getBackground} semaphor;
 
 semaphor uiAction;
 volatile bool mouseDown=NO;
+volatile bool gotBackground=NO;
 volatile bool gotRect=NO;
 volatile bool gotLine=NO;
 volatile bool undoLine=NO;
 volatile bool selectionMade=NO;
 volatile bool windowNeedsReset=NO;
 
+short markSize;
+IplImage* background;
 CvPoint rectStart={0,0};
 CvPoint rectEnd={0,0};
 CvRect fullRect={0,0,0,0};
