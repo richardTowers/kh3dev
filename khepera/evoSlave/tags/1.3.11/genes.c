@@ -9,7 +9,8 @@
 
 void readGenotype(const char *filename)
 {
-	unsigned int preNeuron, postNeuron;
+	unsigned int preNeuron, postNeuron, nNeurons;
+	int integerWeight;
 	FILE *file;
 	
 	file = fopen(filename, "r");
@@ -22,14 +23,16 @@ void readGenotype(const char *filename)
 	//printf("nNeurons: %d\n",nNeurons);
 	
 	//Allocate enough memory for the weights, biases and time constants
-	weights=malloc(sizeof(short)*nNeurons*nNeurons);
+	weights=malloc(sizeof(float)*nNeurons*nNeurons);
 	
 	//Loop through weights:
 	for (postNeuron = 0; postNeuron < nNeurons; postNeuron ++)
 	{
 		for (preNeuron = 0; preNeuron < nNeurons; preNeuron ++)
 		{
-			fscanf(file,"%hd",&weights[postNeuron*nNeurons+preNeuron]);
+			fscanf(file,"%d",&integerWeight);
+			weights[postNeuron*nNeurons+preNeuron]=((float)integerWeight)/1024.0;
+			if(weights[postNeuron*nNeurons+preNeuron]!=0) weights[postNeuron*nNeurons+preNeuron]+=0.1;
 		}
 	}
 		//Same for the others...
@@ -44,7 +47,7 @@ void printGenotype(void)
 		for (j = 0; j < (nInputs+nHiddens+nOutputs); j += 1)
 		{
 			if(weights[i*(nInputs+nHiddens+nOutputs)+j]==0) printf(" 0     ");
-			else printf("%hd ",weights[i*(nInputs+nHiddens+nOutputs)+j]);
+			else printf("%6.3f ",weights[i*(nInputs+nHiddens+nOutputs)+j]);
 		}
 		printf("\n");
 	}

@@ -38,7 +38,7 @@ int main(int argc, char * argv[])
 				{
 					expectedSignal=stopMotors;
 					//If there's a child process, kill it
-					if(processID>0){ kill(processID, SIGKILL); wait(&status);}	//FREE
+					if(processID>0){ kill(processID, SIGKILL); wait(&status); NNdealloc();}
 					//Fork process
 					processID = fork();
 					if(processID==CHILD) childProcess(buffer);
@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
 				{
 					expectedSignal=genotype;
 					//If there's a child process, kill it
-					if(processID>0){ kill(processID, SIGKILL); wait(&status);}	//FREE
+					if(processID>0){ kill(processID, SIGKILL); wait(&status); NNdealloc();}
 					//Stop Motors
 					printf("Stopping Motors\n");
 					#ifndef TESTING
@@ -65,42 +65,46 @@ int main(int argc, char * argv[])
 void childProcess(char *filename)
 {
 	unsigned short int i;
-	short inputs[INPUTS];
-	short *neuronStates;
-	short outputs[OUTPUTS];
-	short timeStep=CLOCKS_PER_SEC/1000;	//This timeStep will be much too small, but we'll calculate it dynamically.
-	clock_t start;
+	float inputs[INPUTS];
+	/*float weightsIH[INPUTS][HIDDENS] = {{0.2,0.2},
+										{-0.2,0.2},
+										{-0.4,0.2},
+										{-1,0.5},
+										{0.5,-1},
+										{0.2,-0.4},
+										{0.2,-0.2},
+										{0.2,0.2},
+										{0.4,0.4}};
+
+	float weightsHO[HIDDENS][OUTPUTS] = {{1,0},
+										{0,1}};*/
+	float *outputs;
 
 	int leftMotorSpeed=0, rightMotorSpeed=0;
 	
 	readGenotype(filename);
 	printf("Read Genotype...\n");
 	printGenotype();
-	
-	//Initially all neurons have 0 states...
-	neuronStates = calloc(nNeurons, sizeof(float));
-
+	//Allocate memory for NN:
+	NNalloc(nInputs+nOutputs+nHiddens);
 	//Just wait a few seconds for the fitness monitor to catch up...
 	sleep(4);
-	
 	for(;;)
 	{
-		start=clock();
 		for(i=0;i<INPUTS;i++)
 		{
 			#ifndef TESTING
 				inputs[i]=getIRRange(i);
 			#else
-				inputs[i]=(rand()%4096);
+				inputs[i]=(rand()%2048-1024)/1024.0;
 			#endif
 		}
 		
 		//Send IR Values to NN and get outputs
 		//outputs = ffnn(inputs, weightsIH, weightsHO);
-		//outputs = dtrnn(inputs, weights);
-		ctrnn(neuronStates, nNeurons, inputs, biases, tConsts, weights, timeStep);
+		outputs = dtrnn(inputs, weights);
 
-		//Set Motor values to outputs
+		//Set	Motor values to outputs
 		leftMotorSpeed = (int)(outputs[1]*20000);
 		rightMotorSpeed = (int)(outputs[0]*20000);
 		//DONE WITH OUTPUTS NOW
@@ -110,6 +114,8 @@ void childProcess(char *filename)
 			setMotor(LEFT_MOTOR, leftMotorSpeed);
 			setMotor(RIGHT_MOTOR, rightMotorSpeed);
 		#endif
-		timeStep=clock()-start;
+		
+		//Just so we don't get ahead of oursleves...
+		usleep(20000);
 	}
 }

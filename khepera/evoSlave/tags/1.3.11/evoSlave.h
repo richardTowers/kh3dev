@@ -11,8 +11,6 @@
 
 #include <string.h>
 #include <dirent.h>
-#include <limits.h>
-
 
 #include "network.h"
 #include "errors.h"
@@ -35,8 +33,8 @@
 typedef enum semaphor {genotype, stopMotors} semaphor;
 
 //Genotype stored as global:
-unsigned short int nInputs, nHiddens, nOutputs, nNeurons;
-short *weights, *biases, *tConsts; 
+unsigned short int nInputs, nHiddens, nOutputs;
+float *weights; //Add biases and time constants later...
 
 void childProcess(char *genotype);
 
