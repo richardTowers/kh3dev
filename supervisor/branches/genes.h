@@ -23,10 +23,9 @@
 
 //Genotype stored as global:
 extern unsigned short int nInputs, nHiddens, nOutputs, nNodes;
-extern short int *weights;
 
 short int* readGenotype(const char *filename, short int* weights);
-void writeGenotype(const char *geneFile, const char *networkDiagram, short int* weights);
+void writeGenotype(const char *geneFile, const char *networkDiagram, short* weights, short* biases, short*tConsts);
 void createInitialGenes(int population, rtGeneration* generation);
 void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* childGen);
 void rtShuffle(rtIndividual* array, int size);

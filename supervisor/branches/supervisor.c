@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 			send(bots[0].socket, "Stop Motors", 11, 0);
 		}
 		//When entire population have fitness values
-		reproduce(nInds+1, gen, &gens[gen], &gens[gen+1]);
+		reproduce(nInds, gen, &gens[gen], &gens[gen+1]);
 		//Next Generation
 	}
 	

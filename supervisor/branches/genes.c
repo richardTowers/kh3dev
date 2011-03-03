@@ -7,9 +7,9 @@
 
 #include "genes.h"
 
-short int* readGenotype(const char *filename, short int* weights)
+void readGenotype(const char *filename, short int* weights, short* biases, short* tConsts)
 {
-	int theWeight;
+	short theWeight, theBias, theTConst;
 	FILE *file;
 	
 	file = fopen(filename, "r");
@@ -17,9 +17,15 @@ short int* readGenotype(const char *filename, short int* weights)
 	fscanf(file,"%hd %hd %hd",&nInputs,&nHiddens,&nOutputs);
 	
 	//Allocate enough memory for the weights, biases and time constants
+	tConsts=(short*)malloc(sizeof(short)*nNodes);
+	biases=(short*)malloc(sizeof(short)*nNodes);
 	weights=(short*)malloc(sizeof(short)*nNodes*nNodes);
-		//biases=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));
-		//timeConstants=malloc(sizeof(int)*(nInputs+nHiddens+nOutputs));
+	
+	//Loop through biases:
+	for (theBias = 0; theBias < nNodes; theBias ++) fscanf(file,"%hd",&biases[theBias]);
+	
+	//Loop through time constants:
+	for (theTConst = 0; theTConst < nNodes; theTConst ++) fscanf(file,"%hd",&tConsts[theTConst]);
 	
 	//Loop through weights:
 	for (theWeight = 0; theWeight < nNodes*nNodes; theWeight ++)
@@ -28,18 +34,26 @@ short int* readGenotype(const char *filename, short int* weights)
 	}
 	
 	fclose(file);
-	return weights;
+	return;
 }
 
-void writeGenotype(const char *geneFile, const char *networkDiagram, short int* weights)
+void writeGenotype(const char *geneFile, const char *networkDiagram, short* weights, short* biases, short*tConsts)
 {
-	short row, column;
+	short row, column, theBias, theTConst;
 	short theWeight;
 	FILE *file_gene, *file_diagram;
 	
 	file_gene=fopen(geneFile, "w+");
 	//Print number of nodes:
 	fprintf(file_gene, "%d %d %d\n", nInputs, nHiddens, nOutputs);
+	
+	//Loop through biases:
+	for (theBias = 0; theBias < nNodes; theBias ++) fprintf(file_gene,"%hd ",biases[theBias]);
+	fprintf(file_gene, "\n");
+	
+	//Loop through time constants:
+	for (theTConst = 0; theTConst < nNodes; theTConst ++) fprintf(file_gene,"%hd ",tConsts[theTConst]);
+	fprintf(file_gene, "\n");
 	
 	//Loop through weights:
 	for (row = 0; row < (nInputs+nHiddens+nOutputs); row ++)
@@ -79,54 +93,54 @@ void writeGenotype(const char *geneFile, const char *networkDiagram, short int* 
 			{
 				if(column<nInputs)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
 				}
 				else if(column<nInputs+nHiddens)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
 				}
 				else
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
 				}
 			}
 			else if(row<nInputs+nHiddens)
 			{
 				if(column<nInputs)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
 				}
 				else if(column<nInputs+nHiddens)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
 				}
 				else
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
 				}
 			}
 			else
 			{
 				if(column<nInputs)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
 				}
 				else if(column<nInputs+nHiddens)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
 				}
 				else
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/200.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/200.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
 				}
 			}
 		}
@@ -137,13 +151,25 @@ void writeGenotype(const char *geneFile, const char *networkDiagram, short int* 
 
 void createInitialGenes(int population, rtGeneration* generation)
 {
-	short int* weights;
+	short int* weights, *biases, *tConsts;
 	int theIndividual, theWeight, row, column;
 	
 	weights=(short*)malloc(sizeof(short)*nNodes*nNodes);
+	biases=(short*)malloc(sizeof(short)*nNodes);
+	tConsts=(short*)malloc(sizeof(short)*nNodes);
 	
 	for (theIndividual=0; theIndividual < population; theIndividual++)
 	{
+		//Assign Biases
+		for (row = 0; row < nNodes; row += 1)
+		{
+			biases[row]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+		}
+		//Assign Time Constants
+		for (row = 0; row < nNodes; row += 1)
+		{
+			tConsts[row]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+		}
 		//Assign Weights
 		for (row = 0; row < nNodes; row ++)
 		{
@@ -211,20 +237,24 @@ void createInitialGenes(int population, rtGeneration* generation)
 		sprintf(generation[0].inds[theIndividual].logFile, "%s/Gen0Ind%d.svg", logFolder, theIndividual);
 		sprintf(generation[0].inds[theIndividual].networkDiagram, "%s/Gen0Ind%d.dot", genotypeFolder, theIndividual);
 		//Store genotype in file...
-		writeGenotype(generation[0].inds[theIndividual].geneFile, generation[0].inds[theIndividual].networkDiagram, weights);
+		writeGenotype(generation[0].inds[theIndividual].geneFile, generation[0].inds[theIndividual].networkDiagram, weights, biases, tConsts);
 		generation[0].inds[theIndividual].fitness=0; generation[0].inds[theIndividual].parent=NULL;
 		generation[0].inds[theIndividual].generation=0;
 		generation[0].inds[theIndividual].number=theIndividual;
 	}
 	free(weights);
+	free(biases);
+	free(tConsts);
 }
 
 void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* childGen)
 {
-	short int *weights=NULL;
+	short int *weights=NULL, *biases=NULL, *tConsts=NULL;
 	short int child, parent, bestParent;
-	int maxFitness=0;
+	int maxFitness=-100;
 	
+	biases=(short*)malloc(sizeof(short)*nNodes);
+	tConsts=(short*)malloc(sizeof(short)*nNodes);
 	weights=(short*)malloc(sizeof(short)*nNodes*nNodes);
 	
 	//We're going to use tournament selection
@@ -234,7 +264,7 @@ void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* c
 		//Shuffle array of parents:
 		rtShuffle((*parentGen).inds, population);
 		//Find fittest parent in tournament:
-		maxFitness=0;
+		maxFitness=-100;
 		for (parent = 0; parent < TOUR_SIZE && parent < population; parent ++)
 		{
 			if((*parentGen).inds[parent].fitness > maxFitness)
@@ -246,13 +276,13 @@ void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* c
 		//Fittest parent is allowed a child!
 		(*childGen).inds[child] = (*parentGen).inds[bestParent];
 		
-		weights=readGenotype((*parentGen).inds[bestParent].geneFile, weights);
+		readGenotype((*parentGen).inds[bestParent].geneFile, weights, biases, tConsts);
 		//Create files for this individual
 		sprintf((*childGen).inds[child].geneFile, "%s/Gen%dInd%d.txt", genotypeFolder, gen+1, child);
 		sprintf((*childGen).inds[child].logFile, "%s/Gen%dInd%d.svg", logFolder, gen+1, child);
 		sprintf((*childGen).inds[child].networkDiagram, "%s/Gen%dInd%d.dot", genotypeFolder, gen+1, child);
 		//Store genotype in file...
-		writeGenotype((*childGen).inds[child].geneFile, (*childGen).inds[child].networkDiagram, weights);
+		writeGenotype((*childGen).inds[child].geneFile, (*childGen).inds[child].networkDiagram, weights, biases, tConsts);
 		//Set data
 		(*childGen).inds[child].number=child;
 		(*childGen).inds[child].generation=gen+1;
@@ -263,15 +293,35 @@ void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* c
 	//Mutate kiddies
 	for (child = 0; child < population; child ++) mutate(&(*childGen).inds[child]);
 	//Done!
+	free(weights); free(biases); free(tConsts);
 }
 
 void mutate(rtIndividual* individual)
 {
-	short int* weights=NULL;	//This will be initialized properly in readGenotype()
+	short int *weights=NULL, *biases=NULL, *tConsts=NULL;
 	int theWeight, row, column;
 	
-	weights=readGenotype((*individual).geneFile, weights);
+	biases=(short*)malloc(sizeof(short)*nNodes);
+	tConsts=(short*)malloc(sizeof(short)*nNodes);
+	weights=(short*)malloc(sizeof(short)*nNodes*nNodes);
 	
+	readGenotype((*individual).geneFile, weights, biases, tConsts);
+	//Change biases
+	for (row = 0; row < nNodes; row += 1)
+	{
+		if(rand()%pMUTATE<pSET_ZERO) biases[row]=0;
+		if((rand()%pMUTATE<pADD_WEIGHT) && (biases[row]==0)) biases[row]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+		if(rand()%pMUTATE<pFLIP_NEG) biases[row]=-biases[row];
+		if((rand()%pMUTATE<pCHANGE_WEIGHT) && (biases[row]!=0)) biases[row]=mutateWeight(biases[row]);
+	}
+	//Change time constants
+	for (row = 0; row < nNodes; row += 1)
+	{
+		if(rand()%pMUTATE<pSET_ZERO) tConsts[row]=0;
+		if((rand()%pMUTATE<pADD_WEIGHT) && (tConsts[row]==0)) tConsts[row]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+		if(rand()%pMUTATE<pFLIP_NEG) tConsts[row]=-tConsts[row];
+		if((rand()%pMUTATE<pCHANGE_WEIGHT) && (tConsts[row]!=0)) tConsts[row]=mutateWeight(tConsts[row]);
+	}
 	//Change weights
 	for (row = 0; row < nNodes; row ++)
 	{
@@ -280,11 +330,11 @@ void mutate(rtIndividual* individual)
 			theWeight=row*nNodes+column;
 			if(rand()%pMUTATE<pSET_ZERO) weights[theWeight]=0;
 			if((rand()%pMUTATE<pADD_WEIGHT) && (weights[theWeight]==0)) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
-			if(rand()%pMUTATE<pFLIP_NEG) weights[theWeight]=-1*weights[theWeight];
+			if(rand()%pMUTATE<pFLIP_NEG) weights[theWeight]=-weights[theWeight];
 			if((rand()%pMUTATE<pCHANGE_WEIGHT) && (weights[theWeight]!=0)) weights[theWeight]=mutateWeight(weights[theWeight]);
 		}
 	}
-	writeGenotype((*individual).geneFile,(*individual).networkDiagram,  weights);
+	writeGenotype((*individual).geneFile,(*individual).networkDiagram,  weights, biases, tConsts);
 }
 
 short int mutateWeight(short int weight)

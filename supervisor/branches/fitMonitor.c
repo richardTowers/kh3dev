@@ -306,7 +306,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 			fclose(logImage);
 
 			//Use retreat genotype:
-			send(robot.socket, "Genotypes/Retreat.txt", 22, 0);
+			send(robot.socket, "Retreat", 7, 0);
 			retreatTime=time(NULL);
 			while((time(NULL)-retreatTime) < 12)
 			{
@@ -362,7 +362,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	//Wait for the message to sink in:
 	sleep(1);
 	//Use retreat genotype:
-	send(robot.socket, "Genotypes/Retreat.txt", 22, 0);
+	send(robot.socket, "Retreat", 7, 0);
 	retreatTime=time(NULL);
 	while((time(NULL)-retreatTime) < 12)
 	{
