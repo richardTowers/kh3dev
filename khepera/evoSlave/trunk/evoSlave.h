@@ -32,12 +32,14 @@
 #endif
 #define CHILD 0
 
-typedef enum semaphor {genotype, stopMotors} semaphor;
+//typedef enum semaphor {genotype, stopMotors} semaphor;
 
 //Genotype stored as global:
 unsigned short int nInputs, nHiddens, nOutputs, nNeurons;
 short *weights, *biases, *tConsts; 
 
+extern void initSigmoid(void);
 void childProcess(char *genotype);
+void retreat(void);
 
 #endif //INC_EVOSLAVE

@@ -6,7 +6,7 @@ CFLAGS = -Wall
 LDFLAGS = -lm
 SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:.c=.o)
-EXECUTABLE = evoSlave
+EXECUTABLE = evoSlave2
 
 INCS = -I ~/Development/libraries/include
 LIBS	= -L ~/Development/libraries/lib -lkorebot

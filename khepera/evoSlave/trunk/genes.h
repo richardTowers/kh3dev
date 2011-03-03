@@ -14,7 +14,7 @@
 
 //Genotype stored as global:
 extern unsigned short int nInputs, nHiddens, nOutputs, nNeurons;
-extern short *weights;
+extern short *weights, *biases, *tConsts;
 
 void readGenotype(const char *filename);
 void printGenotype(void);
