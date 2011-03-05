@@ -93,54 +93,54 @@ void writeGenotype(const char *geneFile, const char *networkDiagram, short* weig
 			{
 				if(column<nInputs)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/(WEIGHT_RANGE/4));
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/(WEIGHT_RANGE/4));
 				}
 				else if(column<nInputs+nHiddens)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/(WEIGHT_RANGE/4));
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/(WEIGHT_RANGE/4));
 				}
 				else
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/(WEIGHT_RANGE/4));
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/(WEIGHT_RANGE/4));
 				}
 			}
 			else if(row<nInputs+nHiddens)
 			{
 				if(column<nInputs)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/(WEIGHT_RANGE/4));
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/(WEIGHT_RANGE/4));
 				}
 				else if(column<nInputs+nHiddens)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/(WEIGHT_RANGE/4));
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/(WEIGHT_RANGE/4));
 				}
 				else
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/(WEIGHT_RANGE/4));
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/(WEIGHT_RANGE/4));
 				}
 			}
 			else
 			{
 				if(column<nInputs)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/(WEIGHT_RANGE/4));
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/(WEIGHT_RANGE/4));
 				}
 				else if(column<nInputs+nHiddens)
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/(WEIGHT_RANGE/4));
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/(WEIGHT_RANGE/4));
 				}
 				else
 				{
-					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/64000.0);
-					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/64000.0);
+					if(weights[theWeight]<0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\", color=Red];\n",row, column, -1*weights[theWeight]/(WEIGHT_RANGE/4));
+					else if(weights[theWeight]>0) fprintf(file_diagram, "n%d->n%d [style=\"setlinewidth(%f)\"];\n", row, column, weights[theWeight]/(WEIGHT_RANGE/4));
 				}
 			}
 		}

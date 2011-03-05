@@ -27,6 +27,6 @@ O 0  0  0*/
 #define pOH 0
 #define pOO 0
 //Range:
-#define WEIGHT_RANGE 1024
+#define WEIGHT_RANGE 63
 
 #endif //INC_NEUROLOGY

@@ -351,9 +351,9 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	//Finish up log file:
 	logFinalPosition(logImage, robot.currPos, markSize, FALSE, cherries, nCherries);
 	logFitnessData(logImage, fitness, *individual);
-	fprintf(logImage, "\n</svg>");
-	
+	endSVG(logImage);
 	fclose(logImage);
+	
 	//Store fitness:
 	(*individual).fitness=fitness+SURVIVAL_BONUS;//3*dFit+dFromOrigin+SURVIVAL_BONUS;
 	//Retreat to sensible position:
