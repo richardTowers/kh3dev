@@ -7,6 +7,8 @@
 
 #include "neuralNetwork.h"
 
+#define WEIGHT_SCALE 0x4
+
 void ctrnn(short *y, const short n, const short *I, const short *b, const short *t, const short *w, const short dT)
 {
 	short *yOld;
@@ -24,7 +26,7 @@ void ctrnn(short *y, const short n, const short *I, const short *b, const short 
 	//Calculate neuron states at t+dT:
 	for (i = 0; i < n; i += 1)
 	{
-		for (j = 0, sum = 0; j < n; j += 1) sum+=(*(w+i*n+j))*sigmoid(yOld[j]-b[j]);
+		for (j = 0, sum = 0; j < n; j += 1) sum+=(int)((float)((*(w+i*n+j))/((float)WEIGHT_SCALE))*sigmoid(yOld[j]-b[j]));
 		k1=(-(yOld[i]          )+sum+I[i])/t[i];
 		k2=(-(yOld[i]+0.5*k1*dT)+sum+I[i])/t[i];
 		k3=(-(yOld[i]+0.5*k2*dT)+sum+I[i])/t[i];
