@@ -37,7 +37,7 @@ short sigmoid(short x);
 //WARNING!
 //It is your responsibility to allocate and free the returned array of states!
 void ctrnn(short *y, const short n, const short *I, const short *b, const short *t, const short *w, const short dT);
-float *dtrnn(const float *inputs, const float *weights);
+void ffnn(short *y, const short n, const short *I, const short *w);
 
 #endif //INC_NEURALNETWORK
 

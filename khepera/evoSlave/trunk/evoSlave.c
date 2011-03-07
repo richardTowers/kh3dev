@@ -70,7 +70,7 @@ int main(int argc, char * argv[])
 void childProcess(char *filename)
 {
 	unsigned short int i, count;
-	short inputs[INPUTS];
+	short *inputs;
 	short *neuronStates;
 	short timeStep=2000;	//This timeStep will be caculated dynamically
 	clock_t start;
@@ -88,6 +88,7 @@ void childProcess(char *filename)
 	
 		//Initially all neurons have 0 states...
 		neuronStates = calloc(nNeurons, sizeof(float));
+		inputs = calloc(nNeurons, sizeof(short));
 
 		//Just wait a few seconds for the fitness monitor to catch up...
 		sleep(4);
@@ -108,8 +109,8 @@ void childProcess(char *filename)
 				}
 		
 				//Send IR Values to NN and get new neuron states:
-				ctrnn(neuronStates, nNeurons, inputs, biases, tConsts, weights, timeStep);
-			
+				//ctrnn(neuronStates, nNeurons, inputs, biases, tConsts, weights, timeStep);
+				ffnn(neuronStates, nNeurons, inputs, weights);
 	/*			printf("Neuron States: ");*/
 	/*			for (i = 0; i < nNeurons; i += 1) printf("%hd, ", neuronStates[i]);*/
 	/*			printf("\n");*/

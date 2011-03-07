@@ -45,6 +45,27 @@ void ctrnn(short *y, const short n, const short *I, const short *b, const short 
 	return;
 }
 
+void ffnn(short *y, const short n, const short *I, const short *w)
+{
+	short *yOld;
+	//i represents the postsynaptic neuron, j the presynaptic neuron
+	short i, j;
+	
+	//Copy neuron states into new array:
+	yOld=malloc(n*sizeof(short));
+	for (i = 0; i < n; i += 1) yOld[n] = y[n];
+
+	//Calculate neuron states at t+1:
+	for (i = 0; i < n; i += 1)
+	{
+		y[i]=0;
+		for (j = 0; j < n; j += 1) y[i]+=(int)(0.5+((float)(*(w+i*nNeurons+j)))*sigmoid(yOld[j]));
+		y[i]+=I[i];
+	}
+	free(yOld);
+	return;
+}
+
 void initSigmoid(void)
 {
 	#define R SHRT_MAX
