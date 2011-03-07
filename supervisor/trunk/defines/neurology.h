@@ -9,7 +9,7 @@
 
 //Architecture:
 #define INPUTS 9
-#define	HIDDENS 2
+#define	HIDDENS 5
 #define OUTPUTS 2
 //Connection Probabilities:
 /*I  H  O
@@ -26,7 +26,12 @@ O 0  0  0*/
 #define pOI 0
 #define pOH 0
 #define pOO 0
+#define pBIAS 5
+
 //Range:
-#define WEIGHT_RANGE 1024
+#define WEIGHT_RANGE 0x3F
+#define BIAS_RANGE 0x3F
+#define TCONST_RANGE 0x3F
+
 
 #endif //INC_NEUROLOGY

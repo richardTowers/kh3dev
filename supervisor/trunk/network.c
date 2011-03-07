@@ -90,9 +90,7 @@ int connectToClient(const char* IPAddress)
 
 	
 	sin_size = sizeof their_addr;
-	printf("About to accept...\n");
 	new_fd = accept(sockfd, (struct sockaddr *)&their_addr, &sin_size);
-	printf("Accepted!\n");
 	close(sockfd);
 	
 	inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), s, sizeof s);

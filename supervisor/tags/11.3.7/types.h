@@ -8,7 +8,6 @@
 #define INC_TYPES
 
 #include "defines/genetics.h"
-#include "cv.h"
 
 typedef struct rtRobot		//This refers to a physical robot, not an individual
 {
@@ -23,12 +22,9 @@ typedef struct rtRobot		//This refers to a physical robot, not an individual
 typedef struct rtIndividual	//An individual to be evaluated and bred
 {
 	char geneFile[100];
-	char logFile[100];
-	char networkDiagram[100];
 	int fitness;
 	int generation;
 	int number;
-	rtIndividual* parent;
 } rtIndividual;
 
 typedef struct rtGeneration	//A generation contains several individuals

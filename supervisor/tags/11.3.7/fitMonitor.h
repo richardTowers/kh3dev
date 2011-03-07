@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include <string.h>
+#include <dirent.h>
+
 
 
 #include "cv.h"
@@ -61,6 +64,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot);
 int pointToLine(CvPoint point, CvPoint start, CvPoint end);
 void keyHandler(void);
 void mouseHandler(int event, int x, int y, int flags, void* param);
+char *replace_str(const char *str, const char *orig, const char *rep);
 
 
 //Globals:
@@ -81,5 +85,7 @@ CvPoint rectEnd={0,0};
 CvRect fullRect={0,0,0,0};
 int nBounds=0;
 CvLine* bounds;
+extern char logFolder[200];
+extern char genotypeFolder[200];
 
 #endif //INC_FITMONITOR

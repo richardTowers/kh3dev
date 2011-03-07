@@ -21,6 +21,7 @@
 #include "types.h"
 #include "limits.h"
 #include "network.h"
+#include "dataLogger.h"
 
 //Defines:
 #define CV_NO_BACKWARD_COMPATIBILITY
@@ -40,6 +41,7 @@
 #include "defines/colours.h"
 #include "defines/genetics.h"
 
+#define CHERRY_SPACE 10
 #define AREA 16
 #define ANY_CAMERA -1
 #define YES 1
@@ -56,30 +58,47 @@
 #define ESC 27
 #define min(X, Y)  ((X) < (Y) ? (X) : (Y))
 
+#define TRUE 1
+#define FALSE 0
+
 
 //Functions:
 void setupTracker(int nRobots, rtRobot* robots);
 void testIndividualOnRobot(rtIndividual* individual, rtRobot robot);
 
 int pointToLine(CvPoint point, CvPoint start, CvPoint end);
+int pointToPoint(CvPoint p1, CvPoint p2);
+
 void keyHandler(void);
 void mouseHandler(int event, int x, int y, int flags, void* param);
-char *replace_str(const char *str, const char *orig, const char *rep);
 
+char *replace_str(const char *str, const char *orig, const char *rep);
+CvPoint* removeFromArray(CvPoint* array, short *length, const short index);
+
+//extern void createLogImage(FILE* logImage, short arenaWidth, short arenaHeight, CvLine* bounds, short nBounds);
+//extern void startLoggingPositions(FILE* logImage);
+//extern void logPosition(FILE* logImage, CvPoint position);
+//extern void logFinalPosition(FILE* logImage, CvPoint position, short markSize, char crashed, CvPoint* cherries, short nCherries);
+//extern void logFitnessData(FILE* logImage, short fitness, rtIndividual ind);
+//extern void addNetworkDiagram(FILE* logImage, char* filename);
+//extern void endSVG(FILE* logImage);
 
 //Globals:
 extern rtRobot* bots;
 
-typedef enum semaphor {getRect, getLine, acceptOrReset, watchMouse, watchEscOnly} semaphor;
+typedef enum semaphor {getRect, getLine, acceptOrReset, watchMouse, watchEscOnly, getBackground} semaphor;
 
 semaphor uiAction;
 volatile bool mouseDown=NO;
+volatile bool gotBackground=NO;
 volatile bool gotRect=NO;
 volatile bool gotLine=NO;
 volatile bool undoLine=NO;
 volatile bool selectionMade=NO;
 volatile bool windowNeedsReset=NO;
 
+short markSize;
+IplImage* background;
 CvPoint rectStart={0,0};
 CvPoint rectEnd={0,0};
 CvRect fullRect={0,0,0,0};

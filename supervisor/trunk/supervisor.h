@@ -11,8 +11,6 @@
 #include <stdlib.h>
 #include <dirent.h>
 
-#include "cv.h"
-#include "highgui.h"
 #include "network.h"
 #include "genes.h"
 #include "types.h"
@@ -22,21 +20,18 @@
 #define nROBOTS 1			//This represents the physical number of robots in the environment
 //Genetics:
 #include "defines/genetics.h"
-//Neurology:
-#include "defines/neurology.h"
-//Colours:
-#include "defines/colours.h"
 
 
-void createInitialGenes(int population, rtGeneration* generation);
-void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* childGen);
-void rtShuffle(rtIndividual* array, int size);
-void mutate(rtIndividual* individual);
-short int mutateWeight(const short int weight);
+char* commandLine(int argc, char *argv[]);
+extern void createInitialGenes(int population, rtGeneration* generation);
+extern void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* childGen);
+extern void rtShuffle(rtIndividual* array, int size);
+extern void mutate(rtIndividual* individual);
+extern short int mutateWeight(const short int weight);
 extern void setupTracker(int nRobots, rtRobot* robots);
 extern void testIndividualOnRobot(rtIndividual* individual, rtRobot robot);
 
-extern CvCapture* capture;
+
 //Assign architecure
 unsigned short int nInputs=INPUTS;
 unsigned short int nHiddens=HIDDENS;
@@ -44,7 +39,7 @@ unsigned short int nOutputs=OUTPUTS;
 unsigned short int nNodes=INPUTS+HIDDENS+OUTPUTS;
 
 //File Paths
-char genotypeFolder[200];
-char logFolder[200];
+char genotypeFolder[60];
+char logFolder[60];
 
 #endif //INC_SUPERVISOR
