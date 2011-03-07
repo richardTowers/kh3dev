@@ -12,6 +12,7 @@
 
 #include "errors.h"
 #include "math.h"
+#include "genes.h"
 
 #define INPUTS 9
 #define OUTPUTS 2

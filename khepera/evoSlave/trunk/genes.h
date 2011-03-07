@@ -9,7 +9,14 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <limits.h>
 
+#define BIAS_OUT 500
+#define BIAS_IN 0x3F
+#define TCONST_OUT 2000
+#define TCONST_IN 0x3F
+#define WEIGHT_RANGE 3.0
+#define WEIGHT_IN 0x3F
 
 
 //Genotype stored as global:

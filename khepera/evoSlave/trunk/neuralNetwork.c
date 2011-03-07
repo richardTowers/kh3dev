@@ -7,8 +7,6 @@
 
 #include "neuralNetwork.h"
 
-#define WEIGHT_SCALE 0x4
-
 void ctrnn(short *y, const short n, const short *I, const short *b, const short *t, const short *w, const short dT)
 {
 	short *yOld;
@@ -19,6 +17,7 @@ void ctrnn(short *y, const short n, const short *I, const short *b, const short 
 	//sum holds the value of the sum[w(ij)*sigmoid(y(i)-Theta(j)] term
 	float sum=0;
 	
+	
 	//Copy neuron states into new array:
 	yOld=malloc(n*sizeof(short));
 	for (i = 0; i < n; i += 1) yOld[n] = y[n];
@@ -26,7 +25,7 @@ void ctrnn(short *y, const short n, const short *I, const short *b, const short 
 	//Calculate neuron states at t+dT:
 	for (i = 0; i < n; i += 1)
 	{
-		for (j = 0, sum = 0; j < n; j += 1) sum+=(int)((float)((*(w+i*n+j))/((float)WEIGHT_SCALE))*sigmoid(yOld[j]-b[j]));
+		for (j = 0, sum = 0; j < n; j += 1) sum+=(int)((float)((WEIGHT_RANGE*(*(w+i*n+j)))/WEIGHT_IN)*sigmoid(yOld[j]-b[j]));
 		k1=(-(yOld[i]          )+sum+I[i])/t[i];
 		k2=(-(yOld[i]+0.5*k1*dT)+sum+I[i])/t[i];
 		k3=(-(yOld[i]+0.5*k2*dT)+sum+I[i])/t[i];
@@ -39,9 +38,9 @@ void ctrnn(short *y, const short n, const short *I, const short *b, const short 
 			y[i]=SHRT_MIN;
 		else
 			y[i]+=(k1+2*k2+2*k3+k4)/6;
-		//printf("%d ", y[i]);
+		printf("%d ", y[i]);
 	}
-	//printf("\n");
+	printf("\n");
 	free(yOld);
 	return;
 }

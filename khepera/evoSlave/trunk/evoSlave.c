@@ -69,10 +69,10 @@ int main(int argc, char * argv[])
 
 void childProcess(char *filename)
 {
-	unsigned short int i;
+	unsigned short int i, count;
 	short inputs[INPUTS];
 	short *neuronStates;
-	short timeStep=CLOCKS_PER_SEC/1000;	//This timeStep will be too small, but we'll calculate it dynamically.
+	short timeStep=2000;	//This timeStep will be caculated dynamically
 	clock_t start;
 
 	int leftMotorSpeed=0, rightMotorSpeed=0;
@@ -83,8 +83,8 @@ void childProcess(char *filename)
 	else
 	{
 		readGenotype(filename);
-		printf("Read Genotype...\n");
-		//printGenotype();
+		printf("Read Genotype %s...\n", filename);
+		printGenotype();
 	
 		//Initially all neurons have 0 states...
 		neuronStates = calloc(nNeurons, sizeof(float));
@@ -96,28 +96,35 @@ void childProcess(char *filename)
 		for(;;)
 		{
 			start=clock();
-			for(i=0;i<INPUTS;i++)
+			for (count = 0; count < 100; count += 1)
 			{
+				for(i=0;i<INPUTS;i++)
+				{
+					#ifndef TESTING
+						inputs[i]=getIRRange(i)*(2*SHRT_MAX/4096);
+					#else
+						inputs[i]=(rand()%4096);
+					#endif
+				}
+		
+				//Send IR Values to NN and get new neuron states:
+				ctrnn(neuronStates, nNeurons, inputs, biases, tConsts, weights, timeStep);
+			
+	/*			printf("Neuron States: ");*/
+	/*			for (i = 0; i < nNeurons; i += 1) printf("%hd, ", neuronStates[i]);*/
+	/*			printf("\n");*/
+			
+				//Set Motor values to outputs
+				leftMotorSpeed = (int)(neuronStates[nNeurons-OUTPUTS+1]);
+				rightMotorSpeed = (int)(neuronStates[nNeurons-OUTPUTS]);
+		
 				#ifndef TESTING
-					inputs[i]=getIRRange(i);
-				#else
-					inputs[i]=(rand()%4096);
+					//Set Motors
+					setMotor(LEFT_MOTOR, leftMotorSpeed);
+					setMotor(RIGHT_MOTOR, rightMotorSpeed);
 				#endif
 			}
-		
-			//Send IR Values to NN and get new neuron states:
-			ctrnn(neuronStates, nNeurons, inputs, biases, tConsts, weights, timeStep);
-
-			//Set Motor values to outputs
-			leftMotorSpeed = (int)(neuronStates[nNeurons-OUTPUTS+1]);
-			rightMotorSpeed = (int)(neuronStates[nNeurons-OUTPUTS]);
-		
-			#ifndef TESTING
-				//Set Motors
-				setMotor(LEFT_MOTOR, leftMotorSpeed);
-				setMotor(RIGHT_MOTOR, rightMotorSpeed);
-			#endif
-			timeStep=clock()-start;
+			timeStep=(int)((clock()-start)/100.0+0.5);
 		}
 	}
 }
@@ -149,6 +156,7 @@ void retreat(void)
 	neuronState=calloc(nNeurons,sizeof(float));
 	neuronStatePrev=malloc(nNeurons*sizeof(float));
 	
+	printf("Retreating...");
 	for(;;)
 	{
 		for(i=0;i<INPUTS;i++)
@@ -156,7 +164,6 @@ void retreat(void)
 			inputs[i]=getIRRange(i)/4096.0;
 			//printf("%d: %f ", i, inputs[i]);
 		}
-		printf("\nNeuron States:\n");
 		for (pre = 0; pre < nNeurons; pre ++)
 		{
 			neuronStatePrev[pre]=neuronState[pre];
@@ -179,7 +186,6 @@ void retreat(void)
 			neuronState[pre]=rSigmoid(neuronState[pre]);
 			//printf("%d: %f ", pre, neuronState[pre]);
 		}
-		printf("\n");
 		
 		for (neuron = nInputs+nHiddens; neuron < nNeurons; neuron ++)
 		{
@@ -187,8 +193,8 @@ void retreat(void)
 		}
 		//printf("output1:%f, output2:%f\n", outputs[0], outputs[1]);
 
-		leftMotorSpeed = (int)(neuronState[nNeurons-OUTPUTS+1]*20000);
-		rightMotorSpeed = (int)(neuronState[nNeurons-OUTPUTS]*20000);
+		leftMotorSpeed = (int)(neuronState[nNeurons-OUTPUTS+1]*40000);
+		rightMotorSpeed = (int)(neuronState[nNeurons-OUTPUTS]*40000);
 		//printf("leftMotorSpeed:%d, rightMotorSpeed:%d\n", leftMotorSpeed, rightMotorSpeed);
 	
 		setMotor(LEFT_MOTOR, leftMotorSpeed);
