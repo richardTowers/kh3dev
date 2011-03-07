@@ -9,17 +9,17 @@
 
 #define POP_SIZE 10			//The number of individuals to be evaluated before reproduction
 #define GENERATIONS 100		//The number of generations to evaluate
-#define EVAL_TIME 2			//The max time to spend evaluating an individual
+#define EVAL_TIME 10		//The max time to spend evaluating an individual
 #define SURVIVAL_BONUS 00	//The bonus an individual recieves for not crashing
 #define TOUR_SIZE 5			//The number of individuals to compete in a tournament
 
-#define pMUTATE 5000
+#define pMUTATE 1000
 #define pSET_ZERO 5
 #define pADD_WEIGHT 5
 #define pFLIP_NEG 5
 
-#define pCHANGE_WEIGHT 200
-#define pFLIP_THIS_BIT 2500 
+#define pCHANGE_WEIGHT 90
+#define pFLIP_THIS_BIT 500 
 
 
 #endif //INC_GENETICS

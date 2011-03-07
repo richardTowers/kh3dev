@@ -21,6 +21,8 @@ int main(int argc, char *argv[])
 	
 	unsigned short int i;
 	
+	srand(time(NULL));
+	
 	if(commandLine(argc, argv)!=NULL)
 	{
 		strcpy(buffer,commandLine(argc, argv));
@@ -29,12 +31,12 @@ int main(int argc, char *argv[])
 		sprintf(logFolder, "%sLogFiles/", buffer);
 		
 		//Get number of individuals by counting through Gen0
-		do{sprintf(buffer, "%sGen0Ind%d.txt", genotypeFolder, ind); ind++;} while(access(buffer,F_OK)==0); ind-=2;
+		do{sprintf(buffer, "%sGen0Ind%d.txt", genotypeFolder, ind); ind++;} while(access(buffer,F_OK)==0); ind-=1;
 		nInds=ind;
 		//nInds is now equal to the number of individuals
 		
 		//Get most recent full generation by counting GenXIndNinds
-		do{sprintf(buffer, "%sGen%dInd%d.txt", genotypeFolder, gen, nInds);gen++;} while(access(buffer,F_OK)==0); gen-=2;
+		do{sprintf(buffer, "%sGen%dInd%d.txt", genotypeFolder, gen, nInds-1);gen++;} while(access(buffer,F_OK)==0); gen-=1;
 		nGens=gen;
 		//nGens is now equal to the number of generations evaluated so far
 		
@@ -45,7 +47,7 @@ int main(int argc, char *argv[])
 			sprintf(buffer, "mkdir %s", logFolder);
 			system(buffer);
 		}
-		
+		printf("Starting on Gen%d, reading until Ind%d\n", nGens, nInds-1);
 		//Now need to set data of individuals in the first generation
 		for (ind = 0; ind < nInds; ind += 1)
 		{
@@ -92,7 +94,7 @@ int main(int argc, char *argv[])
 	//Set up fitness tracker
 	setupTracker(nROBOTS, bots);
 	
-	//For each generation starting at 0
+	//For each generation starting at 0 or the most recent gen
 	for (gen = nGens; gen < GENERATIONS; gen ++)
 	{
 		//For each individual in the population

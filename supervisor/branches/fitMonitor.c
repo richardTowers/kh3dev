@@ -85,7 +85,7 @@ void setupTracker(int nRobots, rtRobot* robots)
 					selectionMade=NO;
 					robots[bot].mark=cvCreateImage(cvGetSize(frame), frame->depth, frame->nChannels);
 					cvCopy(frame, robots[bot].mark, 0);
-					markSize=(fullRect.width+fullRect.height)/4;
+					markSize=(fullRect.width+fullRect.height)/3;
 					bot++;
 					break;
 				}
@@ -254,7 +254,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	startLoggingPositions(logImage);
 	
 	startTime=time(NULL);
-	while(time(NULL)-startTime < EVAL_TIME+fitness/9)
+	while(time(NULL)-startTime < EVAL_TIME+fitness)
 	{	
 		keyHandler();
 		frame=cvQueryFrame(capture);
@@ -295,7 +295,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		
 		//If the mark's closer than 10 px to an object we're basically about to crash...
 		//Use the "retreat" neural network to get out of trouble.
-		if (dToNearestBound<markSize+10)
+		if (dToNearestBound<markSize+2)
 		{
 			//Stop motors
 			send(robot.socket, "Stop Motors", 11, 0);
@@ -305,17 +305,19 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 			endSVG(logImage);
 			fclose(logImage);
 
-			//Use retreat genotype:
-			send(robot.socket, "Retreat", 7, 0);
-			retreatTime=time(NULL);
-			while((time(NULL)-retreatTime) < 12)
-			{
-				keyHandler();
-				frame = cvQueryFrame(capture);
-				cvPutText(frame, "Crashed, Retreating...", cvPoint(10,15), &font, BLUE);
-				cvPutText(frame, "CRASH!", robot.currPos, &font, RED);
-				cvShowImage("Fitness Monitor", frame);
-			}
+/*			//Use retreat genotype:*/
+/*			send(robot.socket, "Retreat", 7, 0);*/
+/*			retreatTime=time(NULL);*/
+/*			while((time(NULL)-retreatTime) < 12)*/
+/*			{*/
+/*				keyHandler();*/
+/*				frame = cvQueryFrame(capture);*/
+/*				cvPutText(frame, "Crashed, Retreating...", cvPoint(10,15), &font, BLUE);*/
+/*				cvPutText(frame, "CRASH!", robot.currPos, &font, RED);*/
+/*				cvShowImage("Fitness Monitor", frame);*/
+/*			}*/
+			printf("Please reposition robot. Enter a number when ready...\n");
+			scanf("%d", &bound);
 			//Give fitness equal to whatever fitness it had before the crash
 			(*individual).fitness=fitness;//3*dFit+dFromOrigin;
 			cvReleaseCapture(&capture);
@@ -335,6 +337,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 		
 		//show cherries:
 		for (cherry = 0; cherry < nCherries; cherry ++) cvCircle(frame, cherries[cherry], 1, RED, -1, CV_AA);
+		//fitness=dFromOrigin;
 		
 		//Write data:
 		sprintf(line1, "Distance from origin: %d px",dFromOrigin);
@@ -361,16 +364,19 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	send(robot.socket, "Stop Motors", 11, 0);
 	//Wait for the message to sink in:
 	sleep(1);
-	//Use retreat genotype:
-	send(robot.socket, "Retreat", 7, 0);
-	retreatTime=time(NULL);
-	while((time(NULL)-retreatTime) < 12)
-	{
-		keyHandler();
-		frame = cvQueryFrame(capture);
-		cvPutText(frame, "Finished Evaluation, Retreating...", cvPoint(10,15), &font, BLUE);
-		cvShowImage("Fitness Monitor", frame);
-	}
+/*	//Use retreat genotype:*/
+/*	send(robot.socket, "Retreat", 7, 0);*/
+/*	retreatTime=time(NULL);*/
+/*	while((time(NULL)-retreatTime) < 12)*/
+/*	{*/
+/*		keyHandler();*/
+/*		frame = cvQueryFrame(capture);*/
+/*		cvPutText(frame, "Finished Evaluation, Retreating...", cvPoint(10,15), &font, BLUE);*/
+/*		cvShowImage("Fitness Monitor", frame);*/
+/*	}*/
+	
+	printf("Please reposition robot. Enter a number when ready...\n");
+	scanf("%d", &bound);
 	//Clear up:
 	cvReleaseCapture(&capture);
 	free(cherries);

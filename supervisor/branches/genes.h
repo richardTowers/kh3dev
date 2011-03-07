@@ -31,6 +31,8 @@ void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* c
 void rtShuffle(rtIndividual* array, int size);
 void mutate(rtIndividual* individual);
 short int mutateWeight(const short int weight);
+short int mutateBias(short int bias);
+short int mutateTConst(short int tConst);
 
 extern char genotypeFolder[60];
 extern char logFolder[60];
