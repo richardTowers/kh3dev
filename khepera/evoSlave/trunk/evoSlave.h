@@ -36,7 +36,7 @@
 
 //Genotype stored as global:
 unsigned short int nInputs, nHiddens, nOutputs, nNeurons;
-short *weights, *biases, *tConsts; 
+float *weights, *biases, *tConsts; 
 
 extern void initSigmoid(void);
 void childProcess(char *genotype);

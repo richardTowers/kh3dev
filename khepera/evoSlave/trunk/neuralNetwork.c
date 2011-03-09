@@ -7,9 +7,9 @@
 
 #include "neuralNetwork.h"
 
-void ctrnn(short *y, const short n, const short *I, const short *b, const short *t, const short *w, const short dT)
+void ctrnn(float *y, const short n, const float *I, const float *b, const float *t, const float *w, const float dT)
 {
-	short *yOld;
+	float *yOld;
 	//i represents the postsynaptic neuron, j the presynaptic neuron
 	short i, j;
 	//k1-4 are the runge-kutta coefficients
@@ -19,47 +19,41 @@ void ctrnn(short *y, const short n, const short *I, const short *b, const short 
 	
 	
 	//Copy neuron states into new array:
-	yOld=malloc(n*sizeof(short));
+	yOld=malloc(n*sizeof(float));
 	for (i = 0; i < n; i += 1) yOld[n] = y[n];
 	
 	//Calculate neuron states at t+dT:
 	for (i = 0; i < n; i += 1)
 	{
-		for (j = 0, sum = 0; j < n; j += 1) sum+=(int)((float)((WEIGHT_RANGE*(*(w+i*n+j)))/WEIGHT_IN)*sigmoid(yOld[j]-b[j]));
+		for (j = 0, sum = 0; j < n; j += 1) sum+=w[j*n+i]*sigmoid(yOld[j]-b[j]);
 		k1=(-(yOld[i]          )+sum+I[i])/t[i];
 		k2=(-(yOld[i]+0.5*k1*dT)+sum+I[i])/t[i];
 		k3=(-(yOld[i]+0.5*k2*dT)+sum+I[i])/t[i];
 		k4=(-(yOld[i]  +  k3*dT)+sum+I[i])/t[i];
-		if((int)((int)y[i]+(int)((k1+2*k2+2*k3+k4)/6))>SHRT_MAX)
-			//Incrementing would cause overflow so set to max:
-			y[i]=SHRT_MAX;
-		else if((int)((int)y[i]+(int)((k1+2*k2+2*k3+k4)/6))<SHRT_MIN)
-			//Incrementing would cause underflow so set to min:
-			y[i]=SHRT_MIN;
-		else
-			y[i]+=(k1+2*k2+2*k3+k4)/6;
-		printf("%d ", y[i]);
+		
+		y[i]+=(k1+2*k2+2*k3+k4)/6;
+		printf("%3.1f ", y[i]);
 	}
 	printf("\n");
 	free(yOld);
 	return;
 }
 
-void ffnn(short *y, const short n, const short *I, const short *w)
+void ffnn(float *y, const short n, const float *I, const float *w)
 {
-	short *yOld;
+	float *yOld;
 	//i represents the postsynaptic neuron, j the presynaptic neuron
 	short i, j;
 	
 	//Copy neuron states into new array:
-	yOld=malloc(n*sizeof(short));
+	yOld=malloc(n*sizeof(float));
 	for (i = 0; i < n; i += 1) yOld[n] = y[n];
 
 	//Calculate neuron states at t+1:
 	for (i = 0; i < n; i += 1)
 	{
 		y[i]=0;
-		for (j = 0; j < n; j += 1) y[i]+=(int)(0.5+((float)(*(w+i*nNeurons+j)))*sigmoid(yOld[j]));
+		for (j = 0; j < n; j += 1) y[i]+=(w[j*n+i])*sigmoid(yOld[j]);
 		y[i]+=I[i];
 	}
 	free(yOld);
@@ -68,20 +62,15 @@ void ffnn(short *y, const short n, const short *I, const short *w)
 
 void initSigmoid(void)
 {
-	#define R SHRT_MAX
-	#define RR 2*SHRT_MAX
 	int i;
 	for(i=0;i<1024;i++)
-		sigmoidTable[i]=(double)(RR/(1+exp(-(double)(((long)(i)<<8))/R))-R);
-	sigmoidTable[1024]=R;
+		sigmoidTable[i]=1.0/(1+exp(-((i-512)*0.008)));
 }
 
-short sigmoid(short x)
+float sigmoid(float x)
 {
-	int s, y, j;
-	if((s=x)<0)x=-x;
-	y=*(sigmoidTable+(j=x >> 5));
-	y+=((*(sigmoidTable+j+1)-y)*(x&0x1F)) >> 5;
-	if(s < 0) y=-y;
-	return y;
+	short index;
+	x/=0.008; x+=512.5; index=(short)x;
+	if(x>1024)x=1024; if(x<0)x=0;
+	return sigmoidTable[index];
 }

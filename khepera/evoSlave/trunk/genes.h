@@ -11,17 +11,17 @@
 #include <stdio.h>
 #include <limits.h>
 
-#define BIAS_OUT 500
 #define BIAS_IN 0x3F
-#define TCONST_OUT 2000
 #define TCONST_IN 0x3F
-#define WEIGHT_RANGE 3.0
 #define WEIGHT_IN 0x3F
 
+#define BIAS_MAX 1
+#define TCONST_MAX 1
+#define WEIGHT_MAX 1
 
 //Genotype stored as global:
 extern unsigned short int nInputs, nHiddens, nOutputs, nNeurons;
-extern short *weights, *biases, *tConsts;
+extern float *weights, *biases, *tConsts;
 
 void readGenotype(const char *filename);
 void printGenotype(void);

@@ -70,25 +70,23 @@ int main(int argc, char * argv[])
 void childProcess(char *filename)
 {
 	unsigned short int i, count;
-	short *inputs;
-	short *neuronStates;
-	short timeStep=2000;	//This timeStep will be caculated dynamically
+	float *inputs;
+	float *neuronStates;
+	float timeStep=0.1;	//This timeStep will be caculated dynamically
 	clock_t start;
 
 	int leftMotorSpeed=0, rightMotorSpeed=0;
-	if(strcmp(filename, "Retreat")==0)
-	{
-		retreat();
-	}
+	if(strcmp(filename, "Retreat")==0) retreat();
+	
 	else
 	{
 		readGenotype(filename);
 		printf("Read Genotype %s...\n", filename);
 		printGenotype();
-	
+
 		//Initially all neurons have 0 states...
 		neuronStates = calloc(nNeurons, sizeof(float));
-		inputs = calloc(nNeurons, sizeof(short));
+		inputs = calloc(nNeurons, sizeof(float));
 
 		//Just wait a few seconds for the fitness monitor to catch up...
 		sleep(4);
@@ -97,41 +95,47 @@ void childProcess(char *filename)
 		for(;;)
 		{
 			start=clock();
-			for (count = 0; count < 100; count += 1)
+			for (count = 0; count < 10; count += 1)
 			{
-				for(i=0;i<INPUTS;i++)
-				{
-					#ifndef TESTING
-						inputs[i]=getIRRange(i)*(2*SHRT_MAX/4096);
-					#else
-						inputs[i]=(rand()%4096);
-					#endif
-				}
-		
+				//Get inputs:
+				for(i=0;i<INPUTS;i++) inputs[i]=getIRRange(i)/4096.0;
+
 				//Send IR Values to NN and get new neuron states:
-				//ctrnn(neuronStates, nNeurons, inputs, biases, tConsts, weights, timeStep);
-				ffnn(neuronStates, nNeurons, inputs, weights);
-	/*			printf("Neuron States: ");*/
-	/*			for (i = 0; i < nNeurons; i += 1) printf("%hd, ", neuronStates[i]);*/
-	/*			printf("\n");*/
-			
+				ctrnn(neuronStates, nNeurons, inputs, biases, tConsts, weights, timeStep);
+				//ffnn(neuronStates, nNeurons, inputs, weights);
+
+				printf("Neuron States: ");
+				for (i = 0; i < nNeurons; i += 1) printf("%3.2f, ", neuronStates[i]);
+				printf("\n");
+
 				//Set Motor values to outputs
-				leftMotorSpeed = (int)(neuronStates[nNeurons-OUTPUTS+1]);
-				rightMotorSpeed = (int)(neuronStates[nNeurons-OUTPUTS]);
-		
-				#ifndef TESTING
-					//Set Motors
-					setMotor(LEFT_MOTOR, leftMotorSpeed);
-					setMotor(RIGHT_MOTOR, rightMotorSpeed);
-				#endif
+				leftMotorSpeed = (int)(2000*neuronStates[nNeurons-OUTPUTS+1]);
+				rightMotorSpeed = (int)(2000*neuronStates[nNeurons-OUTPUTS]);
+
+				//Set Motors
+				setMotor(LEFT_MOTOR, leftMotorSpeed);
+				setMotor(RIGHT_MOTOR, rightMotorSpeed);
 			}
-			timeStep=(int)((clock()-start)/100.0+0.5);
+			timeStep=(clock()-start)/(float)CLOCKS_PER_SEC;
+			printf("Timestep=%f\n", timeStep);
 		}
 	}
 }
 
 void retreat(void)
 {
+	/****************************************************************/
+	//This is just for the retreat function and needs redoing...
+	#define rSigmoid(input) 2.0/(1.0 + exp(-3*input)) - 1
+
+	typedef enum NNlayer
+	{
+		input,
+		hidden,
+		output
+	} NNlayer;
+	/****************************************************************/
+	
 	float inputs[INPUTS], *neuronState, *neuronStatePrev, *outputs;
 	int i, leftMotorSpeed=0, rightMotorSpeed=0;
 	float retreatWeights[169]={
@@ -194,8 +198,8 @@ void retreat(void)
 		}
 		//printf("output1:%f, output2:%f\n", outputs[0], outputs[1]);
 
-		leftMotorSpeed = (int)(neuronState[nNeurons-OUTPUTS+1]*40000);
-		rightMotorSpeed = (int)(neuronState[nNeurons-OUTPUTS]*40000);
+		leftMotorSpeed = (int)(neuronState[nNeurons-OUTPUTS+1]*20000);
+		rightMotorSpeed = (int)(neuronState[nNeurons-OUTPUTS]*20000);
 		//printf("leftMotorSpeed:%d, rightMotorSpeed:%d\n", leftMotorSpeed, rightMotorSpeed);
 	
 		setMotor(LEFT_MOTOR, leftMotorSpeed);

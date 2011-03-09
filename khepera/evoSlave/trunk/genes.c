@@ -20,22 +20,22 @@ void readGenotype(const char *filename)
 	nNeurons=nInputs+nHiddens+nOutputs;
 	
 	//Allocate enough memory for the weights, biases and time constants
-	tConsts=malloc(sizeof(short)*nNeurons);
-	biases=malloc(sizeof(short)*nNeurons);
-	weights=malloc(sizeof(short)*nNeurons*nNeurons);
+	tConsts=malloc(sizeof(float)*nNeurons);
+	biases=malloc(sizeof(float)*nNeurons);
+	weights=malloc(sizeof(float)*nNeurons*nNeurons);
 	
 	//Loop through biases:
 	for (theBias = 0; theBias < nNeurons; theBias ++)
 	{
-		fscanf(file,"%hd",&biases[theBias]);
-		biases[theBias]*=(BIAS_OUT/BIAS_IN);
+		fscanf(file,"%f",&biases[theBias]);
+		biases[theBias]*=(BIAS_MAX/BIAS_IN);
 	}
 	
 	//Loop through time constants:
 	for (theTConst = 0; theTConst < nNeurons; theTConst ++)
 	{
-		fscanf(file,"%hd",&tConsts[theTConst]);
-		tConsts[theTConst]*=(TCONST_OUT/TCONST_IN);
+		fscanf(file,"%f",&tConsts[theTConst]);
+		tConsts[theTConst]*=(TCONST_MAX/TCONST_IN);
 	}
 	
 	//Loop through weights:
@@ -43,7 +43,8 @@ void readGenotype(const char *filename)
 	{
 		for (preNeuron = 0; preNeuron < nNeurons; preNeuron ++)
 		{
-			fscanf(file,"%hd",&weights[postNeuron*nNeurons+preNeuron]);
+			fscanf(file,"%f",&weights[postNeuron*nNeurons+preNeuron]);
+			weights[postNeuron*nNeurons+preNeuron]*=(WEIGHT_MAX/WEIGHT_IN);
 		}
 	}
 	//All of the characteristics are stored as globals on the heap and are now set.
@@ -56,11 +57,11 @@ void printGenotype(void)
 	printf("Inputs: %d\nHiddens: %d\nOutputs: %d\nTotal: %d\n",nInputs,nHiddens,nOutputs,nInputs+nHiddens+nOutputs);
 	
 	//Loop through biases:
-	for (theBias = 0; theBias < nNeurons; theBias ++) printf("%4hd ", biases[theBias]);
+	for (theBias = 0; theBias < nNeurons; theBias ++) printf("%3.1f ", biases[theBias]);
 	printf("\n");
 	
 	//Loop through time constants:
-	for (theTConst = 0; theTConst < nNeurons; theTConst ++) printf("%4hd ",tConsts[theTConst]);
+	for (theTConst = 0; theTConst < nNeurons; theTConst ++) printf("%3.1f ",tConsts[theTConst]);
 	printf("\n");
 		
 	for (i = 0; i < (nInputs+nHiddens+nOutputs); i += 1)
@@ -68,7 +69,7 @@ void printGenotype(void)
 		for (j = 0; j < (nInputs+nHiddens+nOutputs); j += 1)
 		{
 			if(weights[i*(nInputs+nHiddens+nOutputs)+j]==0) printf("   0");
-			else printf("%4hd ",weights[i*(nInputs+nHiddens+nOutputs)+j]);
+			else printf("%3.1f ",weights[i*(nInputs+nHiddens+nOutputs)+j]);
 		}
 		printf("\n");
 	}

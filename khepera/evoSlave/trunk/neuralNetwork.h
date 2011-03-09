@@ -17,27 +17,15 @@
 #define INPUTS 9
 #define OUTPUTS 2
 
-/****************************************************************/
-//This is just for the retreat function and needs redoing...
-#define rSigmoid(input) 2.0/(1.0 + exp(-3*input)) - 1;
-
-typedef enum NNlayer
-{
-	input,
-	hidden,
-	output
-} NNlayer;
-/****************************************************************/
-
-short sigmoidTable[1025];
+float sigmoidTable[1025];
 
 void initSigmoid(void);
-short sigmoid(short x);
+float sigmoid(float x);
 
 //WARNING!
 //It is your responsibility to allocate and free the returned array of states!
-void ctrnn(short *y, const short n, const short *I, const short *b, const short *t, const short *w, const short dT);
-void ffnn(short *y, const short n, const short *I, const short *w);
+void ctrnn(float *y, const short n, const float *I, const float *b, const float *t, const float *w, const float dT);
+void ffnn(float *y, const short n, const float *I, const float *w);
 
 #endif //INC_NEURALNETWORK
 
