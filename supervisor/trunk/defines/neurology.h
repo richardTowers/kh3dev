@@ -9,14 +9,14 @@
 
 //Architecture:
 #define INPUTS 9
-#define	HIDDENS 5
+#define	HIDDENS 4
 #define OUTPUTS 2
 //Connection Probabilities:
 /*I  H  O
 I 0 14  1
 H 0  4 14
 O 0  0  0*/
-#define pBASE 20
+#define pBASE 40
 #define pII 0
 #define pIH 14
 #define pIO 1

@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 	rtRobot bots[nROBOTS]={{"192.168.1.2",NULL,NULL,RED,{0,0},{0,0}}};
 	rtGeneration gens[GENERATIONS];
 	
-	char buffer[100], folder[40], filename[30];
+	char buffer[200], folder[40], filename[30];
 	
 	short int ind=0, gen=0, bot, nInds=0, nGens=0;
 	
@@ -31,13 +31,13 @@ int main(int argc, char *argv[])
 		sprintf(logFolder, "%sLogFiles/", buffer);
 		
 		//Get number of individuals by counting through Gen0
-		do{sprintf(buffer, "%sGen0Ind%d.txt", genotypeFolder, ind); ind++;} while(access(buffer,F_OK)==0); ind-=1;
-		nInds=ind;
+		do{sprintf(buffer, "%sGen0Ind%d.txt", genotypeFolder, ind); ind++;} while(access(buffer,F_OK)==0);
+		nInds=ind-1;
 		//nInds is now equal to the number of individuals
 		
 		//Get most recent full generation by counting GenXIndNinds
-		do{sprintf(buffer, "%sGen%dInd%d.txt", genotypeFolder, gen, nInds-1);gen++;} while(access(buffer,F_OK)==0); gen-=1;
-		nGens=gen;
+		do{sprintf(buffer, "%sGen%dInd%d.txt", genotypeFolder, gen, nInds-1);gen++;} while(access(buffer,F_OK)==0);
+		nGens=gen-2;
 		//nGens is now equal to the number of generations evaluated so far
 		
 		//Make sure Log File exists too:

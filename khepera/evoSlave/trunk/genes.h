@@ -15,9 +15,9 @@
 #define TCONST_IN 0x3F
 #define WEIGHT_IN 0x3F
 
-#define BIAS_MAX 1
-#define TCONST_MAX 1
-#define WEIGHT_MAX 1
+#define BIAS_MAX 1.0
+#define TCONST_MAX 1.0
+#define WEIGHT_MAX 1.0
 
 //Genotype stored as global:
 extern unsigned short int nInputs, nHiddens, nOutputs, nNeurons;

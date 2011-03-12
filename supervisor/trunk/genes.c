@@ -198,17 +198,17 @@ void createInitialGenes(int population, rtGeneration* generation)
 				{
 					if(column<nInputs)
 					{
-						if(rand()%pBASE<pII) weights[theWeight]=rand()%WEIGHT_RANGE;//(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pBASE<pII) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
 					else if(column<nInputs+nHiddens)
 					{
-						if(rand()%pBASE<pIH) weights[theWeight]=rand()%WEIGHT_RANGE;//(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pBASE<pIH) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
 					else
 					{
-						if(rand()%pBASE<pIO) weights[theWeight]=rand()%WEIGHT_RANGE;//(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pBASE<pIO) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
 				}
@@ -216,17 +216,17 @@ void createInitialGenes(int population, rtGeneration* generation)
 				{
 					if(column<nInputs)
 					{
-						if(rand()%pBASE<pHI) weights[theWeight]=rand()%WEIGHT_RANGE;//(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pBASE<pHI) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
 					else if(column<nInputs+nHiddens)
 					{
-						if(rand()%pBASE<pHH) weights[theWeight]=rand()%WEIGHT_RANGE;//(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pBASE<pHH) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
 					else
 					{
-						if(rand()%pBASE<pHO) weights[theWeight]=rand()%WEIGHT_RANGE;//(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pBASE<pHO) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
 				}
@@ -234,17 +234,17 @@ void createInitialGenes(int population, rtGeneration* generation)
 				{
 					if(column<nInputs)
 					{
-						if(rand()%pBASE<pOI) weights[theWeight]=rand()%WEIGHT_RANGE;//(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pBASE<pOI) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
 					else if(column<nInputs+nHiddens)
 					{
-						if(rand()%pBASE<pOH) weights[theWeight]=rand()%WEIGHT_RANGE;//(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pBASE<pOH) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
 					else
 					{
-						if(rand()%pBASE<pOO) weights[theWeight]=rand()%WEIGHT_RANGE;//(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pBASE<pOO) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 						else weights[theWeight]=0;
 					}
 				}
@@ -355,7 +355,6 @@ void mutate(rtIndividual* individual)
 	{
 		if(rand()%pMUTATE<pSET_ZERO) biases[row]=0;
 		if((rand()%pMUTATE<pADD_WEIGHT) && (biases[row]==0)) biases[row]=rand()%(2*BIAS_RANGE)-BIAS_RANGE;
-		if(rand()%pMUTATE<pFLIP_NEG) biases[row]=-biases[row];
 		if((rand()%pMUTATE<pCHANGE_WEIGHT) && (biases[row]!=0)) biases[row]=mutateBias(biases[row]);
 	}
 	//Change time constants
@@ -363,7 +362,6 @@ void mutate(rtIndividual* individual)
 	{
 		if(rand()%pMUTATE<pSET_ZERO) tConsts[row]=0;
 		if((rand()%pMUTATE<pADD_WEIGHT) && (tConsts[row]==0)) tConsts[row]=rand()%TCONST_RANGE;
-		if(rand()%pMUTATE<pFLIP_NEG) tConsts[row]=-tConsts[row];
 		if((rand()%pMUTATE<pCHANGE_WEIGHT) && (tConsts[row]!=0)) tConsts[row]=mutateTConst(tConsts[row]);
 	}
 	//Change weights
@@ -373,7 +371,7 @@ void mutate(rtIndividual* individual)
 		{
 			theWeight=row*nNodes+column;
 			if(rand()%pMUTATE<pSET_ZERO) weights[theWeight]=0;
-			if((rand()%pMUTATE<pADD_WEIGHT) && (weights[theWeight]==0)) weights[theWeight]=rand()%WEIGHT_RANGE;//(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+			if((rand()%pMUTATE<pADD_WEIGHT) && (weights[theWeight]==0)) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
 			if(rand()%pMUTATE<pFLIP_NEG) weights[theWeight]=-weights[theWeight];
 			if((rand()%pMUTATE<pCHANGE_WEIGHT) && (weights[theWeight]!=0)) weights[theWeight]=mutateWeight(weights[theWeight]);
 		}

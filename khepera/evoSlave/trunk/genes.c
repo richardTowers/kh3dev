@@ -10,6 +10,7 @@
 void readGenotype(const char *filename)
 {
 	unsigned short int preNeuron, postNeuron, theBias, theTConst;
+	short value;
 	FILE *file;
 	
 	file = fopen(filename, "r");
@@ -27,15 +28,15 @@ void readGenotype(const char *filename)
 	//Loop through biases:
 	for (theBias = 0; theBias < nNeurons; theBias ++)
 	{
-		fscanf(file,"%f",&biases[theBias]);
-		biases[theBias]*=(BIAS_MAX/BIAS_IN);
+		fscanf(file,"%hd",&value);
+		biases[theBias]=(float)value*(BIAS_MAX/BIAS_IN);//+3.0;
 	}
 	
 	//Loop through time constants:
 	for (theTConst = 0; theTConst < nNeurons; theTConst ++)
 	{
-		fscanf(file,"%f",&tConsts[theTConst]);
-		tConsts[theTConst]*=(TCONST_MAX/TCONST_IN);
+		fscanf(file,"%hd",&value);
+		tConsts[theTConst]=(float)value*(TCONST_MAX/TCONST_IN)+1.0;
 	}
 	
 	//Loop through weights:
@@ -43,11 +44,12 @@ void readGenotype(const char *filename)
 	{
 		for (preNeuron = 0; preNeuron < nNeurons; preNeuron ++)
 		{
-			fscanf(file,"%f",&weights[postNeuron*nNeurons+preNeuron]);
-			weights[postNeuron*nNeurons+preNeuron]*=(WEIGHT_MAX/WEIGHT_IN);
+			fscanf(file,"%hd",&value);
+			weights[postNeuron*nNeurons+preNeuron]=(float)value*(WEIGHT_MAX/WEIGHT_IN);
 		}
 	}
 	//All of the characteristics are stored as globals on the heap and are now set.
+	fclose(file);
 	return;
 }
 
@@ -68,8 +70,8 @@ void printGenotype(void)
 	{
 		for (j = 0; j < (nInputs+nHiddens+nOutputs); j += 1)
 		{
-			if(weights[i*(nInputs+nHiddens+nOutputs)+j]==0) printf("   0");
-			else printf("%3.1f ",weights[i*(nInputs+nHiddens+nOutputs)+j]);
+			if(weights[i*(nInputs+nHiddens+nOutputs)+j]==0.0) printf("   0");
+			else printf("   %3.1f ",weights[i*(nInputs+nHiddens+nOutputs)+j]);
 		}
 		printf("\n");
 	}
