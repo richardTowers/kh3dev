@@ -1,0 +1,1658 @@
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass IEEEtran
+\begin_preamble
+\usepackage{algorithmic}
+\usepackage{siunitx}
+\usepackage{tikz}
+\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,%
+    decorations.pathreplacing,decorations.pathmorphing,shapes,%
+    matrix,shapes.symbols}
+\end_preamble
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 3cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 2
+\papersides 2
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Why Is My Hoover So Stupid? A Platform for Evolving Intelligent Mobile Robots
+\end_layout
+
+\begin_layout Author
+Richard Towers
+\begin_inset Newline newline
+\end_inset
+
+Supervisor: Professor V.
+ Vitanov
+\end_layout
+
+\begin_layout Abstract
+The importance of developing intelligent robotic agents is well known, as
+ is the difficulty of the task.
+ The evolutionary method offers a solution to the difficulty of manually
+ designing complex control systems.
+ This paper presents a new platform for conducting evolutionary experiments
+ on mobile Khepera robots and the strengths and limitations of the platform
+ are investigated.
+ The results of some preliminary experiments evolving control systems for
+ robotic vacuum cleaners are presented.
+ It is concluded that the platform shows excellent promise in its ability
+ to synthesise control systems and recommendations are made for future work.
+\end_layout
+
+\begin_layout Abstract
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{keywords}
+\end_layout
+
+\end_inset
+
+Evolutionary Computation, Cognitive Robotics, Mobile Robots
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{keywords}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout MarkBoth
+Durham University ME
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+MakeLowercase{ng}
+\end_layout
+
+\end_inset
+
+ Final Year Project
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}{
+\end_layout
+
+\end_inset
+
+Why Is My Hoover So Stupid?
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Quote
+\align center
+\begin_inset Quotes eld
+\end_inset
+
+Machines will be capable, within twenty years, of doing any work a man can
+ do.
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+after "1965"
+key "simon1965shape"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+PARstart{
+\end_layout
+
+\end_inset
+
+F
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}{
+\end_layout
+
+\end_inset
+
+orty years
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ after Simon made this statement, robotics is just beginning to edge into
+ the consumer domain with products such as the iRobot Roomba Robotic Floorvac
+ developed by Brooks, Jones 
+\shape italic
+et al.
+
+\shape default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Roomba"
+
+\end_inset
+
+.
+ Whilst the commercial success of this product is impressive, it can hardly
+ be said to be 
+\emph on
+intelligent
+\emph default
+, and it certainly cannot 
+\begin_inset Quotes eld
+\end_inset
+
+do any work a man can do
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The reason for this failure to live up to expectations is simple, designing
+ systems that exhibit intelligent behaviour is enormously more difficult
+ than researchers first assumed.
+\end_layout
+
+\begin_layout Standard
+The situation is not all gloomy though, natural evolution provides us with
+ countless examples of intelligent systems, from the amazingly simple
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The roundworm C.
+ Elegans has only 302 neurons
+\end_layout
+
+\end_inset
+
+ to the astoundingly complex
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The primate Homo sapiens has over 80,000,000,000 neurons
+\end_layout
+
+\end_inset
+
+.
+ By using artificial evolution we may hope to emulate nature's success.
+\end_layout
+
+\begin_layout Standard
+The feasibility of using artificial evolution to develop the control systems
+ and morphology of robots has been demonstrated by many authors 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nolfi&Floreano,pfeifer2000role,PursuitEvasion,Snake"
+
+\end_inset
+
+, however, as Brooks argues, 
+\begin_inset Quotes eld
+\end_inset
+
+To compete with hand coding techniques it will be necessary to automatically
+ evolve programs that are one to two orders of magnitude more complex than
+ those previously reported in any domain
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "brooks1992artificial"
+
+\end_inset
+
+.
+ Control systems of this level of complexity have never been evolved, although
+ work such as 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoSyNE"
+
+\end_inset
+
+ suggests that, for some problems at least, the evolutionary method is producing
+ control systems that are 
+\begin_inset Quotes eld
+\end_inset
+
+better ...
+ than those reported in any other domain
+\begin_inset Quotes erd
+\end_inset
+
+, although perhaps not by orders of magnitude.
+\end_layout
+
+\begin_layout Standard
+This paper aims to further demonstrate the feasibility of the evolutionary
+ method, specifically using embodied evolution conducted on real robots.
+ To demonstrate that the method can be more effective than manual design
+ a control system for a device similar to the commercially successful Roomba
+ vacuum cleaner is evolved.
+ For a number of reasons the control system of choice is an artificial neural
+ network (ANN).
+ The evolvabilities of two common types of ANN, the simple feed-forward
+ architecture (FFNN) and the continuous time recurrent neural network (CTRNN),
+ are investigated.
+\end_layout
+
+\begin_layout Standard
+The paper is organised as follows.
+ The relevant theory relating to evolutionary algorithms and neural networks
+ is presented in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Theory"
+
+\end_inset
+
+.
+ A description of the platform designed to run the embodied experiments
+ is given in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Development-of-the"
+
+\end_inset
+
+ and the strengths and limitations of the platform are discussed.
+ The results of evolving controllers for vacuum cleaners are presented in
+ Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Results-and-Discussion"
+
+\end_inset
+
+ and the quality of the best controllers is evaluated.
+ Finally, in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Conclusions"
+
+\end_inset
+
+, conclusions about the efficacy of the method are drawn and recommendations
+ for future work are made.
+\end_layout
+
+\begin_layout Section
+Theory
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Theory"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The platform described in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Development-of-the"
+
+\end_inset
+
+ relies heavily on two computational methods.
+ The control systems used are neural networks, selected for their good evolvabil
+ity
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nolfi&Floreano"
+
+\end_inset
+
+, and evolutionary algorithms, which are used to determine the constants
+ in the networks.
+ Both methods are appealing for their biological plausibilty, since we are
+ trying to emulate nature's success it seems apt that we should mimic its
+ methods closely.
+\end_layout
+
+\begin_layout Subsection
+Neural Networks
+\end_layout
+
+\begin_layout Standard
+Artificial neural networks are all, to a greater or lesser extent, designed
+ to mimic nature's chosen method of computation.
+ This section covers the theory behind artificial neural networks, the most
+ complex are presented first with each subsequent architecture making some
+ simplifying assumptions to allow for faster computation and easier analysis,
+ usually at the cost of computational power and
+\emph on
+ 
+\emph default
+evolvability.
+\end_layout
+
+\begin_layout Standard
+Firstly let us consider biological networks.
+ A biological network has a number of interconnected neurons which communicate
+ either through chemical synapses or electrical gap junctions.
+ At a synapse there will be a number of dendrites from incoming 
+\emph on
+presynaptic 
+\emph default
+neurons and (usually) one soma from a 
+\emph on
+postsynaptic
+\emph default
+ neuron.
+ A neuron will only fire if the polarisation across its membrane (produced
+ by the summation of the presynaptic potentials) exceeds some threshold,
+ in which case the neuron will produce an action potential (sometimes called
+ a 
+\emph on
+spike
+\emph default
+).
+ Synaptic transmission can be excitatory or inhibitory depending on the
+ type of neurotransmitter.
+ The modern view is that information is not just encoded by the rate of
+ spikes, but also by the precise timing of the spikes
+\begin_inset CommandInset citation
+LatexCommand cite
+key "snns"
+
+\end_inset
+
+: a pulse-code as well as a rate-code.
+\end_layout
+
+\begin_layout Standard
+By far the most biologically plausible class of ANNs are the so called 
+\emph on
+third generation
+\emph default
+: spiking neural networks (SNNs).
+ In SNNs neurons are modelled as leaky integrate-and-fire systems with each
+ spike being modelled separately.
+ These networks have been shown to have significant advantages over simpler
+ networks in terms of both computational power and evolvability, however
+ they are much more computationally expensive to simulate and significantly
+ more difficult to build and analyse.
+ For these reasons spiking neural networks are not covered in this study,
+ although further work could be done in this area.
+\end_layout
+
+\begin_layout Standard
+Continuous Time Recurrent NNs can be arrived at from SNNs by making some
+ simplifying assumptions.
+ Assuming that information is transmitted across synapses only in terms
+ of spike rate (as mentioned, biologically speaking this is not the case)
+ there is no need to model every spike.
+ Neurons need only concern themselves with the rate of incoming spikes,
+ which can be assumed to be the sum of the activation states of all presynaptic
+ neurons, adjusted by synaptic weights.
+ Once this assumption is made neurons can be modelled as simple dynamic
+ systems, where the change in activation is given by equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:CTRNN"
+
+\end_inset
+
+.
+ 
+\begin_inset Formula \begin{equation}
+\dot{y}_{i}=\frac{-y_{i}+\sum_{j=1}^{n}w_{ji}\sigma(y_{j}-\Theta_{j})+I_{i}(t)}{\tau_{i}}\label{eq:CTRNN}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where 
+\begin_inset Formula $\dot{y_{i}}$
+\end_inset
+
+ is the rate of change of activation, 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ the activation of the postsynaptic node, 
+\begin_inset Formula $y_{j}$
+\end_inset
+
+ the activation of the presynaptic node, 
+\begin_inset Formula $w{}_{ji}$
+\end_inset
+
+ is the weight of the connection from pre to postsynaptic node, 
+\begin_inset Formula $\sigma(x)$
+\end_inset
+
+ is the sigmoid of x (in this case 
+\begin_inset Formula $\frac{1}{1+e^{-x}}$
+\end_inset
+
+), 
+\begin_inset Formula $\Theta_{j}$
+\end_inset
+
+ is the neuron's bias, 
+\begin_inset Formula $\tau_{i}$
+\end_inset
+
+ is the time constant of the neuron and 
+\begin_inset Formula $I_{i}(t)$
+\end_inset
+
+ is the input (if any) to the node.
+\end_layout
+
+\begin_layout Standard
+A network can be said to be recurrent if and only if it contains at least
+ on directed loop (
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+
+\family typewriter
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+
+\family typewriter
+\begin_inset Formula $\xymatrix{A\ar[r] & B\ar[r] & C\ar@/{}_{-1pc}/[ll]\\
+\\}
+$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A directed loop, the arrows can be followed in a complete cycle
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:A-directed-loop"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+
+\family typewriter
+\begin_inset Formula $\xymatrix{A\ar[r] & B & C\ar[l]\ar@/{}_{-1pc}/[ll]\\
+\\}
+$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Not a directed loop, the arrows cannot be followed in a complete cycle
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:No-directed-loop"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\family default
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Directed loops: A network can be said to be recurrent if and only if it
+ contains at least one directed loop
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Directed-loops,-the"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:A-directed-loop"
+
+\end_inset
+
+), CTRNNs make use of the ability of these loops to sustain patterns of
+ activation, allowing a sort of short term memory.
+ Because of this ability to capture and store time dependant phenomena they
+ are capable of displaying a very wide range of behaviour, including limit-cycle
+s and chaotic effects such as strange attractors.
+ CTRNNs with an arbitrary number of hidden neurons are known to be able
+ to approximate any smooth dynamic system.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CTRNNuinversal"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+%FFNN Tikz
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+layersep{2.5cm} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=
+\backslash
+layersep]
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+tikzstyle{every node}=[font=
+\backslash
+small] 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+tikzstyle{every pin edge}=[<-,shorten <=1pt]
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+tikzstyle{neuron}=[circle,fill=black!100,minimum size=5pt,inner sep=0pt]
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+tikzstyle{input neuron}=[neuron];
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+tikzstyle{output neuron}=[neuron];
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+tikzstyle{hidden neuron}=[neuron];
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+tikzstyle{annot} = [text width=10em, text centered]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Draw the input layer nodes
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+foreach 
+\backslash
+name / 
+\backslash
+y in {1,...,4}
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node[input neuron, pin=left:$i_
+\backslash
+y$] (I-
+\backslash
+name) at (0,-2*
+\backslash
+y/3) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Draw the hidden layer nodes
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+foreach 
+\backslash
+name / 
+\backslash
+y in {1,...,5}
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path[yshift=0.33cm]
+\end_layout
+
+\begin_layout Plain Layout
+
+            node[hidden neuron] (H-
+\backslash
+name) at (
+\backslash
+layersep,-2*
+\backslash
+y/3) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Draw the output layer node
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node[output neuron,pin={[pin edge={->}]right:$O$}, right of=H-3] (O) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Connect every node in the input layer with every node in the
+\end_layout
+
+\begin_layout Plain Layout
+
+    % hidden layer.
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+foreach 
+\backslash
+source in {1,...,4}
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+foreach 
+\backslash
+dest in {1,...,5}
+\end_layout
+
+\begin_layout Plain Layout
+
+            
+\backslash
+path (I-
+\backslash
+source) edge (H-
+\backslash
+dest);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Connect every node in the hidden layer with the output layer
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+foreach 
+\backslash
+source in {1,...,5}
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path (H-
+\backslash
+source) edge (O);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Annotate the layers
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node[annot,above of=H-1, node distance=0.5cm] (hl) {Hidden layer};
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node[annot,left of=hl] {Input layer};
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node[annot,right of=hl] {Output layer};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A diagram of a simple Feed Forward Neural Network with 4 input, 5 hidden
+ and 1 output nodes.
+ Circles denote neurons and arrows denote connections.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:FFNN"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Strictly speaking the term 
+\begin_inset Quotes eld
+\end_inset
+
+feed forward
+\begin_inset Quotes erd
+\end_inset
+
+ refers to any network with no directed loops (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:No-directed-loop"
+
+\end_inset
+
+).
+ The neuron and synapse models are irrelevant, so a SNN or a CTRNN is feed
+ forward so long as it doesn't have any loops.
+ Forbidding these loops makes the analysis of networks significantly easier,
+ but much interesting dynamic behaviour is lost.
+ On the face of it this seems like a bad thing, however, in practice, robots
+ that have these recurrent connections (especially neurons with self connections
+) often exhibit unstable behaviour that results in very low fitness scores,
+ so removing them simplifies the fitness space significantly.
+ When only reactive behaviour is required feed forward networks are usually
+ adequate.
+\end_layout
+
+\begin_layout Standard
+The behaviour of the neurons described so far is heavily dependent on their
+ parameters (the bias 
+\begin_inset Formula $\Theta$
+\end_inset
+
+ and the time constant 
+\begin_inset Formula $\tau$
+\end_inset
+
+), these increase the parameter space of possible networks significantly
+ and this makes genetic search more difficult.
+ If a network is recurrent it is necessary to have neuron models with time
+ constants to prevent the instability caused by feedback, however if networks
+ are feed forward the time constants can safely be dropped.
+ In this study the term FFNN is used to refer to a network of this type,
+ that is:
+\end_layout
+
+\begin_layout Itemize
+There are no recurrent connections
+\end_layout
+
+\begin_layout Itemize
+Neurons respond immediately to their input
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:FFNN"
+
+\end_inset
+
+ shows a typical FFNN.
+ Using the assumptions above then, for each neuron, the output at the next
+ time step is given by equation 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "eq:FFNN"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+{\textstyle y_{i\,(t+1)}={\displaystyle \sum_{j=1}^{n}}}w_{ji}\sigma(y_{j\,(t)}+\Theta_{j})+I(t)\label{eq:FFNN}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Evolutionary Algorithms
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+
+\size small
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzstyle{decision} = [diamond, draw, text width=4em, text badly centered,
+ fill=purple!20, node distance=2cm, inner sep=0pt]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzstyle{block} = [rectangle, draw, text width=8em, text badly centered,
+ fill=blue!20, rounded corners, minimum height=2em]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzstyle{line} = [draw, -latex']
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzstyle{cloud} = [draw, ellipse, node distance=1cm] 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture}[node distance = 1.5cm, auto]
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+tikzstyle{every node}=[font=
+\backslash
+small]
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Place nodes
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node [cloud, fill=green!20] (start) {Start};
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node [block, below of=start, text width=5em] (init) {Create initial population};
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node [block, right of=init, node distance=2.8cm] (evaluate) {Evaluate each
+ individual in population};
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node [decision, below of=evaluate] (decide) {Good enough?};
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node [block, below of=decide, node distance=2cm] (reproduce) {Select fitter
+ individuals to form new population};
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node [block, right of=reproduce, node distance=2.75cm, text width=5.5em] (crossove
+r) {Recombine genes (crossover)};
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node [block, right of=decide, node distance=2.75cm, text width=5.5em] (mutate)
+ {Mutate genes};
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+node [cloud, left of=reproduce, node distance=2.5cm, fill=red!40] (stop)
+ {Stop};
+\end_layout
+
+\begin_layout Plain Layout
+
+    %
+\backslash
+node [cloud, below of=stop, fill=red!40] (hammer) {Hammer Time!};
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Draw edges
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+draw[->] (start) -- (init);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+draw[->] (init) -- (evaluate);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+draw[->] (evaluate) -- (decide);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+draw[->] (decide) -- node [near start] {no} (reproduce);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+draw[->] (decide) -| node [near start] {yes} (stop);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+draw[->] (reproduce) -- (crossover);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+draw[->] (crossover) -- (mutate);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+draw[->] (mutate) |- node [right] {} (evaluate);
+\end_layout
+
+\begin_layout Plain Layout
+
+    %
+\backslash
+draw[->] (stop) -- (hammer);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A flow diagram showing the general form of evolutionary algorithms
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Evo-Flow"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+EAs are stochastic searh algorithms that are intended to mimic the process
+ of biological evolution.
+ The general principal is the same: through the ability of random mutations
+ to occasionally produce improvements, and through the ability of selection
+ to preserve these improvements in future generations, over a period of
+ many generations the population will improve.
+ The general form of EAs is shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Evo-Flow"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In much of the literature regarding EAs they are used tune parameters of
+ some function to be optimised, evolutionary robotics is slightly different
+ in this respect - there is no explicit fitness function to be evaluated,
+ the control systems' fitness must be determined experimentally (or in simulatio
+n).
+ Because of this it is useful to treat fitness evaluation as separate from
+ the genetic processes (selection, crossover and mutation).
+ This section will consider genetic processes in isolation first, before
+ touching upon the difficulties involved in fitness evaluation.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Development of the Platform
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Development-of-the"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/richard/Development/sigmoidwInset.pdf
+	width 90col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The lookup table powered logistic function.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/richard/Development/kh3dev/drawing.pdf
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The experimental apparatus (not to scale).
+ The maze can be of arbitrary shape and complexity.
+ Computer icon modified from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Icons"
+
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:The-experimental-apparatus"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ExampleLogFile.pdf
+	width 85col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A log file.
+ The large circle represents the robot (its size is to scale, this was a
+ small maze), the red lines represent boundaries (here the maze is an empty
+ box), the green line represents the path traced by the center of the robot
+ and the red dots represent area that the robot has not covered.
+ Note also the data in the black box, this is useful for tracing improvements
+ back through the robot's ancestry.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:A-log-file-e.g."
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Gen0Ind4.dot.pdf
+	width 100col%
+	scaleBeforeRotation
+	BoundingBox 40bp 40bp 670bp 230bp
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A neural network diagram.
+ Circles represent neurons, arrows connections.
+ Green arrows are excitatory connections, red arrows are inhibitory.
+ Arrow width is proportional to connection weight.
+ Dotted node boundaries indicate slow time constants, solid boundaries fast
+ time constants.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Neural-network-e.g."
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Examples of output files generated automatically by the supervising program
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Examples of the output files automatically generated by the supervising
+ program.
+ The Graphviz program is used to lay out the graph in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Neural-network-e.g."
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Results and Discussion
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Results-and-Discussion"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusions
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Conclusions"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "DissertationReferences"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Acknowledgements
+\end_layout
+
+\begin_layout Standard
+My thanks to Professor V.
+ Vitanov and to Mr.
+ B.
+ Derrick for all their help and support during the project.
+\end_layout
+
+\begin_layout Standard
+All code written for the platform is released under the GNU GPL v3 and can
+ be found at 
+\emph on
+http://code.google.com/p/kh3dev/
+\emph default
+, a copy of the licence is available at 
+\emph on
+http://www.gnu.org/licenses/gpl.html
+\end_layout
+
+\end_body
+\end_document
