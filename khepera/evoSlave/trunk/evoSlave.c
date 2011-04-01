@@ -101,7 +101,7 @@ void childProcess(char *filename)
 				for(i=0;i<INPUTS;i++)
 				{
 					inputs[i]=getIRRange(i)/1024.0;
-					printf("%.3f, ",inputs[i]);
+					//printf("%.3f, ",inputs[i]);
 				}
 
 				//Send IR Values to NN and get new neuron states:

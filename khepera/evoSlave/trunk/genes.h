@@ -15,8 +15,8 @@
 #define TCONST_IN 0x3F
 #define WEIGHT_IN 0x3F
 
-#define BIAS_MAX 1.0
-#define TCONST_MAX 1.0
+#define BIAS_MAX 0.2
+#define TCONST_MAX 0.1
 #define WEIGHT_MAX 1.0
 
 //Genotype stored as global:

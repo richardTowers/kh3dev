@@ -9,20 +9,20 @@
 
 //Architecture:
 #define INPUTS 9
-#define	HIDDENS 4
+#define	HIDDENS 2
 #define OUTPUTS 2
 //Connection Probabilities:
 /*I  H  O
 I 0 14  1
 H 0  4 14
 O 0  0  0*/
-#define pBASE 40
+#define pBASE 20
 #define pII 0
 #define pIH 14
-#define pIO 1
+#define pIO 0
 #define pHI 0
-#define pHH 2
-#define pHO 14
+#define pHH 0
+#define pHO 18
 #define pOI 0
 #define pOH 0
 #define pOO 0

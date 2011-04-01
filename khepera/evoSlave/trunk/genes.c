@@ -29,14 +29,14 @@ void readGenotype(const char *filename)
 	for (theBias = 0; theBias < nNeurons; theBias ++)
 	{
 		fscanf(file,"%hd",&value);
-		biases[theBias]=(float)value*(BIAS_MAX/BIAS_IN);//+3.0;
+		biases[theBias]=(float)value*(BIAS_MAX/BIAS_IN);
 	}
 	
 	//Loop through time constants:
 	for (theTConst = 0; theTConst < nNeurons; theTConst ++)
 	{
 		fscanf(file,"%hd",&value);
-		tConsts[theTConst]=(float)value*(TCONST_MAX/TCONST_IN)+1.0;
+		tConsts[theTConst]=(float)value*(TCONST_MAX/TCONST_IN)+0.005;
 	}
 	
 	//Loop through weights:

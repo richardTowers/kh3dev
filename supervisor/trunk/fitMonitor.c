@@ -254,7 +254,7 @@ void testIndividualOnRobot(rtIndividual* individual, rtRobot robot)
 	startLoggingPositions(logImage);
 	
 	startTime=time(NULL);
-	while(time(NULL)-startTime < EVAL_TIME+fitness)
+	while(time(NULL)-startTime < EVAL_TIME+fitness/2)
 	{	
 		keyHandler();
 		frame=cvQueryFrame(capture);

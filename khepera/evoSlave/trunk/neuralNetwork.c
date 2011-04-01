@@ -29,24 +29,22 @@ void ctrnn(float *y, const short n, const float *I, const float *b, const float 
 	for (i = 0; i < n; i += 1)
 	{
 		sum=0;
-		for (j = 0; j < n; j += 1) sum+=w[j*n+i]*sigmoid(y[j]-b[j]);
+		for (j = 0; j < n; j += 1) sum+=w[j*n+i]*sigmoid(yOld[j]-b[j]);
 
 		#ifdef RK4
 		{
-			k1=(-1*(y[i]          )+sum+I[i])/t[i];
-			k2=(-1*(y[i]+0.5*k1*dT)+sum+I[i])/t[i];
-			k3=(-1*(y[i]+0.5*k2*dT)+sum+I[i])/t[i];
-			k4=(-1*(y[i]  +  k3*dT)+sum+I[i])/t[i];
+			k1=(-1*(yOld[i]          )+sum+I[i])/t[i];
+			k2=(-1*(yOld[i]+0.5*k1*dT)+sum+I[i])/t[i];
+			k3=(-1*(yOld[i]+0.5*k2*dT)+sum+I[i])/t[i];
+			k4=(-1*(yOld[i]  +  k3*dT)+sum+I[i])/t[i];
 
 			y[i]+=dT*(k1+2*k2+2*k3+k4)/6;
 		}
-		#endif //RK4
-		
-		#else
-/*		{*/
-/*			y[i]=yOld[i]+(-yOld[i]+sum+I[i])/t[i];*/
-/*		}*/
-		
+		#elif EULER
+		{
+			y[i]=yOld[i]+(-yOld[i]+sum+I[i])/t[i];
+		}
+		#endif
 		printf("%.3f, ", y[i]);
 	}
 	printf("\n");
@@ -62,13 +60,13 @@ void ffnn(float *y, const short n, const float *I, const float *w)
 	
 	//Copy neuron states into new array:
 	yOld=malloc(n*sizeof(float));
-	for (i = 0; i < n; i += 1) yOld[n] = y[n];
+	for (i = 0; i < n; i += 1) yOld[i] = y[i];
 
 	//Calculate neuron states at t+1:
 	for (i = 0; i < n; i += 1)
 	{
 		y[i]=0;
-		for (j = 0; j < n; j += 1) y[i]+=(w[j*n+i])*sigmoid(yOld[j]);
+		for (j = 0; j < n; j += 1) y[i]+=(w[j*n+i])*(2*sigmoid(yOld[j])-1);
 		y[i]+=I[i];
 	}
 	free(yOld);

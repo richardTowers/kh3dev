@@ -14,6 +14,7 @@
 #include "math.h"
 #include "genes.h"
 
+#define RK4
 #define INPUTS 9
 #define OUTPUTS 2
 
