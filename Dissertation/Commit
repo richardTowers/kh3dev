@@ -1,0 +1,7 @@
+#!/bin/bash
+_zenity="/usr/bin/zenity"
+_out="/tmp/whois.output.$$"
+
+commit=$(${_zenity} --title  "Message" --entry --text "Please enter a message for your commit");
+
+output=$(svn ci -m "$commit");
