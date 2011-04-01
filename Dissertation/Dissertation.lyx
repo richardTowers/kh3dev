@@ -675,14 +675,14 @@ reference "fig:A-directed-loop"
  are capable of displaying a very wide range of behaviour, including limit-cycle
 s and chaotic effects such as strange attractors.
  CTRNNs with an arbitrary number of hidden neurons are known to be able
- to approximate any smooth dynamic system.
+ to approximate any smooth dynamic system
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CTRNNuinversal"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Standard
@@ -1341,18 +1341,20 @@ reference "fig:Evo-Flow"
 
 \begin_layout Standard
 In much of the literature regarding EAs they are used tune parameters of
- some function to be optimised, evolutionary robotics is slightly different
- in this respect - there is no explicit fitness function to be evaluated,
- the control systems' fitness must be determined experimentally (or in simulatio
-n).
+ some function to be optimised
+\begin_inset CommandInset citation
+LatexCommand cite
+key "G3PCX"
+
+\end_inset
+
+, evolutionary robotics is slightly different in this respect - there is
+ no explicit fitness function to be evaluated, the control systems' fitness
+ must be determined experimentally (or in simulation).
  Because of this it is useful to treat fitness evaluation as separate from
  the genetic processes (selection, crossover and mutation).
  This section will consider genetic processes in isolation first, before
- touching upon the difficulties involved in fitness evaluation.
-\end_layout
-
-\begin_layout Standard
-
+ touching upon some of the difficulties involved in fitness evaluation.
 \end_layout
 
 \begin_layout Standard
