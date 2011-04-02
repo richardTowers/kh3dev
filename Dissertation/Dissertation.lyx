@@ -4,6 +4,41 @@
 \begin_header
 \textclass IEEEtran
 \begin_preamble
+%Stuff to allow theorems etc.
+
+\let\IEEEproof\proof
+\let\IEEEendproof\endproof
+\let\proof\@undefined
+\let\endproof\@undefined
+
+\usepackage{amsthm}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\theoremstyle{plain}
+\newtheorem{cor}[thm]{Corollary}
+\theoremstyle{plain}
+\newtheorem{lem}[thm]{Lemma}
+\theoremstyle{plain}
+\newtheorem{prop}[thm]{Proposition}
+\theoremstyle{plain}
+\newtheorem{conjecture}[thm]{Conjecture}
+\theoremstyle{plain}
+\newtheorem{fact}[thm]{Fact}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\theoremstyle{definition}
+\newtheorem{example}[thm]{Example}
+\theoremstyle{definition}
+\newtheorem{problem}[thm]{Problem}
+\theoremstyle{definition}
+\newtheorem{xca}[thm]{Exercise}
+\theoremstyle{remark}
+\newtheorem{remark}[thm]{Remark}
+\theoremstyle{remark}
+\newtheorem{claim}[thm]{Claim}
+
+
 \usepackage{algorithmic}
 \usepackage{siunitx}
 \usepackage{tikz}
@@ -1355,6 +1390,27 @@ key "G3PCX"
  the genetic processes (selection, crossover and mutation).
  This section will consider genetic processes in isolation first, before
  touching upon some of the difficulties involved in fitness evaluation.
+\end_layout
+
+\begin_layout Standard
+In natural evolution, selection is taken care of by Darwin's 
+\begin_inset Quotes eld
+\end_inset
+
+survival of the fittest
+\begin_inset Quotes erd
+\end_inset
+
+ wherein stronger individuals are more likely to survive to the point of
+ reproductive success.
+ In artificial evolution the reproductive process is completely artificial,
+ as a result there needs to be some artificial method of selection.
+ When deciding how to select individuals for reproduction there are two
+ conflicting criteria that need to be considered, average fitness should
+ be maximised by giving fitter individuals better reproductive chances (selectio
+n intesity), but, at the same time, diversity in the population must be
+ maitained.
+ 
 \end_layout
 
 \begin_layout Standard
