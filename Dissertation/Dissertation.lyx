@@ -1408,9 +1408,80 @@ survival of the fittest
  When deciding how to select individuals for reproduction there are two
  conflicting criteria that need to be considered, average fitness should
  be maximised by giving fitter individuals better reproductive chances (selectio
-n intesity), but, at the same time, diversity in the population must be
- maitained.
+n intesity), but, at the same time, loss of diversity in the population
+ must be avoided.
+ This is known as the 
+\emph on
+exploration-exploitation
+\emph default
+ tradeoff.
+\end_layout
+
+\begin_layout Standard
+In this study tournament selection is used as it provides higher selection
+ intensities for the same loss of diversity compared to other methods
+\begin_inset CommandInset citation
+LatexCommand cite
+key "SelectionComparison"
+
+\end_inset
+
+.
+ Tournament selection involves selecting a random sample from the population
+ of size 
+\begin_inset Formula $t$
+\end_inset
+
+ and choosing the fittest individual for the next generation, this is repeated
  
+\begin_inset Formula $N$
+\end_inset
+
+ times where 
+\begin_inset Formula $N$
+\end_inset
+
+ is the size of the population.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "tournamentSel"
+
+\end_inset
+
+ provides a comprehensive analysis of tournament selection, the loss of
+ diversity is given by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Loss-of-Diversity"
+
+\end_inset
+
+ and selection intensity is given by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Selection-Intesity"
+
+\end_inset
+
+.
+ 
+\begin_inset Formula \begin{equation}
+p_{d}=t^{\nicefrac{-1}{t-1}}-t^{\nicefrac{-t}{t-1}}\label{eq:Loss-of-Diversity}\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula \begin{equation}
+I_{T}(t)=\intop_{-\infty}^{\infty}t\, x\,\frac{1}{\sqrt{2\pi}}\, e^{-\frac{x^{2}}{2}}\,\left(\intop_{-\infty}^{x}\frac{1}{\sqrt{2\pi}}\, e^{-\frac{y^{2}}{2}}\, dy\right)^{t-1}\, dx\label{eq:Selection-Intesity}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \begin_layout Standard
