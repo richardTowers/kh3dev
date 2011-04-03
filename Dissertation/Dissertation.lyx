@@ -1116,21 +1116,21 @@ Evolutionary Algorithms
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 
 \size small
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
 
 \backslash
 tikzstyle{decision} = [diamond, draw, text width=4em, text badly centered,
- node distance=2cm, inner sep=0pt]
+ node distance=2cm, fill=purple!20, inner sep=0pt]
 \end_layout
 
 \begin_layout Plain Layout
@@ -1138,7 +1138,7 @@ tikzstyle{decision} = [diamond, draw, text width=4em, text badly centered,
 
 \backslash
 tikzstyle{block} = [rectangle, draw, text width=8em, text badly centered,
- rounded corners, minimum height=2em]
+ rounded corners, fill=blue!20, minimum height=2em]
 \end_layout
 
 \begin_layout Plain Layout
@@ -1184,7 +1184,7 @@ small]
 
     
 \backslash
-node [cloud] (start) {Start};
+node [cloud, fill=green!20] (start) {Start};
 \end_layout
 
 \begin_layout Plain Layout
@@ -1237,14 +1237,15 @@ node [block, right of=decide, node distance=2.75cm, text width=5.5em] (mutate)
 
     
 \backslash
-node [cloud, left of=reproduce, node distance=2.5cm] (stop) {Stop};
+node [cloud, left of=reproduce, fill=red!40, node distance=2.5cm] (stop)
+ {Stop};
 \end_layout
 
 \begin_layout Plain Layout
 
     %
 \backslash
-node [cloud, below of=stop] (hammer) {Hammer Time!};
+node [cloud, below of=stop, fill=red!40] (hammer) {Hammer Time!};
 \end_layout
 
 \begin_layout Plain Layout
@@ -1371,28 +1372,131 @@ reference "fig:Evo-Flow"
 \end_inset
 
 .
+ EAs are by no means the only appropriate search algorithm for tuning network
+ parameters, other processes such as simulated annealing or tabu search
+ could equally be applied.
+ EAs are used in this study primarily for similarity to the biological process
+ being emulated, further work could be done comparing their performance
+ to other search algorithms.
 \end_layout
 
 \begin_layout Standard
-In much of the literature regarding EAs they are used tune parameters of
- some function to be optimised
-\begin_inset CommandInset citation
-LatexCommand cite
-key "G3PCX"
+When thinking about any multiparameter optimisation process it is useful
+ to consider a 
+\emph on
+fitness landscape
+\emph default
+ (
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename FitScape.eps
+	width 90col%
 
 \end_inset
 
-, evolutionary robotics is slightly different in this respect - there is
- no explicit fitness function to be evaluated, the control systems' fitness
- must be determined experimentally (or in simulation).
- Because of this it is useful to treat fitness evaluation as separate from
- the genetic processes (selection, crossover and mutation).
- This section will consider genetic processes in isolation first, before
- touching upon some of the difficulties involved in fitness evaluation.
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A cartoon example of a fitness landscape.
+ The dimensionality of the fitness landscape is always 
+\begin_inset Formula $n+1$
+\end_inset
+
+, where 
+\begin_inset Formula $n$
+\end_inset
+
+ is the number of parameters.
+ In this case there are two parameters to be tuned and one fitness value,
+ resulting in a three dimensional surface.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fitness-landscape"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Fitness-landscape"
+
+\end_inset
+
+).
+ Where an explicit fitness function is available there will be single fitness
+ value for every combination of parameters.
+ The fitness landscape refers to the multi-dimensional surface traced by
+ these fitness values.
+ In robotics the picture is slightly less clear since robots with the same
+ genotype can score different fitness values depending on things like initial
+ position, initial heading and sensor noise, but the principal is the same.
+ When optimising ANN parameters directly, fitness landscapes often have
+ 
+\emph on
+thousands
+\emph default
+ of dimensions, and so, ulinke in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Fitness-landscape"
+
+\end_inset
+
+, direct visualisation is obviously impossible, this illustrates the need
+ for heuristics.
 \end_layout
 
 \begin_layout Standard
-In natural evolution, selection is taken care of by Darwin's 
+One of the biggest difficulties in evolving neural networks is the problem
+ of genotype-phenotype (G-P) mapping.
+ A robot's phenotype is the expression of its genotype under the influence
+ of the environment, it is this that determines its behaviour and fitness.
+ The genetic operators of the EA act upon the genotype, not the phenotype,
+ as a result the way that the genotype encodes the control system has a
+ huge impact on the shape of the fitness landscape and thus the performance
+ of the evolutionary search.
+ In this study a direct 
+\emph on
+one-to-one 
+\emph default
+mapping is used, wherein the value of every network parameter is directly
+ encoded into the genotype by means of a binary string.
+ This mapping is the simplest from the point of view of platform development,
+ however it becomes unwieldy for large networks.
+ In future work a more biologically plausible scheme such as the growth
+ scheme proposed in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nolfi&Floreano"
+
+\end_inset
+
+ is likely to demonstrate much better evolvability and more compact genotypes.
+\end_layout
+
+\begin_layout Standard
+In natural evolution the selection process is taken care of by Darwin's
+ 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1400,7 +1504,7 @@ survival of the fittest
 \begin_inset Quotes erd
 \end_inset
 
- wherein stronger individuals are more likely to survive to the point of
+, wherein stronger individuals are more likely to survive to the point of
  reproductive success.
  In artificial evolution the reproductive process is completely artificial,
  as a result there needs to be some artificial method of selection.
@@ -1472,7 +1576,7 @@ p_{d}=t^{\nicefrac{-1}{t-1}}-t^{\nicefrac{-t}{t-1}}\label{eq:Loss-of-Diversity}\
 
 
 \begin_inset Formula \begin{equation}
-I(t)=\intop_{-\infty}^{\infty}\frac{t\, x}{\sqrt{2\pi}}\, e^{-\frac{x^{2}}{2}}\,\left(\intop_{-\infty}^{x}\frac{1}{\sqrt{2\pi}}\, e^{-\frac{y^{2}}{2}}\, dy\right)^{t-1}\, dx\label{eq:Selection-Intesity}\end{equation}
+I(t)=\intop_{-\infty}^{\infty}\frac{t\, x}{\sqrt{2\pi}}\, e^{-\frac{x^{2}}{2}}\,\left(\intop_{-\infty}^{x}\frac{1}{\sqrt{2\pi}}\, e^{-\frac{y^{2}}{2}}\, dy\right)^{t-1}dx\label{eq:Selection-Intesity}\end{equation}
 
 \end_inset
 
@@ -1490,12 +1594,12 @@ status collapsed
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -1700,6 +1804,13 @@ end{tikzpicture}
 
 \begin_layout Plain Layout
 The effect of point mutation on binary strings
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Mutation"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1717,7 +1828,7 @@ The effect of point mutation on binary strings
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -2070,6 +2181,13 @@ end{tikzpicture}
 
 \begin_layout Plain Layout
 The crossover operation
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:The-crossover-operation"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2093,6 +2211,13 @@ The crossover operation
 Diagrams showing the genetic operations.
  Chains of boxes represent genomes encoded as binary strings, numbers show
  the magnitude of the string in decimal.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Mutation-and-Crossover"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2106,14 +2231,42 @@ Diagrams showing the genetic operations.
 
 \end_inset
 
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Mutation-and-Crossover"
 
+\end_inset
+
+ shows the operation of mutation and crossover.
+ Without these operators the average fitness of the population would still
+ improve, tending towards the fitness of the best individual, but there
+ would be no exploration of the fitness landscape - no new solutions evaluated.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Newpage clearpage
+Mutation is usually the primary force driving exploration, so long as the
+ mutation rate is low children produced will be near to the parents in terms
+ of the parameter space.
+ A thourough search of the fitness landscape is accomplished by having a
+ large population of individuals with initially random genotypes and using
+ mutation to explore the local regions.
+\end_layout
+
+\begin_layout Standard
+Crossover is a more intrusive operation, many more bits are flipped and
+ several parameters can change at once.
+ Children are generally much further from their parents in parameter space
+ than they would be after a point mutation and this can often mean that
+ they score very low fitnesses, although more of the space is explored.
+ With a naïve G-P mapping scheme this problem can be significant 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nolfi&Floreano"
+
 \end_inset
 
-
+, for this reason the crossover rates used in this study are extremely low.
 \end_layout
 
 \begin_layout Section
