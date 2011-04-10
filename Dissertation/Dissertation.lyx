@@ -94,7 +94,11 @@
 \begin_body
 
 \begin_layout Title
-Why Is My Hoover So Stupid? A Platform for Evolving Intelligent Mobile Robots
+Why Is My Hoover So Stupid?
+\begin_inset Newline newline
+\end_inset
+
+A Platform for Evolving Intelligent Mobile Robots
 \end_layout
 
 \begin_layout Author
@@ -1385,7 +1389,7 @@ When thinking about any multiparameter optimisation process it is useful
 \emph on
 fitness landscape
 \emph default
- (
+ 
 \begin_inset Float figure
 wide false
 sideways false
@@ -1434,7 +1438,7 @@ name "fig:Fitness-landscape"
 
 \end_inset
 
-figure 
+(figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Fitness-landscape"
@@ -2376,281 +2380,12 @@ This study uses Khepera III robots rather than an actual Roombas in the
  scaling the environment to negate the size difference.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Float algorithm
-placement th
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-algsetup{indent=2em} 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{algorithmic}[1]
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-REPEAT
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-STATE
-\end_layout
-
-\end_inset
-
- move in outwards spiral
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-UNTIL{collision}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-REPEAT
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-REPEAT
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-STATE
-\end_layout
-
-\end_inset
-
- follow the wall
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-UNTIL
-\end_layout
-
-\end_inset
-
- random length of time has elapsed
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-STATE
-\end_layout
-
-\end_inset
-
- rotate away from the wall
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-REPEAT
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-STATE
-\end_layout
-
-\end_inset
-
- move in straight line
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-UNTIL{collision}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-UNTIL{cleaning time over}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{algorithmic}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-The Roomba's exploration algorithm
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
 Platform Structure
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
-placement !p
 wide false
 sideways false
 status collapsed
@@ -23824,153 +23559,274 @@ The lookup table powered logistic function.
 Outputs
 \end_layout
 
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ExampleLogFile.pdf
-	width 85col%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-A log file.
- The large circle represents the robot (its size is to scale, this was a
- small maze), the red lines represent boundaries (here the maze is an empty
- box), the green line represents the path traced by the center of the robot
- and the red dots represent area that the robot has not covered.
- Note also the data in the black box, this is useful for tracing improvements
- back through the robot's ancestry.
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:A-log-file-e.g."
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename Gen0Ind4.dot.pdf
-	width 100col%
-	scaleBeforeRotation
-	BoundingBox 40bp 40bp 670bp 230bp
-	clip
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-A neural network diagram.
- Circles represent neurons, arrows connections.
- Green arrows are excitatory connections, red arrows are inhibitory.
- Arrow width is proportional to connection weight.
- Dotted node boundaries indicate slow time constants, solid boundaries fast
- time constants.
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Neural-network-e.g."
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Examples of output files generated automatically by the supervising program
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Examples of the output files automatically generated by the supervising
- program.
- The Graphviz program is used to lay out the graph in 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Neural-network-e.g."
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Section
 Results and Discussion
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Results-and-Discussion"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+algsetup{indent=2em} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+REPEAT
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ move in outwards spiral
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+UNTIL{collision with wall}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+REPEAT
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+REPEAT
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ follow the wall
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+UNTIL
+\end_layout
+
+\end_inset
+
+ random length of time has elapsed
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ rotate away from the wall
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+REPEAT
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ move in straight line
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+UNTIL{collision with wall}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+UNTIL{total cleaning time elapsed}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The Roomba's exploration algorithm
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -24069,6 +23925,134 @@ Screenshots of the supervisor program
 \end_layout
 
 \begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ExampleLogFile.pdf
+	width 38text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A log file.
+ The large circle represents the robot (its size is to scale, this was a
+ small maze), the red lines represent boundaries (here the maze is an empty
+ box), the green line represents the path traced by the center of the robot
+ and the red dots represent area that the robot has not covered.
+ Note also the data in the black box, this is useful for tracing improvements
+ back through the robot's ancestry.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:A-log-file-e.g."
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Gen0Ind4.dot.pdf
+	width 56text%
+	scaleBeforeRotation
+	BoundingBox 40bp 40bp 670bp 230bp
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A neural network diagram.
+ Circles represent neurons, arrows connections.
+ Green arrows are excitatory connections, red arrows are inhibitory.
+ Arrow width is proportional to connection weight.
+ Dotted node boundaries indicate slow time constants, solid boundaries fast
+ time constants.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Neural-network-e.g."
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Examples of the output files automatically generated by the supervising
+ program.
+ The Graphviz program is used to lay out the graph in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Neural-network-e.g."
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
