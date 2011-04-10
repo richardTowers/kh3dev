@@ -2348,36 +2348,70 @@ The Robots
 \end_layout
 
 \begin_layout Standard
-The Roomba is a cylindrical robot, 34
-\begin_inset Formula $\unit{cm}$
+This study uses version III Kheperas which are small, cylindrical, two-wheel
+ differential drive robots with a large array of sensors - six ultrasound
+ and nine active and passive infrared (IR).
+ For simplicity only the motors and active IR sensors are used.
+ The IR sensors provide a voltage which is related (in a non-linear fashion)
+ to the distance from the sensor to the nearest reflective object.
+ These voltages are converted into binary values by analogue-to-digital
+ converters, these values are fed as inputs to the neural network which
+ produces output values which are converted to analogue, boosted and fed
+ to the two motors.
+ Because the robot is differential drive the outputs of the motors can specify
+ any curvilinear path, including on the spot rotation.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename KheperaIII.pdf
+	width 90col%
+
 \end_inset
 
- in diameter and 9
-\begin_inset Formula $\unit{cm}$
-\end_inset
 
- high, it has three infrared sensors to gather range data, one facing forward
- and two sideways.
- It also has a large front facing bump sensor to detect collisions.
- Its two motors operate as a differential drive system for steering and
- turning on the spot.
- The Roomba has several other features that will not be investigated here.
 \end_layout
 
-\begin_layout Standard
-This study uses Khepera III robots rather than an actual Roombas in the
- experiments due to the Khepera platform's flexibility and power.
- Kheperas are much smaller than Roombas (
-\begin_inset Formula $\phi=12\unit{cm}$
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A diagram of the Khepera III robot showing IR sensor positions and the arrangeme
+nt of the wheels.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Khepera-Layout"
+
 \end_inset
 
-, 
-\begin_inset Formula $h=5\unit{cm}$
+
+\end_layout
+
 \end_inset
 
-), have 9 infrared sensors instead of three and no bump sensor - however
- they can be made to simulate Roombas by switching off some sensors and
- scaling the environment to negate the size difference.
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Khepera-Layout"
+
+\end_inset
+
+ shows Khepera's sensory layout.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -2802,7 +2836,9 @@ end{tikzpicture}
 
 \begin_layout Plain Layout
 Flow diagram showing the program outline.
-\end_layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Flow-diagram-outline"
 
 \end_inset
 
@@ -2812,6 +2848,22 @@ Flow diagram showing the program outline.
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Flow-diagram-outline"
+
+\end_inset
+
+ shows the logical flow of the platform.
+ The general principle is to seperate the detailed knowledge of the environment
+ (needed for evaluating fitnesses and avoiding crashes) from the sensory
+ knowledge that the robots need to operate.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -2827,7 +2879,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/richard/Development/kh3dev/drawing.pdf
+	filename Aparatus.pdf
 	width 100col%
 
 \end_inset
@@ -23935,7 +23987,7 @@ Screenshots of the supervisor program
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -23995,10 +24047,10 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename Gen0Ind4.dot.pdf
+	filename Gen1Ind9.dot.pdf
 	width 56text%
 	scaleBeforeRotation
-	BoundingBox 40bp 40bp 670bp 230bp
+	BoundingBox 40bp 40bp 670bp 330bp
 	clip
 
 \end_inset
