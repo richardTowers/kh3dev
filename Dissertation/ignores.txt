@@ -2,3 +2,4 @@
 *.bak
 *~
 ULTRArsync
+Dissertation.pdf

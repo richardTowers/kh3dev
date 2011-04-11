@@ -4,6 +4,8 @@
 \begin_header
 \textclass IEEEtran
 \begin_preamble
+\usepackage{verbatim} 
+
 %Stuff to allow theorems etc.
 
 \let\IEEEproof\proof
@@ -432,9 +434,9 @@ reference "sec:Development-of-the"
  relies heavily on two computational methods.
  Neural networks are used as control systems, and evolutionary algorithms
  are used to determine the network parameters.
- Both methods are appealing for their biological plausibilty, since we are
- trying to emulate nature's success it seems apt that we should mimic its
- methods closely.
+ Both methods are appealing for their biological plausibility, since we
+ are trying to emulate nature's success it seems apt that we should mimic
+ its methods closely.
 \end_layout
 
 \begin_layout Subsection
@@ -494,8 +496,8 @@ By far the most biologically plausible class of ANNs are the so called
 third generation
 \emph default
 : spiking neural networks (SNNs).
- In SNNs neurons are modelled as leaky integrate-and-fire systems with each
- spike being modelled separately.
+ In SNNs neurons are modeled as leaky integrate-and-fire systems with each
+ spike being modeled separately.
  These networks have been shown to have significant advantages over simpler
  networks in terms of both computational power and evolvability, however
  they are much more computationally expensive to simulate and significantly
@@ -513,8 +515,8 @@ Continuous Time Recurrent NNs can be arrived at from SNNs by making some
  Neurons need only concern themselves with the rate of incoming spikes,
  which can be assumed to be the sum of the activation states of all presynaptic
  neurons, adjusted by synaptic weights.
- Once this assumption is made neurons can be modelled as simple dynamic
- systems, where the change in activation is given by equation 
+ Once this assumption is made neurons can be modeled as simple dynamic systems,
+ where the change in activation is given by equation 
 \begin_inset CommandInset ref
 LatexCommand eqref
 reference "eq:CTRNN"
@@ -524,7 +526,7 @@ reference "eq:CTRNN"
 .
  
 \begin_inset Formula \begin{equation}
-\dot{y}_{i}=\frac{-y_{i}+\sum_{j=1}^{n}w_{ji}\sigma(y_{j}-\Theta_{j})+I_{i}(t)}{\tau_{i}}\label{eq:CTRNN}\end{equation}
+\dot{y}_{i}=\frac{-y_{i}+\sum_{j=1}^{n}w_{ji}\sigma(y_{j}-\theta_{j})+I_{i}(t)}{\tau_{i}}\label{eq:CTRNN}\end{equation}
 
 \end_inset
 
@@ -709,7 +711,7 @@ reference "fig:A-directed-loop"
 
 ), CTRNNs make use of the ability of these loops to sustain patterns of
  activation, allowing a sort of short term memory.
- Because of this ability to capture and store time dependant phenomena they
+ Because of this ability to capture and store time dependent phenomena they
  are capable of displaying a very wide range of behaviour, including limit-cycle
 s and chaotic effects such as strange attractors.
  CTRNNs with an arbitrary number of hidden neurons are known to be able
@@ -1104,7 +1106,7 @@ reference "eq:FFNN"
 
 \begin_layout Standard
 \begin_inset Formula \begin{equation}
-{\textstyle y_{i\,(t+1)}={\displaystyle \sum_{j=1}^{n}}}w_{ji}\sigma(y_{j\,(t)}+\Theta_{j})+I(t)\label{eq:FFNN}\end{equation}
+{\textstyle y_{i\,(t+1)}={\displaystyle \sum_{j=1}^{n}}}w_{ji}\sigma(y_{j\,(t)}+\theta_{j})+I(t)\label{eq:FFNN}\end{equation}
 
 \end_inset
 
@@ -1113,6 +1115,13 @@ reference "eq:FFNN"
 
 \begin_layout Subsection
 Evolutionary Algorithms
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Evolutionary-Algorithms"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1361,7 +1370,7 @@ name "fig:Evo-Flow"
 
 \end_inset
 
-EAs are stochastic searh algorithms that are intended to mimic the process
+EAs are stochastic search algorithms that are intended to mimic the process
  of biological evolution.
  The general principal is the same: through the ability of random mutations
  to occasionally produce improvements, and through the ability of selection
@@ -1384,7 +1393,7 @@ reference "fig:Evo-Flow"
 \end_layout
 
 \begin_layout Standard
-When thinking about any multiparameter optimisation process it is useful
+When thinking about any multi-parameter optimisation process it is useful
  to consider a 
 \emph on
 fitness landscape
@@ -1399,7 +1408,7 @@ status collapsed
 \align center
 \begin_inset Graphics
 	filename FitScape.eps
-	width 90col%
+	width 100col%
 
 \end_inset
 
@@ -1458,7 +1467,7 @@ reference "fig:Fitness-landscape"
 \emph on
 thousands
 \emph default
- of dimensions, and so, ulinke in figure 
+ of dimensions, and so, unlike in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Fitness-landscape"
@@ -1509,18 +1518,18 @@ survival of the fittest
 
 , wherein stronger individuals are more likely to survive to the point of
  reproductive success.
- In artificial evolution the reproductive process is completely artificial,
- as a result there needs to be some artificial method of selection.
+ In artificial evolution the reproductive process is completely artificial
+ and as a result there needs to be some artificial method of selection.
  When deciding how to select individuals for reproduction there are two
  conflicting criteria that need to be considered, average fitness should
  be maximised by giving fitter individuals better reproductive chances (selectio
-n intesity), but, at the same time, loss of diversity in the population
+n intensity), but, at the same time, loss of diversity in the population
  must be avoided.
  This is known as the 
 \emph on
 exploration-exploitation
 \emph default
- tradeoff.
+ trade off.
 \end_layout
 
 \begin_layout Standard
@@ -1590,7 +1599,7 @@ I(t)=\intop_{-\infty}^{\infty}\frac{t\, x}{\sqrt{2\pi}}\, e^{-\frac{x^{2}}{2}}\,
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -1653,27 +1662,13 @@ matrix (genes) [matrix of nodes, row sep=5mm, ampersand replacement=
 
 \begin_layout Plain Layout
 
-|[one]| 
+|[zero]| 
 \backslash
 & |[one]| 
 \backslash
 & |[zero]| 
 \backslash
-& |[one]| 
-\backslash
 & |[zero]| 
-\backslash
-& |[zero]| 
-\backslash
-& |[zero]| 
-\backslash
-& |[one]| 
-\backslash
-& |[zero]| 
-\backslash
-& |[one]| 
-\backslash
-& |[anchor=center]| 837 
 \backslash
 & |[one]| 
 \backslash
@@ -1683,7 +1678,11 @@ matrix (genes) [matrix of nodes, row sep=5mm, ampersand replacement=
 \backslash
 & |[one]| 
 \backslash
+& |[anchor=center]| 77 
+\backslash
 & |[zero]| 
+\backslash
+& |[one]| 
 \backslash
 & |[zero]| 
 \backslash
@@ -1691,11 +1690,13 @@ matrix (genes) [matrix of nodes, row sep=5mm, ampersand replacement=
 \backslash
 & |[one]| 
 \backslash
+& |[one]| 
+\backslash
 & |[zero]| 
 \backslash
 & |[one]| 
 \backslash
-& |[anchor=center]| 837 
+& |[anchor=center]| 77 
 \backslash
 & |[one]| {1} 
 \backslash
@@ -1714,23 +1715,9 @@ matrix (genes) [matrix of nodes, row sep=5mm, ampersand replacement=
 \backslash
 & |[one]| 
 \backslash
-& |[one]| 
-\backslash
-& |[one]| 
-\backslash
 & |[zero]| 
 \backslash
 & |[zero]| 
-\backslash
-& |[zero]| 
-\backslash
-& |[one]| 
-\backslash
-& |[zero]| 
-\backslash
-& |[one]| 
-\backslash
-& |[anchor=center]| 965 
 \backslash
 & |[one]| 
 \backslash
@@ -1740,11 +1727,11 @@ matrix (genes) [matrix of nodes, row sep=5mm, ampersand replacement=
 \backslash
 & |[one]| 
 \backslash
-& |[zero]| 
+& |[anchor=center]| $-51$ 
 \backslash
 & |[zero]| 
 \backslash
-& |[zero]| 
+& |[one]| 
 \backslash
 & |[zero]| 
 \backslash
@@ -1752,7 +1739,13 @@ matrix (genes) [matrix of nodes, row sep=5mm, ampersand replacement=
 \backslash
 & |[one]| 
 \backslash
-& |[anchor=center]| 833 
+& |[zero]| 
+\backslash
+& |[zero]| 
+\backslash
+& |[one]| 
+\backslash
+& |[anchor=center]| 73 
 \backslash
 &
 \backslash
@@ -1774,7 +1767,7 @@ matrix (genes) [matrix of nodes, row sep=5mm, ampersand replacement=
 
 
 \backslash
-draw[thick,red!80!black,->] (genes-1-3) -- (genes-2-3) node [midway,right]
+draw[thick,red!80!black,->] (genes-1-1) -- (genes-2-1) node [midway,right]
   {Mutation};
 \end_layout
 
@@ -1782,7 +1775,7 @@ draw[thick,red!80!black,->] (genes-1-3) -- (genes-2-3) node [midway,right]
 
 
 \backslash
-draw[thick,red!80!black,->] (genes-1-19) -- (genes-2-19) node [midway,right]
+draw[thick,red!80!black,->] (genes-1-15) -- (genes-2-15) node [midway,right]
   {};
 \end_layout
 
@@ -1806,7 +1799,7 @@ end{tikzpicture}
 \begin_inset Caption
 
 \begin_layout Plain Layout
-The effect of point mutation on binary strings
+The effect of point mutation on signed, 8-bit binary strings
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:Mutation"
@@ -2248,10 +2241,10 @@ reference "fig:Mutation-and-Crossover"
 \end_layout
 
 \begin_layout Standard
-Mutation is usually the primary force driving exploration, so long as the
- mutation rate is low children produced will be near to the parents in terms
- of the parameter space.
- A thourough search of the fitness landscape is accomplished by having a
+Mutation is usually the primary force driving exploration.
+ So long as the mutation rate is low children produced will be near to the
+ parents in terms of the parameter space.
+ A thorough search of the fitness landscape is accomplished by having a
  large population of individuals with initially random genotypes and using
  mutation to explore the local regions.
 \end_layout
@@ -2307,7 +2300,7 @@ The system should be able to run (after setup) with no human interaction
 
 \begin_deeper
 \begin_layout Itemize
-Fitnesses must be evaluted automatically (i.e.
+Fitnesses must be evaluated automatically (i.e.
  with no human interaction)
 \end_layout
 
@@ -2326,6 +2319,10 @@ The evolutionary process should be as time efficient as possible, since
 \end_layout
 
 \begin_deeper
+\begin_layout Itemize
+Genotype encoding must be compact and evolvable
+\end_layout
+
 \begin_layout Itemize
 Fitness functions must be carefully designed to give high evolvability without
  compromising evolved behaviour
@@ -2381,8 +2378,8 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
-A diagram of the Khepera III robot showing IR sensor positions and the arrangeme
-nt of the wheels.
+A plan view of the Khepera III robot showing IR sensor positions and the
+ arrangement of the wheels.
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:Khepera-Layout"
@@ -2695,12 +2692,12 @@ draw [->] (monitor.west)-| ++(-0.7,0) |- (send.south west) node[near start,
 
 
 \backslash
-draw [->] (reproduce.west) -| node[at start, below, xshift=-22,text width=1.5cm,al
-ign=center] {Next
+draw [->] (reproduce.west) -| node[at start, below, xshift=-15, , yshift=-5,text
+ width=1.5cm,align=center] {Next
 \backslash
 
 \backslash
-Generation} ++(-1.2,0) |- (send.west);
+Generation} ++(-1.0,0) |- (send.west);
 \end_layout
 
 \begin_layout Plain Layout
@@ -2780,7 +2777,7 @@ colorlet{right}{red!7}
 
 
 \backslash
-fill [left, fill=left] (0,-8) rectangle (-5.1,8);
+fill [left, fill=left] (0,-8) rectangle (-4.9,8);
 \end_layout
 
 \begin_layout Plain Layout
@@ -2809,7 +2806,7 @@ shade [left color=left, right color=right] (-1cm,-8) rectangle (1,8);
 
 
 \backslash
-draw [line width=0.1] (-5.1,-8) rectangle (3.9,8);
+draw [line width=0.1] (-4.9,-8) rectangle (3.9,8);
 \end_layout
 
 \begin_layout Plain Layout
@@ -2852,25 +2849,7 @@ name "fig:Flow-diagram-outline"
 
 \end_inset
 
-Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Flow-diagram-outline"
 
-\end_inset
-
- shows the logical flow of the platform.
- The general principle is to seperate the detailed knowledge of the environment
- (needed for evaluating fitnesses and avoiding crashes) from the sensory
- knowledge that the robots need to operate.
- 
-\end_layout
-
-\begin_layout Subsection
-Fitness Monitoring
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -2917,18 +2896,1286 @@ name "fig:The-experimental-apparatus"
 
 \end_inset
 
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Flow-diagram-outline"
 
+\end_inset
+
+ shows the logical flow of the platform and figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:The-experimental-apparatus"
+
+\end_inset
+
+ shows its physical arrangement.
+ All of the genetic processes, including fitness evaluation, are executed
+ on a single supervising computer which communicates with the robots over
+ a wireless network.
+ In theory up to thirty robots could be controlled over such a network
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ieee802.11"
+
+\end_inset
+
+.
+ The robots themselves need only be concerned with receiving instructions
+ and running the neural networks - they have no knowledge of their surroundings
+ aside from that gathered from their sensors.
+ The supervising computer on the other hand can obtain much more data from
+ the environment, using a camera it can track the absolute positions of
+ robots and obstacles and can therefore intervene to prevent collisions.
 \end_layout
 
 \begin_layout Subsection
-Genetics
-\end_layout
-
-\begin_layout Subsection
-Neurology
+Fitness Monitoring
 \end_layout
 
 \begin_layout Standard
+Fitness evaluation is an essential part of any evolutionary algorithm.
+ To evaluate the fitness function it is necessary to have some knowledge
+ of the robot's behaviour.
+ Nolfi and Floreano use a laser tracking device to monitor robot position
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nolfi&Floreano"
+
+\end_inset
+
+, this method provides very precise readings which can be used to follow
+ behaviour and calculate fitness.
+ Laser tracking is very expensive however, and does not scale even to moderately
+ large simultaneous monitoring.
+ A cheaper and more scalable method is proposed by Cupertino 
+\emph on
+et al.
+\emph default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "webcam"
+
+\end_inset
+
+ who use a webcam and a computer vision application to track robots.
+ A similar method is used in this study.
+ Using a small Logitech™ webcam and the OpenCV libraries a lightweight,
+ low cost, scalable solution to robot tracking is realised.
+\end_layout
+
+\begin_layout Standard
+In the 
+\begin_inset Quotes eld
+\end_inset
+
+Ask User for Details of Environment
+\begin_inset Quotes erd
+\end_inset
+
+ section of figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Flow-diagram-outline"
+
+\end_inset
+
+ several pieces of data are acquired, figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Screenshots-of-the"
+
+\end_inset
+
+ (in the appendix) shows screenshots of each step of this process.
+\end_layout
+
+\begin_layout Standard
+Firstly the boundaries of the environment are specified by the user.
+ This aids fitness evaluation and enables the supervisor to intervene if
+ the robot is about to crash.
+\end_layout
+
+\begin_layout Standard
+Next a snapshot of the background (the maze 
+\emph on
+without 
+\emph default
+the robot) is taken.
+ When the robot is within the area this snapshot is subtracted from the
+ full image so that the location of the robot (the only difference between
+ the two images) is easy to determine (this is similar to the blue-screen
+ technique used by weather presenters).
+\end_layout
+
+\begin_layout Standard
+Finally the robot is placed in the environment and the user is required
+ to select the area it occupies in the image.
+ The sub-image representing the robot is stored and later correlated with
+ the full image.
+ The area of highest correlation corresponds to the robot's position.
+ Since correlation is only performed in a linear fashion (the image will
+ not be rotated but the robot can be) it is preferable for the images of
+ the robots to be infinitely rotationally symmetrical, because of this the
+ robots are marked with roundels such as those shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Various-roundels-used"
+
+\end_inset
+
+.
+ By using different roundels several robots can be distinguished, or if
+ heading information is required robots can be fitted with a roundel at
+ either end.
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename HighVisRoundels.pdf
+	width 60col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Various roundels used for robot tracking.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Various-roundels-used"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As it stands the application is capable of tracking up to three robots simultane
+ously in real time before the processing required between frames causes
+ an unacceptable drop in frame rate.
+ Significant improvements in speed (and hence maximum number of robots)
+ should be possible by restricting the search area for each robot to a small
+ region around its previous position, perhaps using a Kalman filter, or
+ by reducing the resolution of the feed.
+\end_layout
+
+\begin_layout Standard
+The maximum area that can be monitored by one camera at ceiling height is
+ around 4
+\begin_inset Formula $\unit{m^{2}}$
+\end_inset
+
+, to increase this either a higher ceiling or a wider angle lens would be
+ required.
+ For very large areas it should be possible to sew together images from
+ an array of cameras.
+\end_layout
+
+\begin_layout Subsection
+Evolutionary Algorithm
+\end_layout
+
+\begin_layout Standard
+The difficulty of genotype to phenotype mapping has already been covered
+ in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Evolutionary-Algorithms"
+
+\end_inset
+
+.
+ In this study direct encoding of all network parameters has been used because
+ developing a more compact, biologically plausible and evolvable scheme
+ was infeasible in the time frame.
+ Further work in this area could significantly increase the time efficiency
+ of the evolutionary process.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="7">
+<features>
+<column alignment="right" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Structure:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Biases:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta_{3}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta_{5}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Time Constants:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\tau_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\tau_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\tau_{3}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\tau_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\tau_{5}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\tau_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Weights:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{11}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{12}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{13}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{14}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{15}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{16}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{21}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{22}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{23}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{24}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{25}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{26}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{31}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{32}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{33}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{34}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{35}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{36}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{41}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{42}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{43}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{44}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{45}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{46}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{51}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{52}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{53}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{54}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{55}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{56}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{61}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{62}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{63}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{64}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{65}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $w_{66}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The structure of a genotype file.
+ Shown with 2 input, 3 hidden and 1 output neurons
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Gene-File"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Gene-File"
+
+\end_inset
+
+ shows the structure of genotype files.
+ The first row determines the architecture of the network (number of neurons)
+ and the remainder encodes network parameters.
+ Because the architecture is specified in this way the genotypes can be
+ variable length, allowing the genetic algorithm to add or remove neurons
+ as well as simply modifying weights, biases and time constants.
+\end_layout
+
+\begin_layout Standard
+Each value in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Gene-File"
+
+\end_inset
+
+ is the decimal representation of an 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+8-bit
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ signed integer, so can range from 
+\begin_inset Formula $-128$
+\end_inset
+
+ to 
+\begin_inset Formula $+127$
+\end_inset
+
+.
+ Once these files have been read into memory the genetic operators can act
+ on these numbers in a bitwise fashion (figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Mutation-and-Crossover"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Files are sent from the supervising computer to the robots across the wireless
+ network using the UNIX secure copy (scp) utility.
+ On arrival values are read into memory as floating point numbers in the
+ range required by the neural 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+network (
+\begin_inset Formula $-1\lesssim x\lesssim+1$
+\end_inset
+
+)
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+.
+ The robots make no alterations to the genotype files - all genetic processes
+ are performed on the supervising machine.
+\end_layout
+
+\begin_layout Standard
+Evolutionary parameters are currently set at compile time, for this study
+ the parameters are set as follows.
+ Population size is set to 10 as a compromise between search speed and thoroughn
+ess.
+ Tournament size is set to 4 as a compromise between loss of diversity (
+\begin_inset Formula $p_{d}=0.47$
+\end_inset
+
+, from eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Loss-of-Diversity"
+
+\end_inset
+
+) and selection intensity (
+\begin_inset Formula $I=1.05$
+\end_inset
+
+, from eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Selection-Intesity"
+
+\end_inset
+
+).
+ The probability of point mutation is set to 0.05 (too high a rate results
+ in random genetic drift, too low and evolution is slowed down).
+ Finally, the probability of crossover is set to zero for the reasons described
+ in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Evolutionary-Algorithms"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Neural Control System
+\end_layout
+
+\begin_layout Standard
+Two neural architectures are implemented, feed forward and continuous-time
+ recurrent.
+ The feed forward architecture is simpler to implement since neuron states
+ explicitly depend only on current state and input.
+ Neuron states in a FFNN can be calculated directly from equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:FFNN"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The implementation of a continuous time network on digital architecture
+ is slightly more complex.
+ Since the dynamic system given by equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CTRNN"
+
+\end_inset
+
+ does not directly relate future states to present states, but instead gives
+ the rate of change of state some integration is necessary.
+ Analytical integration is infeasible, and so numerical methods are required.
+ Currently two fixed step methods are implemented, the first order Euler
+ method and the fourth order Runge Kutta method.
+\end_layout
+
+\begin_layout Standard
+In the Euler method the neuron state at 
+\begin_inset Formula $t+\Delta t$
+\end_inset
+
+ is given by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Euler"
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+.
+ 
+\begin_inset Formula \begin{equation}
+y_{i\,(t+\Delta t)}=y_{i\, t}+\Delta t\cdot\dot{y{}_{i}}\label{eq:Euler}\end{equation}
+
+\end_inset
+
+The Euler method is appealing for its simplicity.
+ Since the calculations are being done in real time, simple, fast integration
+ allows the use of smaller time steps which should increase numerical accuracy.
+ However, the Euler method is known to converge slowly as time steps shrink
+ and therefore, even though it is faster to compute, it has lower accuracy
+ and stability than higher order methods.
+\end_layout
+
+\begin_layout Standard
+In the Runge Kutta method the neuron state at 
+\begin_inset Formula $t+\Delta t$
+\end_inset
+
+ is given by equation 
+\begin_inset Formula $ $
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:RK4"
+
+\end_inset
+
+.
+ 
+\begin_inset Formula \begin{equation}
+y_{i\,(t+\Delta t)}=y_{i\, t}+\nicefrac{1}{6}\cdot\Delta t\cdot(k_{1}+2k_{2}+2k_{3}+k_{4})\label{eq:RK4}\end{equation}
+
+\end_inset
+
+where
+\begin_inset Formula \begin{eqnarray*}
+k_{1} & = & \dot{y}(y_{i\, t})\\
+k_{2} & = & \dot{y}(y_{i\, t}+\nicefrac{1}{2}\cdot k_{1}\cdot\Delta t)\\
+k_{3} & = & \dot{y}(y_{i\, t}+\nicefrac{1}{2}\cdot k_{2}\cdot\Delta t)\\
+k_{4} & = & \dot{y}(y_{i\, t}+k_{3}\cdot\Delta t)\end{eqnarray*}
+
+\end_inset
+
+This method gives much higher numerical accuracy and is therefore used in
+ all experiments in this study.
+\end_layout
+
+\begin_layout Standard
+The resolution in time of both types of neural network depends on the time
+ taken to calculate each new state.
+ Since the sigmoid function must be evaluated 
+\begin_inset Formula $n^{2}$
+\end_inset
+
+ times (where 
+\begin_inset Formula $n$
+\end_inset
+
+ is the number of neurons) its performance is critical to the overall speed
+ of the network.
+ To maximise speed a stepwise lookup table is created for the sigmoid function,
+ since a memory read is much faster than evaluating the logistic function
+ this causes a significant improvement.
+ 
 \begin_inset Float figure
 wide false
 sideways false
@@ -23595,7 +24842,9 @@ end{tikzpicture}
 
 \begin_layout Plain Layout
 The lookup table powered logistic function.
-\end_layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:The-lookup-table"
 
 \end_inset
 
@@ -23605,10 +24854,26 @@ The lookup table powered logistic function.
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:The-lookup-table"
+
+\end_inset
+
+ shows the sigmoid lookup table.
 \end_layout
 
 \begin_layout Subsection
-Outputs
+Output
+\end_layout
+
+\begin_layout Subsection
+Further Work
 \end_layout
 
 \begin_layout Section
@@ -23616,6 +24881,22 @@ Results and Discussion
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Results-and-Discussion"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{comment}
+\end_layout
 
 \end_inset
 
@@ -23885,6 +25166,22 @@ The Roomba's exploration algorithm
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{comment}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Conclusions
 \begin_inset CommandInset label
@@ -23955,9 +25252,8 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/richard/Firefox_wallpaper.png
+	filename /home/richard/Dropbox/Penguin.png
 	lyxscale 30
-	width 90text%
 
 \end_inset
 
@@ -23969,6 +25265,13 @@ status collapsed
 
 \begin_layout Plain Layout
 Screenshots of the supervisor program
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Screenshots-of-the"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -23987,7 +25290,7 @@ Screenshots of the supervisor program
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
