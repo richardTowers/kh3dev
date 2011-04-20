@@ -1,8 +1,20 @@
 #!/bin/bash
 
-sauce=$(cat Gen* | grep 'Fitness');
+sauce=$(cat Gen?I* | grep 'Fitness');
 
 IFS=$'\n'
+for line in $sauce; do
+	line=${line#*'Fitness:'};
+	line=${line%%' <'*};
+	echo "$line"
+done
+sauce=$(cat Gen1?I* | grep 'Fitness');
+for line in $sauce; do
+	line=${line#*'Fitness:'};
+	line=${line%%' <'*};
+	echo "$line"
+done
+sauce=$(cat Gen2?I* | grep 'Fitness');
 for line in $sauce; do
 	line=${line#*'Fitness:'};
 	line=${line%%' <'*};
