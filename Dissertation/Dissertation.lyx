@@ -2278,6 +2278,13 @@ name "sec:Development-of-the"
 
 \begin_layout Subsection
 Aims
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Aims"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -24872,8 +24879,391 @@ reference "fig:The-lookup-table"
 Output
 \end_layout
 
+\begin_layout Standard
+The primary output of an evolutionary run is the gene file of the fittest
+ individual, this allows the control system to be implemented where it is
+ needed in the real world.
+ To aid the analysis of the platform's performance several secondary outputs
+ are also produced.
+\end_layout
+
+\begin_layout Standard
+The supervising computer stores the gene file of every individual from every
+ generation, each file is given a descriptive name of the form 
+\begin_inset Formula $\mathtt{GenXIndY.txt}$
+\end_inset
+
+ where 
+\begin_inset Formula $\mathtt{X}$
+\end_inset
+
+ is the generation number and 
+\begin_inset Formula $\mathtt{Y}$
+\end_inset
+
+ is the individual number.
+ Having the complete genotypic history allows the evolutionary process to
+ be stopped and restarted from any point in its history, and it allows the
+ proliferation of improvements to be tracked.
+ The program also produces diagrams of the neural networks (using Graphviz)
+ which allow changes to be viewed in a human readable way.
+ This hugely aids analysis of emergent behaviours since the effect (on the
+ network) of a mutation that caused a change (in behaviour) can be seen
+ at a glance.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Neural-network-e.g."
+
+\end_inset
+
+ shows an example network diagram.
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Gen1Ind9.dot.pdf
+	width 100col%
+	scaleBeforeRotation
+	BoundingBox 40bp 40bp 670bp 330bp
+	clip
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A neural network diagram.
+ Circles represent neurons, arrows connections.
+ Green arrows are excitatory connections, red arrows are inhibitory.
+ Arrow width is proportional to connection weight.
+ Dotted node boundaries indicate slow time constants, solid boundaries fast
+ time constants.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Neural-network-e.g."
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The supervising machine also stores log files that record the behaviour
+ seen by the fitness monitor.
+ These are stored directly as scalar vector graphics files which allows
+ human readability without any loss of information.
+ Opening the file as an image shows the path taken by the robot and the
+ obstacles at a glance, while opening the file as text shows the point data
+ recorded directly.
+ The files also store the names of the individual and its parent (
+\begin_inset Formula $\mathtt{GenXIndY}$
+\end_inset
+
+), along with its fitness.
+ This allows plotting of fitness against time and for the tracking of the
+ ancestry of fit individuals.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:A-log-file-e.g."
+
+\end_inset
+
+ shows an example log file.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Graphics
+	filename ExampleLogFile.pdf
+	height 90col%
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A log file.
+ The large circle represents the robot (its size is to scale, this was a
+ small maze), the red lines represent boundaries (here the maze is an empty
+ box), the green line represents the path traced by the center of the robot
+ and the red dots represent area that the robot has not covered.
+ Note also the data in the black box, this is useful for tracing improvements
+ back through the robot's ancestry.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:A-log-file-e.g."
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Further Work
+\end_layout
+
+\begin_layout Standard
+Looking back to 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Aims"
+
+\end_inset
+
+ its clear that some but not all of the aims of the platform have been met.
+ The two key aims which have not been met yet are compact genotype encoding
+ and continuous robot recharging.
+\end_layout
+
+\begin_layout Standard
+The system is currently only able to run for the battery life of the khepera,
+ about 40 minutes, after which it must be recharged, which takes around
+ 70 minutes.
+ The evolutionary process can be restarted from the point immediately before
+ battery death, but it still takes 110 minutes to evaluate 40 minutes worth
+ of controllers.
+ A solution to the continuous charging problem would speed up evaluation
+ for long experiments by a factor of 
+\begin_inset Formula $110\div40=2.75$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Martinoli 
+\emph on
+et al.
+\emph default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Floor"
+
+\end_inset
+
+
+\emph on
+ 
+\emph default
+propose a conductive charger for mobile robots consisting of metallic floor
+ strips and a Y shaped array of contacts.
+ The contacts are arranged in such a way that, irrespective of position
+ and rotation, they are always in contact with two strips of opposite polarity
+ (
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture}[color=red, baseline, yshift=-.5pt]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+fill (12pt,3.4pt) circle[radius=1pt];
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+fill (12pt,-.2pt) circle[radius=1pt];
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+fill (8.6pt,6pt) circle[radius=1pt];
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+fill (15.4pt,6pt) circle[radius=1pt];
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture}[yshift=-.5pt, line width=2pt, color=gray!50, fill=red,
+ line cap=round, baseline]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw (0,-2pt) -- (8pt,8pt);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw (4pt,-2pt) -- (12pt,8pt);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw (8pt,-2pt) -- (16pt,8pt);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw (12pt,-2pt) -- (20pt,8pt);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw (16pt,-2pt) -- (24pt,8pt);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+fill (12pt,3.4pt) circle[radius=1pt];
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+fill (12pt,-.2pt) circle[radius=1pt];
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+fill (8.6pt,6pt) circle[radius=1pt];
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+fill (15.4pt,6pt) circle[radius=1pt];
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+).
+ This has been shown to provide a safe and reliable source of power for
+ robots similar to Kheperas, and implementation should be relatively low
+ cost.
+\end_layout
+
+\begin_layout Standard
+Genotype encoding is more of an open area of research.
+ Many methods have been proposed that offer compact yet evolvable genomes,
+ each with its own merit.
+ Nolfi and Floreano
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nolfi&Floreano"
+
+\end_inset
+
+ propose a method based on tree growth rules wherein neurons are connected
+ if there is a route between them consisting of crossing branches.
+ 
 \end_layout
 
 \begin_layout Section
@@ -25247,13 +25637,165 @@ onecolumn
 placement H
 wide false
 sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
 status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/richard/Dropbox/Penguin.png
-	lyxscale 30
+	filename SelectBG.png
+	width 40page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Background selection.
+ The image taken here is subtracted from future frames to make objects stand
+ out for tracking.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename SelectRobot.png
+	width 40page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Robot selection.
+ Note that the background has been subtracted from this image so that the
+ robot is more obvious.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Boundaries.png
+	width 40page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Boundary selection.
+ The user uses the mouse to drag lines delineating objects to be avoided
+ (blue line active, grey lines already saved).
+ The supervisor will intercede if it detects the robot has hit a boundary.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Running.png
+	width 40page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The fitness monitor running.
+ The program is capable of autonomously monitoring the robot and avoiding
+ collisions for the battery life of the robot.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
@@ -25280,134 +25822,6 @@ name "fig:Screenshots-of-the"
 \end_layout
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ExampleLogFile.pdf
-	width 38text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-A log file.
- The large circle represents the robot (its size is to scale, this was a
- small maze), the red lines represent boundaries (here the maze is an empty
- box), the green line represents the path traced by the center of the robot
- and the red dots represent area that the robot has not covered.
- Note also the data in the black box, this is useful for tracing improvements
- back through the robot's ancestry.
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:A-log-file-e.g."
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset space \hspace*{\fill}
-\end_inset
-
-
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename Gen1Ind9.dot.pdf
-	width 56text%
-	scaleBeforeRotation
-	BoundingBox 40bp 40bp 670bp 330bp
-	clip
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-A neural network diagram.
- Circles represent neurons, arrows connections.
- Green arrows are excitatory connections, red arrows are inhibitory.
- Arrow width is proportional to connection weight.
- Dotted node boundaries indicate slow time constants, solid boundaries fast
- time constants.
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Neural-network-e.g."
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Examples of the output files automatically generated by the supervising
- program.
- The Graphviz program is used to lay out the graph in 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Neural-network-e.g."
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
 
 \end_layout
 
