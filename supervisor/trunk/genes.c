@@ -67,30 +67,30 @@ void writeGenotype(const char *geneFile, const char *networkDiagram, short* weig
 	for(row=0; row < nInputs; row++)
 	{
 		fprintf(file_diagram, "n%d [label=\"I %d\"", row, row+1);
-		if (biases[row]<0) fprintf(file_diagram, ", color=\"red\"");
-		if (tConsts[row]<1*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"solid\"");
-		else if (tConsts[row]<2*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"dashed\"");
-		else fprintf(file_diagram, ", style=\"dotted\"");
+/*		if (biases[row]<0) fprintf(file_diagram, ", color=\"red\"");*/
+/*		if (tConsts[row]<1*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"solid\"");*/
+/*		else if (tConsts[row]<2*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"dashed\"");*/
+/*		else fprintf(file_diagram, ", style=\"dotted\"");*/
 		fprintf(file_diagram, "]\n");
 	}
 	
 	for(row=nInputs; row < nInputs+nHiddens; row++)
 	{
 		fprintf(file_diagram, "n%d [label=\"H %d\"", row, row-nInputs+1);
-		if (biases[row]<0) fprintf(file_diagram, ", color=\"red\"");
-		if (tConsts[row]<1*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"solid\"");
-		else if (tConsts[row]<2*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"dashed\"");
-		else fprintf(file_diagram, ", style=\"dotted\"");
+/*		if (biases[row]<0) fprintf(file_diagram, ", color=\"red\"");*/
+/*		if (tConsts[row]<1*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"solid\"");*/
+/*		else if (tConsts[row]<2*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"dashed\"");*/
+/*		else fprintf(file_diagram, ", style=\"dotted\"");*/
 		fprintf(file_diagram, "]\n");
 	}
 	
 	for(row=nInputs+nHiddens; row < nNodes; row++)
 	{
 		fprintf(file_diagram, "n%d [label=\"O %d\"", row, row-nInputs-nHiddens+1);
-		if (biases[row]<0) fprintf(file_diagram, ", color=\"red\"");
-		if (tConsts[row]<1*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"solid\"");
-		else if (tConsts[row]<2*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"dashed\"");
-		else fprintf(file_diagram, ", style=\"dotted\"");
+/*		if (biases[row]<0) fprintf(file_diagram, ", color=\"red\"");*/
+/*		if (tConsts[row]<1*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"solid\"");*/
+/*		else if (tConsts[row]<2*TCONST_RANGE/3) fprintf(file_diagram, ", style=\"dashed\"");*/
+/*		else fprintf(file_diagram, ", style=\"dotted\"");*/
 		fprintf(file_diagram, "]\n");
 	}
 	
@@ -283,7 +283,7 @@ void reproduce(int population, int gen, rtGeneration* parentGen, rtGeneration* c
 		rtShuffle((*parentGen).inds, population);
 		//Find fittest parent in tournament:
 		maxFitness=-100;
-		for (parent = 0; parent < TOUR_SIZE && parent < population; parent ++)
+		for (parent = 0; (parent < TOUR_SIZE) && (parent < population); parent ++)
 		{
 			if((*parentGen).inds[parent].fitness > maxFitness)
 			{
@@ -370,10 +370,108 @@ void mutate(rtIndividual* individual)
 		for (column = 0; column < nNodes; column ++)
 		{
 			theWeight=row*nNodes+column;
-			if(rand()%pMUTATE<pSET_ZERO) weights[theWeight]=0;
-			if((rand()%pMUTATE<pADD_WEIGHT) && (weights[theWeight]==0)) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
-			if(rand()%pMUTATE<pFLIP_NEG) weights[theWeight]=-weights[theWeight];
-			if((rand()%pMUTATE<pCHANGE_WEIGHT) && (weights[theWeight]!=0)) weights[theWeight]=mutateWeight(weights[theWeight]);
+			if(row<nInputs)
+			{
+				if(column<nInputs)
+				{
+					if(ALLOW_RECURRENCE)
+					{
+						if(rand()%pMUTATE<pSET_ZERO) weights[theWeight]=0;
+						if((rand()%pMUTATE<pADD_WEIGHT) && (weights[theWeight]==0))
+							weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pMUTATE<pFLIP_NEG) weights[theWeight]=-weights[theWeight];
+						if((rand()%pMUTATE<pCHANGE_WEIGHT) && (weights[theWeight]!=0))
+							weights[theWeight]=mutateWeight(weights[theWeight]);
+					}
+					else weights[theWeight]=0;
+				}
+				else if(column<nInputs+nHiddens)
+				{
+					if(rand()%pBASE<pIH) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+					else weights[theWeight]=0;
+				}
+				else
+				{
+					if(rand()%pBASE<pIO) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+					else weights[theWeight]=0;
+				}
+			}
+			else if(row<nInputs+nHiddens)
+			{
+				if(column<nInputs)
+				{
+					if(ALLOW_RECURRENCE)
+					{
+						if(rand()%pMUTATE<pSET_ZERO) weights[theWeight]=0;
+						if((rand()%pMUTATE<pADD_WEIGHT) && (weights[theWeight]==0))
+							weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pMUTATE<pFLIP_NEG) weights[theWeight]=-weights[theWeight];
+						if((rand()%pMUTATE<pCHANGE_WEIGHT) && (weights[theWeight]!=0))
+							weights[theWeight]=mutateWeight(weights[theWeight]);
+					}
+					else weights[theWeight]=0;
+				}
+				else if(column<nInputs+nHiddens)
+				{
+					if(ALLOW_RECURRENCE)
+					{
+						if(rand()%pMUTATE<pSET_ZERO) weights[theWeight]=0;
+						if((rand()%pMUTATE<pADD_WEIGHT) && (weights[theWeight]==0))
+							weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pMUTATE<pFLIP_NEG) weights[theWeight]=-weights[theWeight];
+						if((rand()%pMUTATE<pCHANGE_WEIGHT) && (weights[theWeight]!=0))
+							weights[theWeight]=mutateWeight(weights[theWeight]);
+					}
+					else weights[theWeight]=0;
+				}
+				else
+				{
+					if(rand()%pBASE<pHO) weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+					else weights[theWeight]=0;
+				}
+			}
+			else
+			{
+				if(column<nInputs)
+				{
+					if(ALLOW_RECURRENCE)
+					{
+						if(rand()%pMUTATE<pSET_ZERO) weights[theWeight]=0;
+						if((rand()%pMUTATE<pADD_WEIGHT) && (weights[theWeight]==0))
+							weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pMUTATE<pFLIP_NEG) weights[theWeight]=-weights[theWeight];
+						if((rand()%pMUTATE<pCHANGE_WEIGHT) && (weights[theWeight]!=0))
+							weights[theWeight]=mutateWeight(weights[theWeight]);
+					}
+					else weights[theWeight]=0;
+				}
+				else if(column<nInputs+nHiddens)
+				{
+					if(ALLOW_RECURRENCE)
+					{
+						if(rand()%pMUTATE<pSET_ZERO) weights[theWeight]=0;
+						if((rand()%pMUTATE<pADD_WEIGHT) && (weights[theWeight]==0))
+							weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pMUTATE<pFLIP_NEG) weights[theWeight]=-weights[theWeight];
+						if((rand()%pMUTATE<pCHANGE_WEIGHT) && (weights[theWeight]!=0))
+							weights[theWeight]=mutateWeight(weights[theWeight]);
+					}
+					else weights[theWeight]=0;
+				}
+				else
+				{
+					if(ALLOW_RECURRENCE)
+					{
+						if(rand()%pMUTATE<pSET_ZERO) weights[theWeight]=0;
+						if((rand()%pMUTATE<pADD_WEIGHT) && (weights[theWeight]==0))
+							weights[theWeight]=rand()%(2*WEIGHT_RANGE)-WEIGHT_RANGE;
+						if(rand()%pMUTATE<pFLIP_NEG) weights[theWeight]=-weights[theWeight];
+						if((rand()%pMUTATE<pCHANGE_WEIGHT) && (weights[theWeight]!=0))
+							weights[theWeight]=mutateWeight(weights[theWeight]);
+					}
+					else weights[theWeight]=0;
+				}
+			}
 		}
 	}
 	writeGenotype((*individual).geneFile,(*individual).networkDiagram,  weights, biases, tConsts);
@@ -398,7 +496,7 @@ short int mutateWeight(short int weight)
 
 short int mutateBias(short int bias)
 {
-	//Take care weight is in correct range since we're about to to play with bits...
+	//Take care bias is in correct range since we're about to to play with bits...
 	if(bias>BIAS_RANGE) bias=BIAS_RANGE;
 	if(bias<-BIAS_RANGE-1) bias=-BIAS_RANGE-1;
 	
@@ -434,6 +532,7 @@ void rtShuffle(rtIndividual* array, int size)
 {
 	int i, random;
 	rtIndividual temp;
+	srand(time(NULL));
 	for (i = size-1; i > 0; i --)
 	{
 		random=rand() % i;

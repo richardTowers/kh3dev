@@ -9,7 +9,7 @@
 
 //Architecture:
 #define INPUTS 9
-#define	HIDDENS 2
+#define	HIDDENS 5
 #define OUTPUTS 2
 //Connection Probabilities:
 /*I  H  O
