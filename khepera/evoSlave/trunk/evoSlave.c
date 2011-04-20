@@ -15,6 +15,27 @@ int main(int argc, char * argv[])
 	//semaphor expectedSignal=genotype;
 	int status;
 	
+	//Decide the network type:
+	if(argc>1)
+	{
+		if(argc>2) {fprintf(stderr, "Too many input arguments...\n"); exit(1);}
+		else if(strcmp(argv[1],"ffnn")==0)
+		{
+			printf("FFNN\n");
+			netType='f';
+		}
+		else if(strcmp(argv[1],"ctrnn")==0)
+		{
+			printf("CTRNN\n");
+			netType='c';
+		}
+		else {fprintf(stderr,"%s: not a recognised network type.\nAllowable types:\nffnn\nctrnn.\n", argv[1]); exit(1);}
+	}
+	else
+	{
+		netType='f';
+		printf("Continuing with default network type: ffnn\n");
+	}
 	#ifndef TESTING
 		//Connect to host
 		host = connectToHost(HOST_IP);
@@ -69,7 +90,7 @@ int main(int argc, char * argv[])
 
 void childProcess(char *filename)
 {
-	unsigned short int i, count;
+	unsigned short int i;
 	float *inputs;
 	float *neuronStates;
 	float timeStep=0.005;	//This timeStep will be caculated dynamically
@@ -105,16 +126,23 @@ void childProcess(char *filename)
 				}
 
 				//Send IR Values to NN and get new neuron states:
-				ctrnn(neuronStates, nNeurons, inputs, biases, tConsts, weights, timeStep);
-				//ffnn(neuronStates, nNeurons, inputs, weights);
+				if(netType=='c')
+				{
+					ctrnn(neuronStates, nNeurons, inputs, biases, tConsts, weights, timeStep);
+				}
+				else if(netType=='f')
+				{
+					ffnn(neuronStates, nNeurons, inputs, weights, biases);
+				}
+				else {fprintf(stderr,"Unrecognised network type!\n"); exit(1);}
 
 /*				printf("Neuron States: ");*/
 /*				for (i = 0; i < nNeurons; i += 1) printf("%3.2f, ", neuronStates[i]);*/
 /*				printf("\n");*/
 
 				//Set Motor values to outputs
-				leftMotorSpeed = (int)(20000*(2*sigmoid(neuronStates[nNeurons-OUTPUTS+1])-1));
-				rightMotorSpeed = (int)(20000*(2*sigmoid(neuronStates[nNeurons-OUTPUTS])-1));
+				leftMotorSpeed = (int)(80000*(2*sigmoid(neuronStates[nNeurons-OUTPUTS+1])-1));
+				rightMotorSpeed = (int)(80000*(2*sigmoid(neuronStates[nNeurons-OUTPUTS])-1));
 
 				//Set Motors
 				setMotor(LEFT_MOTOR, leftMotorSpeed);
@@ -203,8 +231,8 @@ void retreat(void)
 		}
 		//printf("output1:%f, output2:%f\n", outputs[0], outputs[1]);
 
-		leftMotorSpeed = (int)(neuronState[nNeurons-OUTPUTS+1]*20000);
-		rightMotorSpeed = (int)(neuronState[nNeurons-OUTPUTS]*20000);
+		leftMotorSpeed = (int)((0.1+neuronState[nNeurons-OUTPUTS+1])*30000);
+		rightMotorSpeed = (int)((0.1+neuronState[nNeurons-OUTPUTS])*30000);
 		//printf("leftMotorSpeed:%d, rightMotorSpeed:%d\n", leftMotorSpeed, rightMotorSpeed);
 	
 		setMotor(LEFT_MOTOR, leftMotorSpeed);

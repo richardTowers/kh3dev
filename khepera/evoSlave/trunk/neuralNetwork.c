@@ -52,7 +52,7 @@ void ctrnn(float *y, const short n, const float *I, const float *b, const float 
 	return;
 }
 
-void ffnn(float *y, const short n, const float *I, const float *w)
+void ffnn(float *y, const short n, const float *I, const float *w, const float *b)
 {
 	float *yOld;
 	//i represents the postsynaptic neuron, j the presynaptic neuron
@@ -66,7 +66,7 @@ void ffnn(float *y, const short n, const float *I, const float *w)
 	for (i = 0; i < n; i += 1)
 	{
 		y[i]=0;
-		for (j = 0; j < n; j += 1) y[i]+=(w[j*n+i])*(2*sigmoid(yOld[j])-1);
+		for (j = 0; j < n; j += 1) y[i]+=(w[j*n+i])*(2*sigmoid(yOld[j]-b[j])-1);
 		y[i]+=I[i];
 	}
 	free(yOld);

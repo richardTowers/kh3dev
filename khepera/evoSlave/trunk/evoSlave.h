@@ -38,6 +38,9 @@
 unsigned short int nInputs, nHiddens, nOutputs, nNeurons;
 float *weights, *biases, *tConsts; 
 
+//FFNN or CTRNN
+char netType='f';
+
 extern void initSigmoid(void);
 void childProcess(char *genotype);
 void retreat(void);

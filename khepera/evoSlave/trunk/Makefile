@@ -4,9 +4,9 @@ CC = ~/Development/cross/bin/arm-angstrom-linux-gnueabi-gcc
 #CC = gcc #For development...
 CFLAGS = -Wall
 LDFLAGS = -lm
-SOURCES = $(wildcard *.c)
+SOURCES = $(wildcard [!s]*.c)
 OBJECTS = $(SOURCES:.c=.o)
-EXECUTABLE = evoSlave2
+EXECUTABLE = evoSlave
 
 INCS = -I ~/Development/libraries/include
 LIBS	= -L ~/Development/libraries/lib -lkorebot
