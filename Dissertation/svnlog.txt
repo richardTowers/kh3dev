@@ -1,0 +1,434 @@
+------------------------------------------------------------------------
+r108 | richard_towers@yahoo.co.uk | 2011-04-01 15:56:54 +0100 (Fri, 01 Apr 2011) | 1 line
+
+Set ignores
+------------------------------------------------------------------------
+r107 | richard_towers@yahoo.co.uk | 2011-04-01 15:51:43 +0100 (Fri, 01 Apr 2011) | 1 line
+
+Added drawing of apparatus, matlab script to plot fitnesses, improved many aspects of neurology
+------------------------------------------------------------------------
+r106 | richard_towers@yahoo.co.uk | 2011-03-12 19:34:08 +0000 (Sat, 12 Mar 2011) | 1 line
+
+Fixed CTRNN!! Finally!
+------------------------------------------------------------------------
+r105 | richard_towers@yahoo.co.uk | 2011-03-09 11:08:31 +0000 (Wed, 09 Mar 2011) | 1 line
+
+
+------------------------------------------------------------------------
+r104 | richard_towers@yahoo.co.uk | 2011-03-09 11:04:58 +0000 (Wed, 09 Mar 2011) | 1 line
+
+Changed NNs to run on floats instead of shorts at the expense of speed in favour of understandability
+------------------------------------------------------------------------
+r103 | richard_towers@yahoo.co.uk | 2011-03-07 21:38:30 +0000 (Mon, 07 Mar 2011) | 1 line
+
+Moved supervisor branch to trunk, tagged old trunk
+------------------------------------------------------------------------
+r102 | richard_towers@yahoo.co.uk | 2011-03-07 21:17:56 +0000 (Mon, 07 Mar 2011) | 1 line
+
+Added ffnn back to evoSlave in the hope that it might make the maze work...
+------------------------------------------------------------------------
+r101 | richard_towers@yahoo.co.uk | 2011-03-07 20:27:21 +0000 (Mon, 07 Mar 2011) | 1 line
+
+Changed some parameters to try and make the CTRNN work, with limited success.
+------------------------------------------------------------------------
+r100 | richard_towers@yahoo.co.uk | 2011-03-07 20:21:36 +0000 (Mon, 07 Mar 2011) | 1 line
+
+upgraded network diagram, changed biases and time constants fixed some counting issues and commented out retreat for mouse maze
+------------------------------------------------------------------------
+r99 | richard_towers@yahoo.co.uk | 2011-03-06 14:14:54 +0000 (Sun, 06 Mar 2011) | 1 line
+
+Changed the range of weights
+------------------------------------------------------------------------
+r98 | richard_towers@yahoo.co.uk | 2011-03-05 21:11:59 +0000 (Sat, 05 Mar 2011) | 1 line
+
+#defined WEIGHT_RANGE to sort out network diagrams and to aid consistency
+------------------------------------------------------------------------
+r97 | richard_towers@yahoo.co.uk | 2011-03-03 20:49:22 +0000 (Thu, 03 Mar 2011) | 1 line
+
+Half fixed a problem counting individuals, nearly finished integrating with ctrnn
+------------------------------------------------------------------------
+r96 | richard_towers@yahoo.co.uk | 2011-03-03 20:46:33 +0000 (Thu, 03 Mar 2011) | 1 line
+
+Fixed CTRNN and retreat
+------------------------------------------------------------------------
+r95 | richard_towers@yahoo.co.uk | 2011-03-02 12:43:21 +0000 (Wed, 02 Mar 2011) | 1 line
+
+Tagged evoSlave trunk as it was before tearing it apart with a view to making a CTRNN
+------------------------------------------------------------------------
+r94 | richard_towers@yahoo.co.uk | 2011-03-01 12:09:28 +0000 (Tue, 01 Mar 2011) | 1 line
+
+Added high-vis Roundels and fixed some ignores
+------------------------------------------------------------------------
+r93 | richard_towers@yahoo.co.uk | 2011-03-01 11:24:05 +0000 (Tue, 01 Mar 2011) | 1 line
+
+Added background cancelling to fitness monitor to allow tracking with the camera much further away.
+------------------------------------------------------------------------
+r92 | richard_towers@yahoo.co.uk | 2011-02-24 23:57:52 +0000 (Thu, 24 Feb 2011) | 1 line
+
+Massive upgrade to logging and generally on the branch, changed FitnessList to match
+------------------------------------------------------------------------
+r91 | richard_towers@yahoo.co.uk | 2011-02-23 14:23:09 +0000 (Wed, 23 Feb 2011) | 1 line
+
+Added a dataLogger c file to deal with necessary retructuring of fitMonitor
+------------------------------------------------------------------------
+r90 | richard_towers@yahoo.co.uk | 2011-02-23 14:20:49 +0000 (Wed, 23 Feb 2011) | 1 line
+
+Added script to list fitnesses from log files
+------------------------------------------------------------------------
+r89 | richard_towers@yahoo.co.uk | 2011-02-22 22:14:25 +0000 (Tue, 22 Feb 2011) | 1 line
+
+Fixed fitness logging, Added LogFile and Parent members to individual structure, set fitter individuals to have longer evaluation times.
+------------------------------------------------------------------------
+r88 | richard_towers@yahoo.co.uk | 2011-02-22 22:10:51 +0000 (Tue, 22 Feb 2011) | 1 line
+
+Decreased Mutation probability by a factor of five.
+------------------------------------------------------------------------
+r87 | richard_towers@yahoo.co.uk | 2011-02-19 21:00:40 +0000 (Sat, 19 Feb 2011) | 1 line
+
+Fixed ignores...
+------------------------------------------------------------------------
+r86 | richard_towers@yahoo.co.uk | 2011-02-19 20:56:27 +0000 (Sat, 19 Feb 2011) | 1 line
+
+Im awesome...
+------------------------------------------------------------------------
+r85 | richard_towers@yahoo.co.uk | 2011-02-19 20:51:55 +0000 (Sat, 19 Feb 2011) | 1 line
+
+Added cherry nomming to branch, needs tidying BADLY.
+------------------------------------------------------------------------
+r84 | richard_towers@yahoo.co.uk | 2011-02-19 14:25:17 +0000 (Sat, 19 Feb 2011) | 1 line
+
+Tidied up directory...
+------------------------------------------------------------------------
+r83 | richard_towers@yahoo.co.uk | 2011-02-19 14:22:06 +0000 (Sat, 19 Feb 2011) | 1 line
+
+Ignore executable...
+------------------------------------------------------------------------
+r82 | richard_towers@yahoo.co.uk | 2011-02-19 14:21:12 +0000 (Sat, 19 Feb 2011) | 1 line
+
+Ignore executable...
+------------------------------------------------------------------------
+r81 | richard_towers@yahoo.co.uk | 2011-02-19 13:06:19 +0000 (Sat, 19 Feb 2011) | 1 line
+
+Tagged trunk as was, moved branch to trunk as most recent version. About to go and butcher branch to make it neater... ...
+------------------------------------------------------------------------
+r80 | richard_towers@yahoo.co.uk | 2011-02-19 00:45:44 +0000 (Sat, 19 Feb 2011) | 1 line
+
+Added pacman project, wrote an array manipulation program...
+------------------------------------------------------------------------
+r79 | richard_towers@yahoo.co.uk | 2011-02-18 17:24:33 +0000 (Fri, 18 Feb 2011) | 1 line
+
+Sorted loading of existing genotypes...
+------------------------------------------------------------------------
+r78 | richard_towers@yahoo.co.uk | 2011-02-17 22:35:35 +0000 (Thu, 17 Feb 2011) | 1 line
+
+Changed structure of experiment logs, added ignores, added number and generation to rtIndividual struct. Need to save genotypes in experiment directory and add logging of fitness etc. to log svgs. Plan to implement "Collect the cherries" over the next few days. xx
+------------------------------------------------------------------------
+r77 | richard_towers@yahoo.co.uk | 2011-02-16 14:09:54 +0000 (Wed, 16 Feb 2011) | 1 line
+
+Set ignore text.txt
+------------------------------------------------------------------------
+r76 | richard_towers@yahoo.co.uk | 2011-02-15 19:35:57 +0000 (Tue, 15 Feb 2011) | 1 line
+
+Added a program to automatically log positions into .svg images
+------------------------------------------------------------------------
+r75 | richard_towers@yahoo.co.uk | 2011-02-15 19:32:21 +0000 (Tue, 15 Feb 2011) | 1 line
+
+Added folder for logFiles to be stored in...
+------------------------------------------------------------------------
+r74 | richard_towers@yahoo.co.uk | 2011-02-15 19:30:40 +0000 (Tue, 15 Feb 2011) | 1 line
+
+Branched the supervisor with a view to changing the fitness monitor, chickened out but continued to develop on the branch, which is now much more recent than the trunk
+------------------------------------------------------------------------
+r73 | richard_towers@yahoo.co.uk | 2011-02-15 19:28:28 +0000 (Tue, 15 Feb 2011) | 1 line
+
+Some uncontroversial improvements to the supervisor program
+------------------------------------------------------------------------
+r72 | richard_towers@yahoo.co.uk | 2011-02-15 19:25:37 +0000 (Tue, 15 Feb 2011) | 1 line
+
+Added another more efficient light tracker, possibly to replace template matching later if speed becomes critical
+------------------------------------------------------------------------
+r71 | richard_towers@yahoo.co.uk | 2011-02-12 16:53:04 +0000 (Sat, 12 Feb 2011) | 1 line
+
+Basic genetic algorithm sorted, needs some small improvements before testing. Fixed all compiler warnings.
+------------------------------------------------------------------------
+r70 | richard_towers@yahoo.co.uk | 2011-02-12 16:49:29 +0000 (Sat, 12 Feb 2011) | 1 line
+
+Slight improvement, still pretty shitty
+------------------------------------------------------------------------
+r69 | richard_towers@yahoo.co.uk | 2011-02-12 13:31:11 +0000 (Sat, 12 Feb 2011) | 1 line
+
+Edited weights and biases in ffn in order to use it as a retreat program
+------------------------------------------------------------------------
+r68 | richard_towers@yahoo.co.uk | 2011-02-12 13:30:09 +0000 (Sat, 12 Feb 2011) | 1 line
+
+Clean up
+------------------------------------------------------------------------
+r67 | richard_towers@yahoo.co.uk | 2011-02-12 13:28:26 +0000 (Sat, 12 Feb 2011) | 1 line
+
+Added semaphor to evoSlave, now MUST pass stop motors inbetween each genotype
+------------------------------------------------------------------------
+r66 | richard_towers@yahoo.co.uk | 2011-02-12 13:24:18 +0000 (Sat, 12 Feb 2011) | 1 line
+
+Added intervention when robot crashes into obstacle, created Icon
+------------------------------------------------------------------------
+r65 | richard_towers@yahoo.co.uk | 2011-02-10 16:53:34 +0000 (Thu, 10 Feb 2011) | 1 line
+
+Finished merging fit monitor into the supervisor program, now supports boundaries. Need to write a fitness function.
+------------------------------------------------------------------------
+r64 | richard_towers@yahoo.co.uk | 2011-02-09 10:52:13 +0000 (Wed, 09 Feb 2011) | 1 line
+
+added roundels
+------------------------------------------------------------------------
+r63 | richard_towers@yahoo.co.uk | 2011-02-09 10:50:37 +0000 (Wed, 09 Feb 2011) | 1 line
+
+Removed binary
+------------------------------------------------------------------------
+r62 | richard_towers@yahoo.co.uk | 2011-02-09 10:48:11 +0000 (Wed, 09 Feb 2011) | 1 line
+
+Made some changes to evoMaster to switch from gcc to g++ -Wall, decided that merging evoMaster and fitMonitor would be easier in a new program, hence /supervisor/trunk.
+------------------------------------------------------------------------
+r61 | richard_towers@yahoo.co.uk | 2011-02-08 12:20:59 +0000 (Tue, 08 Feb 2011) | 1 line
+
+Only print neuron states in TEST mode
+------------------------------------------------------------------------
+r60 | richard_towers@yahoo.co.uk | 2011-02-03 19:48:00 +0000 (Thu, 03 Feb 2011) | 1 line
+
+Added new makefile for local testing...
+------------------------------------------------------------------------
+r59 | richard_towers@yahoo.co.uk | 2011-02-03 19:07:58 +0000 (Thu, 03 Feb 2011) | 1 line
+
+Edited code to work with upgraded evoSlave
+------------------------------------------------------------------------
+r58 | richard_towers@yahoo.co.uk | 2011-02-03 19:07:10 +0000 (Thu, 03 Feb 2011) | 1 line
+
+Debugged on robot, changed CFLAGS to include -Wall and sorted out warnings
+------------------------------------------------------------------------
+r57 | richard_towers@yahoo.co.uk | 2011-02-02 22:01:10 +0000 (Wed, 02 Feb 2011) | 1 line
+
+added dtrnn
+------------------------------------------------------------------------
+r56 | richard_towers@yahoo.co.uk | 2011-02-02 16:48:15 +0000 (Wed, 02 Feb 2011) | 1 line
+
+Moved evoSlave branch into trunk, tagged previous trunk as 11.2.2
+------------------------------------------------------------------------
+r55 | richard_towers@yahoo.co.uk | 2011-02-02 14:43:12 +0000 (Wed, 02 Feb 2011) | 1 line
+
+reversed row and columns in weights matrix so as to match with proper notation
+------------------------------------------------------------------------
+r54 | richard_towers@yahoo.co.uk | 2011-02-01 20:52:07 +0000 (Tue, 01 Feb 2011) | 1 line
+
+Made moves towards sensible initial genotyoes in evoMaster
+------------------------------------------------------------------------
+r53 | richard_towers@yahoo.co.uk | 2011-02-01 11:33:54 +0000 (Tue, 01 Feb 2011) | 1 line
+
+Yet more tidying
+------------------------------------------------------------------------
+r52 | richard_towers@yahoo.co.uk | 2011-02-01 11:29:44 +0000 (Tue, 01 Feb 2011) | 1 line
+
+More house keeping...
+------------------------------------------------------------------------
+r51 | richard_towers@yahoo.co.uk | 2011-02-01 11:27:03 +0000 (Tue, 01 Feb 2011) | 1 line
+
+Moved template matching fitness monitor to trunk
+------------------------------------------------------------------------
+r50 | richard_towers@yahoo.co.uk | 2011-02-01 11:23:57 +0000 (Tue, 01 Feb 2011) | 1 line
+
+Got template based object matching WORKING\!, bit slow, currently follows 2 objects. No clever ROI stuff yet...
+------------------------------------------------------------------------
+r49 | richard_towers@yahoo.co.uk | 2011-01-27 21:54:57 +0000 (Thu, 27 Jan 2011) | 1 line
+
+Got template matching working, looks like it'll be too slow.
+------------------------------------------------------------------------
+r48 | richard_towers@yahoo.co.uk | 2011-01-27 15:36:36 +0000 (Thu, 27 Jan 2011) | 1 line
+
+branched fitMonitor and made some VERY buggy /improvements/...
+------------------------------------------------------------------------
+r47 | richard_towers@yahoo.co.uk | 2010-12-25 03:51:42 +0000 (Sat, 25 Dec 2010) | 1 line
+
+Ported open cv light tracker, works now.
+------------------------------------------------------------------------
+r46 | richard_towers@yahoo.co.uk | 2010-12-13 12:33:45 +0000 (Mon, 13 Dec 2010) | 1 line
+
+Got OpenCV working and started to layout fitness monitoring program
+------------------------------------------------------------------------
+r45 | richard_towers@yahoo.co.uk | 2010-12-10 09:51:02 +0000 (Fri, 10 Dec 2010) | 1 line
+
+Created wiki page through web user interface.
+------------------------------------------------------------------------
+r44 | richard_towers@yahoo.co.uk | 2010-11-30 10:51:54 +0000 (Tue, 30 Nov 2010) | 1 line
+
+Created new project to monitor fitness
+------------------------------------------------------------------------
+r43 | richard_towers@yahoo.co.uk | 2010-11-25 18:26:47 +0000 (Thu, 25 Nov 2010) | 1 line
+
+Developed evoSlave and Master so that they work nicely together
+------------------------------------------------------------------------
+r42 | richard_towers@yahoo.co.uk | 2010-11-25 10:09:07 +0000 (Thu, 25 Nov 2010) | 2 lines
+
+Added some error handling to evoMaster and tidied up genotypes into a folder
+
+------------------------------------------------------------------------
+r41 | richard_towers@yahoo.co.uk | 2010-11-25 10:07:22 +0000 (Thu, 25 Nov 2010) | 1 line
+
+Branched evoSlave
+------------------------------------------------------------------------
+r40 | richard_towers@yahoo.co.uk | 2010-11-24 22:36:49 +0000 (Wed, 24 Nov 2010) | 1 line
+
+Updated evoMaster so that it compiles and produces vaguely sensible outputs, needs testing on robots before any serious progress can be made
+------------------------------------------------------------------------
+r39 | richard_towers@yahoo.co.uk | 2010-11-24 15:51:56 +0000 (Wed, 24 Nov 2010) | 1 line
+
+Updated evoMaster, compiles, not tested yet though.
+------------------------------------------------------------------------
+r38 | richard_towers@yahoo.co.uk | 2010-11-24 11:24:31 +0000 (Wed, 24 Nov 2010) | 1 line
+
+Edited genes.c so that it can write genotypes
+------------------------------------------------------------------------
+r37 | richard_towers@yahoo.co.uk | 2010-11-22 15:03:58 +0000 (Mon, 22 Nov 2010) | 1 line
+
+Copied files from evoSlave ready to be edited to run on the host
+------------------------------------------------------------------------
+r36 | richard_towers@yahoo.co.uk | 2010-11-22 15:01:07 +0000 (Mon, 22 Nov 2010) | 1 line
+
+Deleted obsolete branch of evoSlave
+------------------------------------------------------------------------
+r35 | richard_towers@yahoo.co.uk | 2010-11-22 14:58:10 +0000 (Mon, 22 Nov 2010) | 1 line
+
+Added code to evoMaster project
+------------------------------------------------------------------------
+r34 | richard_towers@yahoo.co.uk | 2010-11-18 15:57:07 +0000 (Thu, 18 Nov 2010) | 1 line
+
+Branched evoSlave
+------------------------------------------------------------------------
+r33 | richard_towers@yahoo.co.uk | 2010-11-18 14:08:02 +0000 (Thu, 18 Nov 2010) | 1 line
+
+Deleted accidentally included binary
+------------------------------------------------------------------------
+r32 | richard_towers@yahoo.co.uk | 2010-11-18 14:07:27 +0000 (Thu, 18 Nov 2010) | 1 line
+
+Added other necessary files to evoSlave
+------------------------------------------------------------------------
+r31 | richard_towers@yahoo.co.uk | 2010-11-18 14:04:54 +0000 (Thu, 18 Nov 2010) | 1 line
+
+Added example genotype file
+------------------------------------------------------------------------
+r30 | richard_towers@yahoo.co.uk | 2010-11-18 14:03:50 +0000 (Thu, 18 Nov 2010) | 1 line
+
+Added genes file to read genotype files sent by host
+------------------------------------------------------------------------
+r29 | richard_towers@yahoo.co.uk | 2010-11-18 14:02:17 +0000 (Thu, 18 Nov 2010) | 1 line
+
+Minor alterations to evoSlave.h
+------------------------------------------------------------------------
+r28 | richard_towers@yahoo.co.uk | 2010-11-17 20:05:50 +0000 (Wed, 17 Nov 2010) | 1 line
+
+Created evoSlave, updated netTestClient makefile, added file transfer to netTestHost
+------------------------------------------------------------------------
+r27 | richard_towers@yahoo.co.uk | 2010-11-13 15:36:33 +0000 (Sat, 13 Nov 2010) | 1 line
+
+Added stopAllMotors to robot.c
+------------------------------------------------------------------------
+r26 | richard_towers@yahoo.co.uk | 2010-11-13 15:16:02 +0000 (Sat, 13 Nov 2010) | 1 line
+
+Altered netTestClient and netTestHost trunks and added multi-threading in order to communicate asynchronously.
+------------------------------------------------------------------------
+r25 | richard_towers@yahoo.co.uk | 2010-11-13 09:27:05 +0000 (Sat, 13 Nov 2010) | 1 line
+
+Put some printf statements in netTestHost to try and work out how it works...
+------------------------------------------------------------------------
+r24 | richard_towers@yahoo.co.uk | 2010-11-11 20:30:16 +0000 (Thu, 11 Nov 2010) | 1 line
+
+Split netTests into seperate headers and source
+------------------------------------------------------------------------
+r23 | richard_towers@yahoo.co.uk | 2010-11-11 20:14:34 +0000 (Thu, 11 Nov 2010) | 1 line
+
+Branched network test programs
+------------------------------------------------------------------------
+r22 | richard_towers@yahoo.co.uk | 2010-11-11 20:14:16 +0000 (Thu, 11 Nov 2010) | 1 line
+
+Branched network test programs
+------------------------------------------------------------------------
+r21 | richard_towers@yahoo.co.uk | 2010-11-11 20:01:18 +0000 (Thu, 11 Nov 2010) | 1 line
+
+Tested network "hello world" program. Success.
+------------------------------------------------------------------------
+r20 | richard_towers@yahoo.co.uk | 2010-11-11 11:55:45 +0000 (Thu, 11 Nov 2010) | 1 line
+
+Changed newProject script yet again to fix makefile
+------------------------------------------------------------------------
+r19 | richard_towers@yahoo.co.uk | 2010-11-11 11:52:16 +0000 (Thu, 11 Nov 2010) | 1 line
+
+Changed makefile to compile for host rather than cross compile
+------------------------------------------------------------------------
+r18 | richard_towers@yahoo.co.uk | 2010-11-11 11:49:54 +0000 (Thu, 11 Nov 2010) | 1 line
+
+Fixed ifndefs in netTest headers
+------------------------------------------------------------------------
+r17 | richard_towers@yahoo.co.uk | 2010-11-11 11:47:23 +0000 (Thu, 11 Nov 2010) | 1 line
+
+Updated newProject Script
+------------------------------------------------------------------------
+r16 | richard_towers@yahoo.co.uk | 2010-11-11 11:29:57 +0000 (Thu, 11 Nov 2010) | 1 line
+
+Created a new project to practice sockets programming
+------------------------------------------------------------------------
+r15 | richard_towers@yahoo.co.uk | 2010-11-11 11:29:32 +0000 (Thu, 11 Nov 2010) | 1 line
+
+Created a new project to practice sockets programming
+------------------------------------------------------------------------
+r14 | richard_towers@yahoo.co.uk | 2010-11-11 11:27:48 +0000 (Thu, 11 Nov 2010) | 1 line
+
+Updated makefile
+------------------------------------------------------------------------
+r13 | richard_towers@yahoo.co.uk | 2010-11-10 09:52:48 +0000 (Wed, 10 Nov 2010) | 1 line
+
+Moved branch to trunk, tagged previous trunk as tag1
+------------------------------------------------------------------------
+r12 | richard_towers@yahoo.co.uk | 2010-11-09 22:41:23 +0000 (Tue, 09 Nov 2010) | 1 line
+
+ffnn Branch tested on the robots and appears to work now. Will commit to trunk tomorrow insha'allah
+------------------------------------------------------------------------
+r11 | richard_towers@yahoo.co.uk | 2010-11-09 11:45:42 +0000 (Tue, 09 Nov 2010) | 1 line
+
+Suddenly remembered to free "outputs" THIS IS IMPORTANT.
+------------------------------------------------------------------------
+r10 | richard_towers@yahoo.co.uk | 2010-11-09 11:42:29 +0000 (Tue, 09 Nov 2010) | 1 line
+
+Put neural network in loop, ready for testing now. Will test this afternoon...
+------------------------------------------------------------------------
+r9 | richard_towers@yahoo.co.uk | 2010-11-09 11:35:41 +0000 (Tue, 09 Nov 2010) | 1 line
+
+Scaled nn outputs so that they gel with motor inputs
+------------------------------------------------------------------------
+r8 | richard_towers@yahoo.co.uk | 2010-11-09 11:30:03 +0000 (Tue, 09 Nov 2010) | 1 line
+
+Added array initialisers to ffnn.c hoping to produce Braitenberg behaviour
+------------------------------------------------------------------------
+r7 | richard_towers@yahoo.co.uk | 2010-11-09 11:14:17 +0000 (Tue, 09 Nov 2010) | 1 line
+
+Changed getProxIR to return a float from 0 to 1 instead of (I think) an int from 0 to 1024
+------------------------------------------------------------------------
+r6 | richard_towers@yahoo.co.uk | 2010-11-09 11:07:56 +0000 (Tue, 09 Nov 2010) | 1 line
+
+Changed doubles to floats in branch of ffnn as I feel doubles are overkill
+------------------------------------------------------------------------
+r5 | richard_towers@yahoo.co.uk | 2010-11-09 10:38:09 +0000 (Tue, 09 Nov 2010) | 1 line
+
+branched ffnn before major change
+------------------------------------------------------------------------
+r4 | richard_towers@yahoo.co.uk | 2010-11-08 18:22:24 +0000 (Mon, 08 Nov 2010) | 1 line
+
+Modified every source file, starting to form a proper neural net now...
+------------------------------------------------------------------------
+r3 | richard_towers@yahoo.co.uk | 2010-11-06 12:29:46 +0000 (Sat, 06 Nov 2010) | 1 line
+
+Added files to ffnn project
+------------------------------------------------------------------------
+r2 | richard_towers@yahoo.co.uk | 2010-11-06 12:08:32 +0000 (Sat, 06 Nov 2010) | 1 line
+
+Atcually created ffnn project
+------------------------------------------------------------------------
+r1 | richard_towers@yahoo.co.uk | 2010-11-06 12:07:13 +0000 (Sat, 06 Nov 2010) | 1 line
+
+Defined file structure, Created ffnn project
+------------------------------------------------------------------------

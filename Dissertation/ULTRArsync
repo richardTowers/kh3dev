@@ -1,0 +1,13 @@
+#!/bin/bash
+_zenity="/usr/bin/zenity"
+_out="/tmp/whois.output.$$"
+
+ls /media/ULTRA
+fileExists=$?
+echo $fileExists
+if [ $fileExists -ne 0 ]
+then 
+	${_zenity} --title  "Drive not found" --error --text "Please ensure the USB drive is mounted" 
+else
+	rsync -r --delete . /media/ULTRA/Dissertation
+fi

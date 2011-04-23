@@ -1402,7 +1402,7 @@ fitness landscape
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -2359,9 +2359,8 @@ This study uses version III Kheperas which are small, cylindrical, two-wheel
  The IR sensors provide a voltage which is related (in a non-linear fashion)
  to the distance from the sensor to the nearest reflective object.
  These voltages are converted into binary values by analogue-to-digital
- converters, these values are fed as inputs to the neural network which
- produces output values which are converted to analogue, boosted and fed
- to the two motors.
+ converters, fed as inputs to the neural network which produces output values
+ which are converted to analogue, boosted and fed to the two motors.
  Because the robot is differential drive the outputs of the motors can specify
  any curvilinear path, including on the spot rotation.
  
@@ -2939,6 +2938,13 @@ key "ieee802.11"
 
 \begin_layout Subsection
 Fitness Monitoring
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Fitness-Monitoring"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3097,6 +3103,16 @@ The maximum area that can be monitored by one camera at ceiling height is
  required.
  For very large areas it should be possible to sew together images from
  an array of cameras.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Write stuff about fitness functions here
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -4086,7 +4102,7 @@ In the Euler method the neuron state at
 
  is given by 
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -4106,7 +4122,7 @@ reference "eq:Euler"
 
 
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -25264,28 +25280,65 @@ key "Nolfi&Floreano"
  propose a method based on tree growth rules wherein neurons are connected
  if there is a route between them consisting of crossing branches.
  
-\end_layout
+\begin_inset Note Note
+status open
 
-\begin_layout Section
-Results and Discussion
-\begin_inset CommandInset label
-LatexCommand label
-name "sec:Results-and-Discussion"
+\begin_layout Plain Layout
+This needs more work
+\end_layout
 
 \end_inset
 
 
 \end_layout
 
+\begin_layout Subsection
+Experiment
+\end_layout
+
 \begin_layout Standard
-\begin_inset ERT
+As a demonstration of the platform an experiment into evolving exploratory
+ controllers was conducted.
+ Robotic vacuum cleaners are a real world example of a use for such a controller.
+ The question asked in the title of this report points to some interesting
+ questions: Why does common wisdom say that even mundane repetitive tasks
+ are best solved by humans? Is it possible to design robotic controllers
+ for simple tasks that perform as well as, or even outperform, humans? 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide true
+sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename bestPath.pdf
+	width 30text%
+
+\end_inset
 
 
-\backslash
-begin{comment}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+An example of a near-optimal path.
+ Humans tend to follow paths similar to this when vacuuming.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Human-Path"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -25293,7 +25346,157 @@ begin{comment}
 
 \end_layout
 
-\begin_layout Standard
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename roombaPath.pdf
+	width 30text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+An example of the path taken by a robot following algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:The-Roomba's-exploration"
+
+\end_inset
+
+.
+ Note that although all of the area would be covered eventually, many parts
+ are covered several times, particularly near the walls.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Roomba-Path"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename BestFFNN.pdf
+	lyxscale 50
+	width 30text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The best path taken by a FFNN controller.
+ Note that the robot falls into a stable repeating cycle - as FFNNs have
+ no memory of past states they are not well suited to exploration tasks.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:FFNN-Path"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+A comparison of paths exploring an L shaped area.
+ Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Human-Path"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Roomba-Path"
+
+\end_inset
+
+ are cartoon examples while figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:FFNN-Path"
+
+\end_inset
+
+ shows experimental data.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Comparison-Of-Paths"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Robots such as the Roomba have made a big step forward, but they are far
+ from a serious commercial threat to conventional vacuum cleaners.
+ If it were possible to produce robotic agents that could cover an area
+ as efficiently as a human, at a cost low enough to be competitive with
+ conventional devices, then perhaps they could move out of the realm of
+ gadgetry and into the mainstream.
+ 
 \begin_inset Float algorithm
 wide false
 sideways false
@@ -25544,12 +25747,71 @@ end{algorithmic}
 
 \begin_layout Plain Layout
 The Roomba's exploration algorithm
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:The-Roomba's-exploration"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
 
 
 \end_layout
+
+\end_inset
+
+The Roomba's exploration algorithm uses random walk to explore an area as
+ described in algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:The-Roomba's-exploration"
+
+\end_inset
+
+.
+ Given enough time, a Roomba is very likely to cover all of the available
+ area in a room of moderate complexity, however it will almost certainly
+ cover certain areas much more thoroughly than others.
+ Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Human-Path"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Roomba-Path"
+
+\end_inset
+
+ show a comparison of likely paths taken by a human and a Roomba.
+\end_layout
+
+\begin_layout Standard
+The Roomba's algorithm is clearly suboptimal, however the problem it aims
+ to solve is a difficult one.
+ A human is able to create a mental representation of the area to be covered
+ just by inspection, this can be used to plan an optimal route.
+ Robots have been produced that use this method, however the cost of the
+ equipment required to scan the environment is prohibitively large and this
+ situation is unlikely to improve significantly.
+ The challenge for robots like the Roomba is to explore a large area with
+ only limited, short range information about its surroundings.
+ The experiments conducted in this report aim to answer the question of
+ whether or not neuroevolution can produce controllers able to tackle this
+ exploration problem.
+\end_layout
+
+\begin_layout Section
+Results and Discussion
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Results-and-Discussion"
 
 \end_inset
 
@@ -25557,19 +25819,597 @@ The Roomba's exploration algorithm
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+Two studies were conducted, the first into the performance of FFNNs and
+ the second into CTRNNs.
+ Both studies were conducted in an L shaped area as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Comparison-Of-Paths"
+
+\end_inset
+
+.
+ Individuals were scored acording to the amount of unique area they covered
+ using the fitness function described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Fitness-Monitoring"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Feed Forward Controllers
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Results-FFNN"
+
+\end_inset
+
+ shows the results of the experiment into the performance of feed forward
+ controllers.
+ The first generation of controllers had random weights and biases, and
+ unsurprisingly recieved very low fitness scores (figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Generation-0"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Mutations had produced controllers with the beginnings of an effective strategy
+ by generation 6 (figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Generation-6"
+
+\end_inset
+
+).
+ The looping strategy seen in this individual has no obstacle avoidance
+ component yet and so its success is heavily dependant on its starting point
+ and heading.
+ The dip in fitness after generation 6 (evident in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Fitness-against-individual"
+
+\end_inset
+
+) is due to this problem - in generation 7 the children of fit individuals
+ from 6 are 
+\begin_inset Quotes eld
+\end_inset
+
+unlucky
+\begin_inset Quotes erd
+\end_inset
+
+ in their initial placement, score badly and are selected against - combined
+ with the detrimental effect of mutation the strategy is quickly lost.
+ For a strategy to be succesful it must be robust with respect to initial
+ conditions.
+\end_layout
+
+\begin_layout Standard
+The first robust controller occurred in generation 11 (figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Generation-11"
+
+\end_inset
+
+), it combines a slightly curved path in open space with wall avoidance
+ to produce a more situation independant exploration strategy.
+ Because the success of this strategy is situation independant it proliferates
+ in future generations, although its fitness is often lower due to the (usually)
+ detrimental effects of mutation.
+ The limitations of feed forward networks start to become apparent in this
+ individual: confronted with the same information the network will always
+ make the same decision (irrespective of whether the situation has occured
+ before).
+ Thus, if the robot finds itself at a position and heading its been in before,
+ it is forced into an infinite loop - and unable to explore new territory.
+\end_layout
+
+\begin_layout Standard
+After generation 11 there was a steady improvement in average fitness as
+ the dominant startegy became more common in the population due to selection,
+ but improvements in maximum fitness were not seen until generation 18.
+ There are two reasons for the long gap before an improvement, firstly,
+ as described above, the limits of feed forward behaviour are already being
+ reached, and secondly because mutations usually degrade not improve the
+ controller so improvements tend to be rare.
+ Despite this rarity the ability of selection to favour good strategies
+ is clear.
+\end_layout
+
+\begin_layout Standard
+The superiority of the strategy in generation 19 (figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Generation-19"
+
+\end_inset
+
+) over generation 11 is evident, however it still suffers from the same
+ limitation - it repeatedly follows the same path in an infinite loop.
+ With further generations fitness would probably improve, and it could well
+ be possible to evolve strategies that attempt to avoid looping.
+ One method that could be used to reduce the deterministic behaviour of
+ the network would be to feed a pseudo-random time series as an extra input
+ to the network alongside the sensors.
+ Inclusion of noise in networks has been shown to increase computational
+ power and behavioural complexity.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+FIND A REFERENCE
+\end_layout
+
+\end_inset
+
+ Even with these improvements it is unlikely that robots without memory
+ or the ability to learn from past experience will be able to cover complex
+ environments effectively.
+ Recurrent neural networks such as CTRNNs have been shown to be able to
+ evolve short term memory and so have the potential to use more interesting
+ strategies.
+\begin_inset Float figure
+wide false
+sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Fitnesses.eps
+	width 95col%
+
+\end_inset
 
 
-\backslash
-end{comment}
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Fitness against individual for evolving FFNN controllers.
+ Each generation has 10 individuals.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fitness-against-individual"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Gen0Ind2.pdf
+	width 45col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Generation 0 Individual 2
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Generation-0"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Gen6Ind0.pdf
+	width 45col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Generation 6 Individual 0
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Generation-6"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Gen11Ind2.pdf
+	width 45col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Generation 11 Individual 2
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Generation-11"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Gen19Ind0.pdf
+	width 45col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Generation 19 Individual 0
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Generation-19"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Results of an evolutionary run using feed forward neural controllers.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Results-FFNN"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Recurrent Controllers
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename FitnessesCTRNN.eps
+	width 95col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Fitness against individual for evolving CTRNN controllers illustrating the
+ difficulty of bootstrapping.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fitness-against-individual-CTRNN"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename CTRNN2.pdf
+	width 42col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Behaviour of a typical initial CTRNN controller.
+ Random control systems in the range used tend not to be sufficiently perturbed
+ by sensory data to avoid obstacles.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename CTRNN1.pdf
+	width 42col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The fittest CTRNN controller.
+ None of the controllers in this experiment were able to avoid walls.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Results of a brief evolutionary run using continuous recurrent neural controller
+s.
+ The run was aborted due since no individuals were able to react to their
+ surroundings.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Results-of-CTRNN"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The potential advantages of recurrent networks are significant, however
+ these advantages come at a cost from the point of view of evolution.
+ In a feed forward network the number of parameters to be tuned is relatively
+ small, there are less than half of the possible connections (
+\begin_inset Formula $\nicefrac{n^{2}}{2}-n$
+\end_inset
+
+ compared to 
+\begin_inset Formula $n^{2}$
+\end_inset
+
+ in a recurrent network) and time constants are not necessary.
+ Adding these extra parameters to the genome significantly increases the
+ size of the haystack that needs to be searched, although it should also
+ increase the number (and hopefully the quality) of needles.
+ On top of this, recurrent networks exhibit much greater instability than
+ feed forward networks, especially when neurons have self connections.
+ The addition of one recurrent connection to an otherwise fit network can
+ completely alter its behaviour.
+\end_layout
+
+\begin_layout Standard
+The net effect is that a small initial population of controllers with random
+ parameters is quite likely to score uniformly poor fitness, in this situation
+ the evolutionary algorithm is reduced to mere random genetic drift.
+ This is known as the bootstrapping problem, it can be mitigated in a number
+ of ways.
+ The simplest is to start with a very large population of random controllers
+ (to be gradually reduced in future generations for speed), this allows
+ the search to focus only on initially reasonable controllers.
+ Another method is to start the process with controllers which are known
+ to work for a similar problem, since the parameters are likely to be in
+ the correct region, however this can lead to significantly suboptimal solutions.
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Results-of-CTRNN"
+
+\end_inset
+
+ shows the results of a short experiment attempting to evolve CTRNN controllers,
+ the experiment had to be aborted because of its inability to bootstrap.
+ The problem in this experiment was that, with parameters in the initial
+ range, information from the sensors was too diluted by saturation in neurons
+ and slow time constants to have a useful effect on motor outputs.
+ Attempts to concentrate the evolutionary search in an area of parameter
+ space with higher performance were unsuccesful.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Simulink"
+
+\end_inset
+
+ in the appendix shows a simulink model of a CTRNN built in an attempt to
+ pre-tune parameters, although it was unsuccesful in this respect it does
+ provide a good visualisation of the dilution problem.
 \end_layout
 
 \begin_layout Section
@@ -25581,6 +26421,43 @@ name "sec:Conclusions"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The experiments in this study demonstrate the ability of emobodied evolution
+ to evolve feed forward neural controllers capable of basic obstacle avoidance
+ and exploration behaviour.
+ Although it was not possible to evolve CTRNN controllers this is likely
+ to be a practical problem rather than a fundamental issue with the CTRNN
+ system, and that with further work recurrent networks could be produced
+ with similar effectiveness to the Roomba's control system.
+ Since the timescales involved in embodied evolution are so long it is unlikely
+ to be possible to evolve controllers capable of human-level exploration
+ without some use of simulation or massively parallel embodied trials.
+\end_layout
+
+\begin_layout Standard
+It can be concluded that the platform itself is an effective way of designing
+ control systems, although much further work is required.
+ An immediate and significant improvement to the speed of the system could
+ be achieved simply by providing some continuous charging to the robots,
+ and massive improvements in speed would result from the use of simulation
+ or hybrid embodied-simulated experiments.
+ Further down the line investigations into the evolvability of non-trivial
+ genotype-phenotype mapping schema and the use of third generation neural
+ networks (SNNs) could further enhance the speed of evolution and the behaviour
+ of evolved agents.
+\end_layout
+
+\begin_layout Standard
+The study fails to show the superiority of evolutionary methods over conventiona
+l approaches to AI, but given its short duration and limited scope this
+ is unsurprising.
+\end_layout
+
+\begin_layout Standard
+Finally, to answer the question asked in the title: Why is my hoover so
+ stupid? - Because its a hoover, what do you expect?
 \end_layout
 
 \begin_layout Standard
@@ -25618,7 +26495,7 @@ http://www.gnu.org/licenses/gpl.html
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -25632,12 +26509,13 @@ onecolumn
 
 \end_layout
 
-\begin_layout Appendix
+\begin_layout Standard
+\start_of_appendix
 \begin_inset Float figure
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -25744,7 +26622,7 @@ status collapsed
 \begin_layout Plain Layout
 Boundary selection.
  The user uses the mouse to drag lines delineating objects to be avoided
- (blue line active, grey lines already saved).
+ (blue line active, gray lines already saved).
  The supervisor will intercede if it detects the robot has hit a boundary.
 \end_layout
 
@@ -25810,6 +26688,239 @@ Screenshots of the supervisor program
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:Screenshots-of-the"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename simulinkTest.eps
+	width 90text%
+	rotateAngle 270
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The CTRNN simulink model.
+ Inputs to the system were recorded from the robot moving in the environment.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Sensors.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Sensor ouputs before being fed into the neural network.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Inputs.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Activations of input neurons.
+ Note that those with recurrent connections tend to sustain activation even
+ with no sensory input.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Hiddens.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Activations of hidden neurons.
+ Due to saturation, damping and recurrence sensory information has become
+ diluted.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Outputs.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Activations of output neurons.
+ Sensory information has been diluted to the point of irrelevance.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Results of a MATLAB Simulink simulation of a CTRNN.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Simulink"
 
 \end_inset
 
