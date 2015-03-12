@@ -1,0 +1,42 @@
+
+# Introduction #
+
+The aim of the project is to produce an embodied evolution platform, initially for use in Durham University's School of engineering. The project can be split into three logical branches:
+  1. Robotic Control (run on robot)
+  1. Supervising Progrem (run on PC, deals with fitness monitoring and genetics)
+  1. Simulation Program (a simulation of the above embodied environment)
+
+
+
+---
+
+
+# Details #
+The following sections detail the basic structure of each branch.
+
+## Robotic Control ##
+When each robot is booted it must:
+  * Establish a connection with the host computer
+    * Keep trying until it succeeds or gives up
+  * In a loop until it's told to stop:
+    * Recieve a genotype file
+    * Read the file into connection weights, biases etc. for it's neural net
+    * Run under neural network control until told to stop
+  * Stop
+## Supervising Program ##
+The supervisor must:
+  * Establish a connection with the robots
+    * Keep trying until it succeeds or gives up
+  * In a loop until every generation has been evaluted
+    * In a loop until every individual has been evaluated
+      * Send individual genotypes to robots
+      * Monitor each robot until confident of its fitness
+      * Next set of individuals
+    * Create next generation by reproducing best individuals in this generation
+    * Next Generation
+  * Save best genotype, fitness value etc.
+  * Stop
+
+## Simulation Program ##
+The simulation should accurately simulate only what needs to be simulated, which is how the robots perform under NN control. It's not necessary to simulate other aspects of the program as they don't affect fitness, even the genetic algorithm can potentially be different so long as it still finds fit individuals.
+An advantage of having different GA's etc. is that in simulation computational time is at a premium, whereas in realtime there is no real concern about the speed of computations, because the time taken to monitor the robots will be comparatively massive.
